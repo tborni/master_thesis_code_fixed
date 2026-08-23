@@ -20,6 +20,7 @@ label.
 
 from __future__ import annotations
 
+import tomllib
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -53,8 +54,20 @@ SCRIPT_DIR = Path(__file__).resolve().parent          # pareto/scripts
 PARETO_DIR = SCRIPT_DIR.parent                        # pareto
 DATA_DIR = PARETO_DIR / "data_combined"               # pareto/data_combined
 IMAGE_DIR = PARETO_DIR / "images"                     # pareto/images
+FILTER_PATH = PARETO_DIR / "filter.toml"              # pareto/filter.toml
 
 REQUIRED_COLS = {"rmsre", "lut", "dsp"}
+
+# Permissive defaults used when filter.toml (or a given key) is absent: every
+# point passes. Bounds are inclusive; an empty method list means "all methods".
+DEFAULT_BOUNDS = {
+    "lut_min": float("-inf"), "lut_max": float("inf"),
+    "dsp_min": float("-inf"), "dsp_max": float("inf"),
+    "rmsre_min": float("-inf"), "rmsre_max": float("inf"),
+}
+
+# When true, keep only per-method Pareto-optimal points (see filter.toml).
+DEFAULT_PARETO_PER_METHOD = False
 
 # --- Style for publication ---
 plt.rcParams.update({
@@ -67,6 +80,66 @@ plt.rcParams.update({
     "ytick.labelsize": 12,
     "figure.dpi": 300,
 })
+
+
+# --- Filtering -------------------------------------------------------------
+
+def load_filter() -> tuple[dict[str, float], list[str] | None, bool]:
+    """Read ``filter.toml`` and return ``(bounds, methods, pareto_per_method)``.
+
+    ``bounds`` always contains all six inclusive bounds (missing keys fall back
+    to the permissive defaults). ``methods`` is the allow-list of method names,
+    or ``None`` to allow every method (missing file, missing key, or empty list).
+    ``pareto_per_method`` is the ``[display].pareto_per_method_only`` flag.
+    """
+    bounds = dict(DEFAULT_BOUNDS)
+    methods: list[str] | None = None
+    pareto_per_method = DEFAULT_PARETO_PER_METHOD
+
+    if not FILTER_PATH.is_file():
+        print(f"No {FILTER_PATH.name} found; showing all configurations.")
+        return bounds, methods, pareto_per_method
+
+    with FILTER_PATH.open("rb") as fh:
+        cfg = tomllib.load(fh)
+
+    for key, value in cfg.get("bounds", {}).items():
+        if key not in DEFAULT_BOUNDS:
+            print(f"Warning: unknown bound '{key}' in {FILTER_PATH.name}; ignored.")
+            continue
+        bounds[key] = float(value)
+
+    include = cfg.get("methods", {}).get("include")
+    if include:  # non-empty list -> restrict; empty/absent -> all methods
+        methods = list(include)
+
+    pareto_per_method = bool(
+        cfg.get("display", {}).get("pareto_per_method_only", DEFAULT_PARETO_PER_METHOD)
+    )
+
+    return bounds, methods, pareto_per_method
+
+
+def apply_filter(df: pd.DataFrame, bounds: dict[str, float]) -> pd.DataFrame:
+    """Return the rows of ``df`` inside every inclusive metric bound."""
+    keep = (
+        df["lut"].between(bounds["lut_min"], bounds["lut_max"])
+        & df["dsp"].between(bounds["dsp_min"], bounds["dsp_max"])
+        & df["rmsre"].between(bounds["rmsre_min"], bounds["rmsre_max"])
+    )
+    return df[keep]
+
+
+def method_pareto_only(df: pd.DataFrame) -> pd.DataFrame:
+    """Keep only the rows of ``df`` on its own (LUT, DSP, RMSRE) Pareto front.
+
+    Each combined file holds a single method, so ``df`` *is* one method's group.
+    A row is dropped only when another row IN THIS FRAME dominates it; domination
+    across methods is irrelevant here (handled by comparing whole frames later).
+    Uses the same 3-objective rule as the global front for consistency.
+    """
+    mask = pareto_mask_3d(df[["rmsre", "lut", "dsp"]].to_numpy())
+    return df[mask]
 
 
 # --- Data loading ----------------------------------------------------------
@@ -82,10 +155,19 @@ def load_combined() -> list[pd.DataFrame]:
     if not files:
         raise SystemExit(f"No *_combined.csv files found in {DATA_DIR}")
 
+    bounds, methods, pareto_per_method = load_filter()
+    if pareto_per_method:
+        print("Filter: showing per-method Pareto-optimal points only.")
+
     frames: list[pd.DataFrame] = []
     for path in files:
         label_full = path.name.replace("_combined.csv", "")
         method = label_full.split("+")[0]
+
+        if methods is not None and method not in methods:
+            print(f"Filtered out {path.name}: method '{method}' not in filter.")
+            continue
+
         df = pd.read_csv(path)
         # Combined files use upper-case headers (NUM_NEWTON_STEPS, LUT, ...);
         # work with lower-case internally so the rest of the code is casing-agnostic.
@@ -95,6 +177,25 @@ def load_combined() -> list[pd.DataFrame]:
         if missing:
             print(f"Skipping {path.name}: missing columns {missing}")
             continue
+
+        # Apply the metric bounds. Filtered points are removed entirely, so the
+        # Pareto fronts downstream are computed over what is actually shown.
+        n_before = len(df)
+        df = apply_filter(df, bounds)
+        if df.empty:
+            print(f"Filtered out {path.name}: no rows within bounds.")
+            continue
+        if len(df) < n_before:
+            print(f"  {path.name}: kept {len(df)}/{n_before} rows after bounds.")
+
+        # Optionally reduce to this method's own Pareto front.
+        if pareto_per_method:
+            n_pre_pareto = len(df)
+            df = method_pareto_only(df)
+            print(
+                f"  {path.name}: kept {len(df)}/{n_pre_pareto} rows "
+                f"(per-method Pareto)."
+            )
 
         df["label"] = label_full
         df["method"] = method

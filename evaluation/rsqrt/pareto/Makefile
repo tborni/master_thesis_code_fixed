@@ -16,6 +16,7 @@ IMAGE_DIR    := images
 
 GEN_SCRIPT   := $(SCRIPTS)/generate_combined.py
 PLOT_SCRIPT  := $(SCRIPTS)/plots.py
+FILTER       := filter.toml
 
 # Source data: every method's accuracy/resources pair drives the combined files.
 SOURCE_CSV   := $(wildcard ../*/data/accuracy.csv ../*/data/resources.csv)
@@ -37,7 +38,7 @@ $(DATA_DIR)/.stamp: $(GEN_SCRIPT) $(SOURCE_CSV)
 # --- Stage 2: figures -------------------------------------------------------
 images: $(IMAGES)
 
-$(IMAGES): $(PLOT_SCRIPT) $(DATA_DIR)/.stamp
+$(IMAGES): $(PLOT_SCRIPT) $(FILTER) $(DATA_DIR)/.stamp
 	$(PYTHON) $(PLOT_SCRIPT)
 
 # --- Housekeeping -----------------------------------------------------------
