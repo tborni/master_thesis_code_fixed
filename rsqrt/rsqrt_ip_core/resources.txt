@@ -1,0 +1,26 @@
+settings:
+- used Vivado IP_Core for reverse sqrt
+	-> with DSP support (9 DSP58)
+	-> allowed maximum latency (33 cycles)
+	-> same interface as for lookup and bit hacking approach
+	-> II = 1
+- clock_constraint: 4.0 ns
+- board part: xcvc1902-vsva2197-2MP-e-S
+- out_of_context
+
+resources:
+- LUT: 387
+- REG: 478
+- DSP: 9
+- WNS: 1.937
+- CPD: 2.063
+- max freq.: 485 MHz
+
+
+accuracy (through simulation):
+NUM_SAMPLES = 1000:
+RMSRE: 2.6717783039965422e-08
+max_rel_error: 5.9653922852015229e-08
+NUM_SAMPLES = 1000000
+RMSRE: 2.6448560515155757e-08
+max_rel_error: 6.5056698771781033e-08

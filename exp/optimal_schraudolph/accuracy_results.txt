@@ -1,0 +1,9 @@
+static const int32_t SCHRAUDOLPH_D = 1064866360;
+
+seed                               : 1781169015
+samples (finite, nonzero reference): 1000000
+RMSRE                              : 1.7679178883e-02
+max relative error                 : 3.9432919670e-02
+  at x                             : 84.604187 (0x42a93558)
+  schraudolph_exp(x)               : 5.31690945e+36
+  reference_exp(x)                 : 5.5351776640221109e+36
