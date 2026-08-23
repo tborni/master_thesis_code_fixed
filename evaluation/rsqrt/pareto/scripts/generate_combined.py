@@ -33,7 +33,7 @@ import pandas as pd
 METHODS: dict[str, str] = {
     "bipartite": "Bipartite",
     "bit_hacking": "Bit-Hacking",
-    "ip-core": "IP-Core",
+    "ip_core": "IP-Core",
     "lookup": "Lookup",
 }
 
