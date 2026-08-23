@@ -137,25 +137,26 @@ NEWTON_STEPS = (0, 1, 2)
 
 if __name__ == '__main__':
 
-	# Plot resources: LUT usage over the (addr_width, word_width) grid.
-	# resources.csv only contains num_newton_steps == 0, so no filter is needed.
+	# Plot resources: LUT usage over the (addr_width, word_width) grid, one figure
+	# per num_newton_steps so the three sweeps present in resources.csv do not
+	# overwrite each other in the same cells.
 	XLABEL = "addr_width"
 	YLABEL = "word_width"
-	X_COL_IDX = 1
-	Y_COL_IDX = 2
+	X_COL_IDX = 1			# addr_width
+	Y_COL_IDX = 2			# word_width
 	VALUE_IDX = 4			# LUT column
 	VALUE_FACTOR = 1
 	DATATYPE = "int"
-	FILTER_COL = None
-	FILTER_VAL = None
-	plot_heatmap(
-				filepath=DATA_DIR / "resources.csv",
-				output_path=IMAGES_DIR / "resources.png",
-				title="",
-				xlabel=XLABEL,
-				ylabel=YLABEL,
-				cell_width=2.6
-			)
+	FILTER_COL = 0			# num_newton_steps column
+	for FILTER_VAL in NEWTON_STEPS:
+		plot_heatmap(
+					filepath=DATA_DIR / "resources.csv",
+					output_path=IMAGES_DIR / f"resources_newton{FILTER_VAL}.png",
+					title="",
+					xlabel=XLABEL,
+					ylabel=YLABEL,
+					cell_width=2.6
+				)
 
 	# Plot accuracy: RMSRE over the (addr_width, word_width) grid, one figure per
 	# num_newton_steps so the three sweeps present in accuracy.csv do not
