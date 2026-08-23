@@ -118,8 +118,11 @@ DATA_DIR = PROJECT_ROOT / "data"
 IMAGES_DIR = PROJECT_ROOT / "images"
 
 # Column layout of the CSVs consumed below (0-based indices):
-#   resources.csv : num_newton_steps, addr_width, word_width, REG, LUT, DSP, BRAM, URAM
-#   accuracy.csv  : num_newton_steps, addr_width, word_width, RMSRE, max_rel_error
+#   resources.csv : num_newton_steps, addr_width, word_width, clock_period, WNS,
+#                   critical_path_timing, max_frequency, REG, LUT, DSP, BRAM, URAM
+#                   -> LUT is column 8
+#   accuracy.csv  : num_newton_steps, addr_width, word_width, C, RMSRE, max_rel_error
+#                   -> RMSRE is column 4
 XLABEL = "addr_width"
 YLABEL = "word_width"
 X_COL_IDX = 1
@@ -132,7 +135,7 @@ DATATYPE = "int"	# "int", "float_1" (1 digit after the point), "percent", "sci"
 FILTER_COL = None
 FILTER_VAL = None
 # num_newton_steps to plot accuracy for (column 0 in both CSVs).
-NEWTON_STEPS = (0, 1, 2)
+NEWTON_STEPS = (0, 1)
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':
@@ -144,7 +147,7 @@ if __name__ == '__main__':
 	YLABEL = "word_width"
 	X_COL_IDX = 1			# addr_width
 	Y_COL_IDX = 2			# word_width
-	VALUE_IDX = 4			# LUT column
+	VALUE_IDX = 8			# LUT column (resources.csv 13-column schema)
 	VALUE_FACTOR = 1
 	DATATYPE = "int"
 	FILTER_COL = 0			# num_newton_steps column
@@ -166,7 +169,7 @@ if __name__ == '__main__':
 	YLABEL = "word_width"
 	X_COL_IDX = 1			# addr_width
 	Y_COL_IDX = 2			# word_width
-	VALUE_IDX = 3			# RMSRE column
+	VALUE_IDX = 4			# RMSRE column (accuracy.csv, after the C column at idx 3)
 	VALUE_FACTOR = 100
 	DATATYPE = "percent"
 	FILTER_COL = 0			# num_newton_steps column

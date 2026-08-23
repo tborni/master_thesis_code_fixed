@@ -1,17 +1,27 @@
 #!/usr/bin/env python3
-"""Parse the rsqrt lookup accuracy report into a tidy CSV.
+"""Parse the rec_lookup accuracy sweep into a tidy CSV.
 
-The accuracy report (``accuracy.txt``) contains one test result per line, e.g.::
+The accuracy report (``accuracy.txt``) opens with a short header and then holds
+one test result per line, e.g.::
 
-    Test (Newton = 2, ADDR_W = 11, WORD_W = 16, II = 1): RMSRE = 0.0000000377, MAX_REL_ERROR = 0.0000001305, WORST_INPUT = 0.0000000000367782922172655
+    rec_lookup accuracy sweep
+      NUM_SAMPLES      = 10000
+      NS=0 AW= 6 WW= 6 C=2.000000  RMSRE=4.814353e-03  max_rel_error=1.121214e-02  at x=223227.953  (dut=4.529953e-06, ref=4.47972571e-06)
 
-This script extracts the configuration parameters and error metrics from every
-such line and writes them to a CSV with the columns::
+Each measurement line encodes the configuration (``NS`` Newton steps, ``AW``
+address width, ``WW`` word width, ``C`` correction coefficient) followed by the
+error metrics (``RMSRE``, ``max_rel_error``). The trailing ``at x=... (dut=...,
+ref=...)`` describes the worst-case input and is not extracted.
 
-    NUM_NEWTON_STEPS, ADDR_WIDTH, WORD_WIDTH, RMSRE, MAX_REL_ERROR
+This script writes the configuration parameters and error metrics of every such
+line to a CSV with the columns::
 
-Lines that do not match the expected format (blank lines, comments, ...) are
-skipped and reported on stderr.
+    NUM_NEWTON_STEPS, ADDR_WIDTH, WORD_WIDTH, C, RMSRE, MAX_REL_ERROR
+
+The ``C`` column is preserved so no information from the report is lost; the
+plotting tools that consume the CSV simply ignore it. Lines that do not match
+the expected format (the header, blank lines, comments, ...) are skipped and
+reported on stderr.
 """
 
 from __future__ import annotations
@@ -34,17 +44,30 @@ DATA_DIR = PROJECT_ROOT / "data"
 DEFAULT_INPUT = DATA_DIR / "accuracy.txt"
 DEFAULT_OUTPUT = DATA_DIR / "accuracy.csv"
 
-CSV_HEADER = ("NUM_NEWTON_STEPS", "ADDR_WIDTH", "WORD_WIDTH", "RMSRE", "MAX_REL_ERROR")
+CSV_HEADER = (
+    "NUM_NEWTON_STEPS",
+    "ADDR_WIDTH",
+    "WORD_WIDTH",
+    "C",
+    "RMSRE",
+    "MAX_REL_ERROR",
+)
 
-# One regex captures every field of interest in a single line. Integer fields
-# use \d+; the metrics are parsed as floats to tolerate scientific notation or a
-# varying number of decimals.
+# A float in scientific or plain notation, as emitted by the sweep.
+_FLOAT = r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?"
+
+# One regex captures every field of interest in a single measurement line. The
+# integer fields are right-aligned in the report (e.g. ``AW= 6``), so ``\s*``
+# absorbs the padding between the ``=`` and the digits. Anchoring on ``NS=``
+# means the header lines never match. The ``at x=...`` tail is deliberately left
+# uncaptured.
 LINE_RE = re.compile(
-    r"Newton\s*=\s*(?P<newton>\d+).*?"
-    r"ADDR_W\s*=\s*(?P<addr>\d+).*?"
-    r"WORD_W\s*=\s*(?P<word>\d+).*?"
-    r"RMSRE\s*=\s*(?P<rmsre>[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?).*?"
-    r"MAX_REL_ERROR\s*=\s*(?P<max_rel>[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)"
+    r"NS\s*=\s*(?P<newton>\d+)\s+"
+    r"AW\s*=\s*(?P<addr>\d+)\s+"
+    r"WW\s*=\s*(?P<word>\d+)\s+"
+    rf"C\s*=\s*(?P<c>{_FLOAT})\s+"
+    rf"RMSRE\s*=\s*(?P<rmsre>{_FLOAT})\s+"
+    rf"max_rel_error\s*=\s*(?P<max_rel>{_FLOAT})"
 )
 
 
@@ -55,6 +78,7 @@ class AccuracyRecord:
     num_newton_steps: int
     addr_width: int
     word_width: int
+    c: float
     rmsre: float
     max_rel_error: float
 
@@ -71,6 +95,7 @@ def parse_line(line: str) -> AccuracyRecord | None:
         num_newton_steps=int(match["newton"]),
         addr_width=int(match["addr"]),
         word_width=int(match["word"]),
+        c=float(match["c"]),
         rmsre=float(match["rmsre"]),
         max_rel_error=float(match["max_rel"]),
     )
@@ -131,10 +156,9 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     with args.input.open("r", encoding="utf-8") as handle:
+        # Preserve the report's own order (ascending in NS, then AW, then WW),
+        # which mirrors the row order of resources.csv.
         records = list(parse_report(handle))
-
-    # Emit rows in reverse of the report order (last line first).
-    records.reverse()
 
     if not records:
         print(f"error: no valid records parsed from {args.input}", file=sys.stderr)
