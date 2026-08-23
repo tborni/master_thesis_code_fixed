@@ -1,0 +1,17 @@
+tcl_parameters:
+	# top = rsqrt_bit_hacking
+	# part = xcvc1902-vsva2197-2MP-e-S
+	# clk_name = clk
+
+defaults:
+	# clock_period = 4.0
+	# NUM_NEWTON_STEPS = 1
+	# SUSTAINABLE_INTERVAL = 32
+
+sweeps:
+	***
+		~ name: II
+		~ active: 1
+		~ mode: cartesian
+			# SUSTAINABLE_INTERVAL = {1,2,3,9,12}
+	***
