@@ -2,37 +2,103 @@ module rec_bipartite_accuracy_tb;
 
 	localparam int unsigned  NUM_SAMPLES = 10000;
 
-	// Parameter sweep ranges. Filtered Pareto-front:
-	//   - ADDR_WIDTH_1 == ADDR_WIDTH_2 (symmetric split)
-	//   - WORD_WIDTH set by the bipartite-error heuristic (see below)
-	// so only ~ (#ADDR_0 * #ADDR_1) DUTs are actually instantiated per
-	// Newton-step setting.
-	localparam int unsigned  MIN_ADDR_0     = 2;
-	localparam int unsigned  MAX_ADDR_0     = 6;
-	localparam int unsigned  MIN_ADDR_1     = 3;
-	localparam int unsigned  MAX_ADDR_1     = 7;
-	localparam int unsigned  MIN_ADDR_2     = 3;
-	localparam int unsigned  MAX_ADDR_2     = 7;
-	localparam int unsigned  MIN_WORD       = 8;
-	localparam int unsigned  MAX_WORD       = 23;
-	localparam int unsigned  MIN_NUM_NEWTON = 0;
-	localparam int unsigned  MAX_NUM_NEWTON = 1;
+	// -------------------------------------------------------------------
+	// Parameter sweep ranges.
+	//
+	// make_range(min, max, step) packs an inclusive sweep axis (bounds +
+	// derived count) into one struct so the generate loops and the report
+	// loop can share a single source of truth.  All three bipartite
+	// accuracy TBs (rec/exp/rsqrt) share this structure; only the
+	// per-function specifics (sampler, reference, DUT ports, heuristic
+	// constants) differ.
+	// -------------------------------------------------------------------
+	typedef struct packed {
+		int unsigned min;
+		int unsigned max;
+		int unsigned step;
+		int unsigned num;
+	} range_t;
+	function automatic range_t make_range(input int unsigned  min, input int unsigned  max, input int unsigned  step);
+		return '{
+			min:  min,
+			max:  max,
+			step: step,
+			num:  (max - min) / step + 1
+		};
+	endfunction : make_range
 
-	localparam int unsigned  NUM_ADDR_0 = MAX_ADDR_0 - MIN_ADDR_0 + 1;
-	localparam int unsigned  NUM_ADDR_1 = MAX_ADDR_1 - MIN_ADDR_1 + 1;
-	localparam int unsigned  NUM_ADDR_2 = MAX_ADDR_2 - MIN_ADDR_2 + 1;
-	localparam int unsigned  NUM_WORD   = MAX_WORD   - MIN_WORD   + 1;
-	localparam int unsigned  NUM_NEWTON = MAX_NUM_NEWTON - MIN_NUM_NEWTON + 1;
-	localparam int unsigned  NUM_INST   = NUM_NEWTON * NUM_ADDR_0 * NUM_ADDR_1 * NUM_ADDR_2 * NUM_WORD;
+	localparam range_t NUM_NEWTON = make_range(.min( 0), .max( 1), .step(1));
+	localparam range_t ADDR_0     = make_range(.min( 2), .max( 6), .step(1));
+	localparam range_t ADDR_1     = make_range(.min( 3), .max( 7), .step(1));
+	localparam range_t ADDR_2     = make_range(.min( 3), .max( 7), .step(1));
+	localparam range_t WORD       = make_range(.min( 8), .max(23), .step(1));
+
+	// Newton-coefficient sweep (used only when USE_NEWTON_COEFF_HEURISTIC == 0).
+	// range_t is integer-typed, so the axis is expressed in FIXED-POINT
+	// milli-units and divided by NEWTON_COEFF_SCALE to recover the real
+	// NEWTON_COEFF passed to the DUT. e.g. make_range(1950, 2050, 10) / 1000.0
+	// sweeps 1.95, 1.96, ... 2.05 (the textbook Newton constant is 2.0). Only
+	// exercised at NUM_NEWTON_STEPS >= 1 -- the pure seed (NS = 0) ignores it.
+	localparam range_t NEWTON_COEFF_RANGE = make_range(.min(1950), .max(2050), .step(10));
+	localparam real    NEWTON_COEFF_SCALE = 1000.0;
+
+	// -------------------------------------------------------------------
+	// Heuristic enables.
+	//
+	// The DUT-legality filter (dut_legal) is ALWAYS applied so no elaborated
+	// instance trips its own $error/$finish.  The two heuristics below are
+	// optional Pareto-front narrowings on top of it:
+	//
+	//   USE_WORD_WIDTH_HEURISTIC  : keep only WORD_WIDTH == word_width_heuristic(...)
+	//                               (plus the clamped WORD_WIDTH bounds).
+	//   USE_ADDR_WIDTH_HEURISTIC  : keep only the addr-field relations that sit
+	//                               on the accuracy Pareto front (symmetric split).
+	//   USE_NEWTON_COEFF_HEURISTIC: 1 -> NEWTON_COEFF = newton_coeff(...) (one
+	//                               bias-corrected coefficient per geometry, so the
+	//                               coefficient axis collapses to a single point);
+	//                               0 -> sweep NEWTON_COEFF_RANGE / NEWTON_COEFF_SCALE.
+	//
+	// Set a width/addr flag to 0 to sweep that axis fully (still constrained to
+	// legal DUTs); set to 1 to instantiate only the heuristic-selected point.
+	// -------------------------------------------------------------------
+	localparam bit  USE_WORD_WIDTH_HEURISTIC   = 1;
+	localparam bit  USE_ADDR_WIDTH_HEURISTIC   = 1;
+	localparam bit  USE_NEWTON_COEFF_HEURISTIC = 1;
+
+	// Coefficient-axis length: a single heuristic point when armed, else the
+	// full fixed-point sweep. Compile-time constant -- sizes NUM_INST and the
+	// II flattening below.
+	localparam int unsigned  NUM_COEFF = USE_NEWTON_COEFF_HEURISTIC ? 1 : NEWTON_COEFF_RANGE.num;
+
+	// --- Function 1 (always active): DUT legality -----------------------
+	// Every constraint the rec_bipartite elaboration/runtime depends on:
+	//   * WORD_WIDTH > A0 + A1 - 2   : bipartite is only meaningful above a
+	//                                  direct lookup of the same width (DUT $error).
+	//   * WORD_WIDTH <= 23           : the fp32 output keeps only 23 mantissa
+	//                                  bits, so wider tables add no accuracy.
+	//   * A0 + A1 + A2 <= 23         : the x_2 field is sliced at bit
+	//                                  (22 - A0 - A1) down to (23 - A0 - A1 - A2);
+	//                                  exceeding 23 gives a negative bit index.
+	//   * A0 + A1 >= 3               : the lower table needs at least a sign bit
+	//                                  plus one data bit to carry information.
+	function automatic bit dut_legal(
+		input int unsigned  addr_width_0,
+		input int unsigned  addr_width_1,
+		input int unsigned  addr_width_2,
+		input int unsigned  word_width
+	);
+		return (word_width > addr_width_0 + addr_width_1 - 2)
+			&& (word_width <= 23)
+			&& (addr_width_0 + addr_width_1 + addr_width_2 <= 23)
+			&& (addr_width_0 + addr_width_1 >= 3);
+	endfunction : dut_legal
 
 	// Bipartite-error heuristic (mirrors exp_bipartite_accuracy_tb):
 	// WORD_WIDTH is chosen large enough to keep quantization noise below
 	// the intrinsic linearization error of the two tables.
-	//   range_0 = 2*A_0 + A_1 + 2  - upper-table curvature term
-	//   range_1 = A_0 + A_1 + A_2 + 1 - lower-table cross-term
-	// adding a 2-bit slack for accumulated quantization. Only the combo
-	// that hits this heuristic is instantiated; the rest are stubbed out
-	// so the driver's all_xrdy reduction doesn't stall on them.
+	//   range_0 = 2*A_0 + A_1  - upper-table curvature term
+	//   range_1 = A_0 + A_1 + A_2 - lower-table cross-term
+	// adding a 2-bit slack for accumulated quantization.
 	function automatic int unsigned word_width_heuristic(
 		input int unsigned  addr_width_0,
 		input int unsigned  addr_width_1,
@@ -47,17 +113,45 @@ module rec_bipartite_accuracy_tb;
 		return (word_width > 23) ? 23 : word_width;
 	endfunction : word_width_heuristic
 
+	// --- Function 2 (gated by USE_WORD_WIDTH_HEURISTIC): WORD_WIDTH match --
+	// True when WORD_WIDTH equals the bipartite-error heuristic value AND
+	// stays within the clamped WORD_WIDTH bounds (redundant with dut_legal
+	// but kept here so the WORD axis is fully self-describing).
+	function automatic bit word_width_heuristic_ok(
+		input int unsigned  addr_width_0,
+		input int unsigned  addr_width_1,
+		input int unsigned  addr_width_2,
+		input int unsigned  word_width
+	);
+		return (word_width == word_width_heuristic(addr_width_0, addr_width_1, addr_width_2))
+			&& (word_width > addr_width_0 + addr_width_1 - 2)
+			&& (word_width <= 23);
+	endfunction : word_width_heuristic_ok
+
+	// --- Function 3 (gated by USE_ADDR_WIDTH_HEURISTIC): addr-field relations --
+	// The accuracy Pareto front for the reciprocal: a symmetric middle/lower
+	// split (A1 == A2), which balances the two tables' error terms.
+	function automatic bit addr_width_heuristic_ok(
+		input int unsigned  addr_width_0,
+		input int unsigned  addr_width_1,
+		input int unsigned  addr_width_2
+	);
+		return (addr_width_1 == addr_width_2);
+	endfunction : addr_width_heuristic_ok
+
+	// Combined per-config enable: legality always, heuristics only when armed.
 	function automatic bit config_enabled(
 		input int unsigned  addr_width_0,
 		input int unsigned  addr_width_1,
 		input int unsigned  addr_width_2,
 		input int unsigned  word_width
 	);
-		return (addr_width_1 == addr_width_2)
-			&& (word_width == word_width_heuristic(addr_width_0, addr_width_1, addr_width_2))
-			&& (addr_width_0 + addr_width_1 + addr_width_2 <= 23)
-			&& (addr_width_0 + addr_width_1 >= 3);
+		return dut_legal(addr_width_0, addr_width_1, addr_width_2, word_width)
+			&& (!USE_WORD_WIDTH_HEURISTIC || word_width_heuristic_ok(addr_width_0, addr_width_1, addr_width_2, word_width))
+			&& (!USE_ADDR_WIDTH_HEURISTIC || addr_width_heuristic_ok(addr_width_0, addr_width_1, addr_width_2));
 	endfunction : config_enabled
+
+	localparam int unsigned  NUM_INST = NUM_NEWTON.num * ADDR_0.num * ADDR_1.num * ADDR_2.num * WORD.num * NUM_COEFF;
 
 	// Global Control
 	logic  clk = 0;
@@ -91,6 +185,11 @@ module rec_bipartite_accuracy_tb;
 	real          max_rel_error_ref      [NUM_INST];
 	shortreal     max_rel_error_fr       [NUM_INST];
 
+	// Reference Compute (double-precision reciprocal).
+	function automatic real exact_rec(input shortreal  x);
+		return 1.0 / real'(x);
+	endfunction : exact_rec
+
 	// Random fp sample generator
 	// Uniform over fp32 representables in [1,inf)
 	// Exclude very large values to avoid denormalized numbers on the outputs side
@@ -98,11 +197,10 @@ module rec_bipartite_accuracy_tb;
 	//	1/(1.0*2^(1-127)) = 2^(+126) = 2^(253-127)
 	//		252 is the largest allowed exponent as 253 combined with mantissa != 0 leads to denormalized results
 	//	Exponent range: {127,…,252}
-	function shortreal rand_fp();
-		int unsigned bits;
-		bits = $urandom();
+	function automatic shortreal rand_fp();
+		automatic int unsigned  bits = $urandom();
 		bits[30:23] = $urandom_range(127, 252);
-		bits[31] = 0;
+		bits[31]    = 0;
 		return $bitstoshortreal(bits);
 	endfunction : rand_fp
 
@@ -151,83 +249,106 @@ module rec_bipartite_accuracy_tb;
 		return $bitstoshortreal($shortrealtobits(shortreal'(2.0 + d * d / (1.0 + d * d))));
 	endfunction : newton_coeff
 
-	// Index flattening: II = (((ni * NUM_ADDR_0 + a0) * NUM_ADDR_1 + a1) * NUM_ADDR_2 + a2) * NUM_WORD + w
-	// keeps the WORD axis fastest-varying and the Newton-step axis slowest,
-	// matching the report loop below.
+	// Decode a coefficient-sweep index into the real NEWTON_COEFF (fixed-point
+	// milli-units / NEWTON_COEFF_SCALE). The int-to-real division promotes to
+	// real arithmetic, so 1950 / 1000.0 == 1.95. Only used when the coefficient
+	// heuristic is disabled.
+	function automatic shortreal newton_coeff_swept(input int unsigned  coeff_idx);
+		automatic int unsigned  raw = NEWTON_COEFF_RANGE.min + coeff_idx * NEWTON_COEFF_RANGE.step;
+		return $bitstoshortreal($shortrealtobits(shortreal'(real'(raw) / NEWTON_COEFF_SCALE)));
+	endfunction : newton_coeff_swept
+
+	// Index flattening: II = ((((ni * ADDR_0.num + a0) * ADDR_1.num + a1) * ADDR_2.num + a2) * WORD.num + w) * NUM_COEFF + c
+	// keeps the COEFF axis fastest-varying, then WORD, with the Newton-step axis
+	// slowest, matching the report loop below.
 
 	// Parallel DUT instances
-	for(genvar  ni = 0; ni < NUM_NEWTON; ni++) begin : gNewton
-		localparam int unsigned  NS = MIN_NUM_NEWTON + ni;
+	for(genvar  ni = 0; ni < NUM_NEWTON.num; ni++) begin : gNewton
+		localparam int unsigned  NS = NUM_NEWTON.min + ni * NUM_NEWTON.step;
 
-		for(genvar  a0i = 0; a0i < NUM_ADDR_0; a0i++) begin : gA0
-			localparam int unsigned  A0 = MIN_ADDR_0 + a0i;
+		for(genvar  a0i = 0; a0i < ADDR_0.num; a0i++) begin : gA0
+			localparam int unsigned  A0 = ADDR_0.min + a0i * ADDR_0.step;
 
-			for(genvar  a1i = 0; a1i < NUM_ADDR_1; a1i++) begin : gA1
-				localparam int unsigned  A1 = MIN_ADDR_1 + a1i;
+			for(genvar  a1i = 0; a1i < ADDR_1.num; a1i++) begin : gA1
+				localparam int unsigned  A1 = ADDR_1.min + a1i * ADDR_1.step;
 
-				for(genvar  a2i = 0; a2i < NUM_ADDR_2; a2i++) begin : gA2
-					localparam int unsigned  A2 = MIN_ADDR_2 + a2i;
+				for(genvar  a2i = 0; a2i < ADDR_2.num; a2i++) begin : gA2
+					localparam int unsigned  A2 = ADDR_2.min + a2i * ADDR_2.step;
 
-					for(genvar  wi = 0; wi < NUM_WORD; wi++) begin : gW
-						localparam int unsigned  WW = MIN_WORD + wi;
-						localparam int unsigned  II = (((ni * NUM_ADDR_0 + a0i) * NUM_ADDR_1 + a1i) * NUM_ADDR_2 + a2i) * NUM_WORD + wi;
+					for(genvar  wi = 0; wi < WORD.num; wi++) begin : gW
+						localparam int unsigned  WW = WORD.min + wi * WORD.step;
 
-						if(config_enabled(A0, A1, A2, WW)) begin : gEna
-							uwire [31:0]  r;
-							uwire         rvld;
+						for(genvar  ci = 0; ci < NUM_COEFF; ci++) begin : gCoeff
+							// NEWTON_COEFF source: the per-geometry bias-corrected
+							// heuristic (single point), or the fixed-point sweep. Both
+							// arms are pure constant functions; passing the selected
+							// value straight into the parameter port mirrors the proven
+							// pre-change `.NEWTON_COEFF(newton_coeff(...))` idiom (no
+							// intermediate real localparam).
+							localparam int unsigned  II = ((((ni * ADDR_0.num + a0i) * ADDR_1.num + a1i) * ADDR_2.num + a2i) * WORD.num + wi) * NUM_COEFF + ci;
 
-							rec_bipartite #(
-								.ADDR_WIDTH_0(A0),
-								.ADDR_WIDTH_1(A1),
-								.ADDR_WIDTH_2(A2),
-								.WORD_WIDTH  (WW),
-								.NUM_NEWTON_STEPS(NS),
-								.NEWTON_COEFF(newton_coeff(A0, A1, A2, WW))
-							) dut (
-								.clk, .rst,
-								.idat(x), .ivld(xvld), .irdy(xrdy_vec[II]),
-								.odat(r), .ovld(rvld)
-							);
+							if(config_enabled(A0, A1, A2, WW)) begin : gEna
+								uwire [31:0]  r;
+								uwire         rvld;
 
-							always_ff @(posedge clk iff rvld) begin
-								shortreal  x_sample;
-								shortreal  fr_local;
-								real       rec_ref, diff, rel_error;
+								rec_bipartite #(
+									.ADDR_WIDTH_0(A0),
+									.ADDR_WIDTH_1(A1),
+									.ADDR_WIDTH_2(A2),
+									.WORD_WIDTH  (WW),
+									.NUM_NEWTON_STEPS(NS),
+									.NEWTON_COEFF(USE_NEWTON_COEFF_HEURISTIC ? newton_coeff(A0, A1, A2, WW)
+									                                         : newton_coeff_swept(ci))
+								) dut (
+									.clk, .rst,
+									.idat(x), .ivld(xvld), .irdy(xrdy_vec[II]),
+									.odat(r), .ovld(rvld)
+								);
 
-								assert(num_evaluated[II] < NUM_SAMPLES) else begin
-									$error("Spurious output (NS=%0d A0=%0d A1=%0d A2=%0d WW=%0d) at sample %0d",
-										NS, A0, A1, A2, WW, num_evaluated[II]);
-									$stop;
+								always_ff @(posedge clk iff rvld) begin
+									shortreal  x_sample;
+									shortreal  fr_local;
+									real       rec_ref, diff, rel_error;
+									// Coefficient for diagnostics (matches the value elaborated
+									// into this instance's NEWTON_COEFF above).
+									automatic shortreal  c_used = USE_NEWTON_COEFF_HEURISTIC ? newton_coeff(A0, A1, A2, WW)
+									                                                         : newton_coeff_swept(ci);
+
+									assert(num_evaluated[II] < NUM_SAMPLES) else begin
+										$error("Spurious output (NS=%0d A0=%0d A1=%0d A2=%0d WW=%0d C=%.6f) at sample %0d",
+											NS, A0, A1, A2, WW, c_used, num_evaluated[II]);
+										$stop;
+									end
+
+									x_sample  = samples[num_evaluated[II]];
+									fr_local  = $bitstoshortreal(r);
+									rec_ref   = exact_rec(x_sample);
+									diff      = real'(fr_local) - rec_ref;
+									rel_error = ((diff < 0.0) ? -diff : diff) / rec_ref;
+
+									total_rel_error_squared[II] += rel_error * rel_error;
+									if(rel_error > max_rel_error[II]) begin
+										max_rel_error[II]     = rel_error;
+										max_rel_error_x[II]   = x_sample;
+										max_rel_error_ref[II] = rec_ref;
+										max_rel_error_fr[II]  = fr_local;
+									end
+									num_evaluated[II]++;
 								end
-
-								x_sample  = samples[num_evaluated[II]];
-								fr_local  = $bitstoshortreal(r);
-								rec_ref   = 1.0 / real'(x_sample);
-								diff      = real'(fr_local) - rec_ref;
-								rel_error = ((diff < 0.0) ? -diff : diff) / rec_ref;
-
-								total_rel_error_squared[II] += rel_error * rel_error;
-								if(rel_error > max_rel_error[II]) begin
-									max_rel_error[II]     = rel_error;
-									max_rel_error_x[II]   = x_sample;
-									max_rel_error_ref[II] = rec_ref;
-									max_rel_error_fr[II]  = fr_local;
+							end : gEna
+							else begin : gStub
+								// Disabled by the filter: tie off readiness to 1 so
+								// the AND-reduction doesn't stall, and prefill the
+								// sample count so the drain assertion passes. The
+								// per-instance accumulators stay at their default
+								// zero, and the report loop skips this slot.
+								assign  xrdy_vec[II] = 1'b1;
+								initial begin
+									num_evaluated[II] = NUM_SAMPLES;
 								end
-								num_evaluated[II]++;
-							end
-						end : gEna
-						else begin : gStub
-							// Disabled by the filter: tie off readiness to 1 so
-							// the AND-reduction doesn't stall, and prefill the
-							// sample count so the drain assertion passes. The
-							// per-instance accumulators stay at their default
-							// zero, and the report loop skips this slot.
-							assign  xrdy_vec[II] = 1'b1;
-							initial begin
-								num_evaluated[II] = NUM_SAMPLES;
-							end
-						end : gStub
+							end : gStub
 
+						end : gCoeff
 					end : gW
 				end : gA2
 			end : gA1
@@ -262,31 +383,35 @@ module rec_bipartite_accuracy_tb;
 		$display("rec_bipartite accuracy sweep");
 		$display("  NUM_SAMPLES      = %0d", NUM_SAMPLES);
 
-		for(int unsigned  ni = 0; ni < NUM_NEWTON; ni++) begin
-			automatic int unsigned  NS = MIN_NUM_NEWTON + ni;
-			for(int unsigned  a0i = 0; a0i < NUM_ADDR_0; a0i++) begin
-				automatic int unsigned  A0 = MIN_ADDR_0 + a0i;
-				for(int unsigned  a1i = 0; a1i < NUM_ADDR_1; a1i++) begin
-					automatic int unsigned  A1 = MIN_ADDR_1 + a1i;
-					for(int unsigned  a2i = 0; a2i < NUM_ADDR_2; a2i++) begin
-						automatic int unsigned  A2 = MIN_ADDR_2 + a2i;
-						for(int unsigned  wi = 0; wi < NUM_WORD; wi++) begin
-							automatic int unsigned  WW = MIN_WORD + wi;
-							automatic int unsigned  II = (((ni * NUM_ADDR_0 + a0i) * NUM_ADDR_1 + a1i) * NUM_ADDR_2 + a2i) * NUM_WORD + wi;
-							automatic real          rmsre;
+		for(int unsigned  ni = 0; ni < NUM_NEWTON.num; ni++) begin
+			automatic int unsigned  NS = NUM_NEWTON.min + ni * NUM_NEWTON.step;
+			for(int unsigned  a0i = 0; a0i < ADDR_0.num; a0i++) begin
+				automatic int unsigned  A0 = ADDR_0.min + a0i * ADDR_0.step;
+				for(int unsigned  a1i = 0; a1i < ADDR_1.num; a1i++) begin
+					automatic int unsigned  A1 = ADDR_1.min + a1i * ADDR_1.step;
+					for(int unsigned  a2i = 0; a2i < ADDR_2.num; a2i++) begin
+						automatic int unsigned  A2 = ADDR_2.min + a2i * ADDR_2.step;
+						for(int unsigned  wi = 0; wi < WORD.num; wi++) begin
+							automatic int unsigned  WW = WORD.min + wi * WORD.step;
+							for(int unsigned  ci = 0; ci < NUM_COEFF; ci++) begin
+								automatic shortreal      C  = USE_NEWTON_COEFF_HEURISTIC ? newton_coeff(A0, A1, A2, WW)
+								                                                          : newton_coeff_swept(ci);
+								automatic int unsigned  II = ((((ni * ADDR_0.num + a0i) * ADDR_1.num + a1i) * ADDR_2.num + a2i) * WORD.num + wi) * NUM_COEFF + ci;
+								automatic real          rmsre;
 
-							if(!config_enabled(A0, A1, A2, WW))  continue;
+								if(!config_enabled(A0, A1, A2, WW))  continue;
 
-							assert(num_evaluated[II] == NUM_SAMPLES) else begin
-								$error("Unexpected number of outputs for (NS=%0d, A0=%0d, A1=%0d, A2=%0d, WW=%0d): expected %0d, got %0d",
-									NS, A0, A1, A2, WW, NUM_SAMPLES, num_evaluated[II]);
-								$stop;
+								assert(num_evaluated[II] == NUM_SAMPLES) else begin
+									$error("Unexpected number of outputs for (NS=%0d, A0=%0d, A1=%0d, A2=%0d, WW=%0d, C=%.6f): expected %0d, got %0d",
+										NS, A0, A1, A2, WW, C, NUM_SAMPLES, num_evaluated[II]);
+									$stop;
+								end
+
+								rmsre = $sqrt(total_rel_error_squared[II] / num_evaluated[II]);
+								$display("  NS=%0d A0=%0d A1=%0d A2=%0d WW=%2d C=%.6f  RMSRE=%.6e  max_rel_error=%.6e  at x=%.9g  (dut=%.9g, ref=%.9g)",
+									NS, A0, A1, A2, WW, C, rmsre, max_rel_error[II],
+									max_rel_error_x[II], max_rel_error_fr[II], max_rel_error_ref[II]);
 							end
-
-							rmsre = $sqrt(total_rel_error_squared[II] / num_evaluated[II]);
-							$display("  NS=%0d A0=%0d A1=%0d A2=%0d WW=%2d  RMSRE=%.6e  max_rel_error=%.6e  at x=%.9g  (dut=%.9g, ref=%.9g)",
-								NS, A0, A1, A2, WW, rmsre, max_rel_error[II],
-								max_rel_error_x[II], max_rel_error_fr[II], max_rel_error_ref[II]);
 						end
 					end
 				end
