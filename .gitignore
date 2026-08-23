@@ -1,0 +1,4 @@
+vivado/
+style_check/
+*.png
+.venv
