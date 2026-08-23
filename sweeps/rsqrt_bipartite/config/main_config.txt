@@ -1,0 +1,30 @@
+tcl_parameters:
+	# top = rsqrt_bipartite
+	# part = xcvc1902-vsva2197-2MP-e-S
+	# clk_name = clk
+
+defaults:
+	# clock_period = 4.0
+	# NUM_NEWTON_STEPS = 0
+	# ADDR_WIDTH_0 = 5
+	# ADDR_WIDTH_1 = 5
+	# ADDR_WIDTH_2 = 5
+	# WORD_WIDTH = 15
+	# SUSTAINABLE_INTERVAL = 1
+	# RAM_STYLE = "distributed"
+
+sweeps:
+	***
+		~ name: bipartite
+		~ active: 1
+		~ mode: cartesian
+			# NUM_NEWTON_STEPS = {0,1}
+			# ADDR_WIDTH_0 = {2,3,4}
+			# ADDR_WIDTH_1 = {3,4,5,6}
+			# ADDR_WIDTH_2 = {3,4,5,6}
+			# WORD_WIDTH = {5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25}
+		~ conditions:
+			# int(ADDR_WIDTH_1) == int(ADDR_WIDTH_2)
+			# int(ADDR_WIDTH_1) == int(ADDR_WIDTH_0) + 1 or int(ADDR_WIDTH_1) == int(ADDR_WIDTH_0) + 2
+			# int(WORD_WIDTH) == min(2 * int(ADDR_WIDTH_0) + int(ADDR_WIDTH_1) + 2, int(ADDR_WIDTH_0) + int(ADDR_WIDTH_1) + int(ADDR_WIDTH_2) + 1) + 3
+	***
