@@ -14,6 +14,8 @@ module rec_lookup_accuracy_tb;
 	localparam real          NEWTON_COEFF_END   = 2.05;
 	localparam real          NEWTON_COEFF_STEP  = 0.01;
 
+	localparam bit  USE_NEWTON_COEFF_HEURISTIC = 1;
+
 	// Initiation interval sustained by the lookup+Newton datapath.  The Newton
 	// arithmetic (and hence the accuracy) is identical for every II; changing
 	// this only re-times the shared DSP.  Set to a single constant here (the
@@ -28,7 +30,11 @@ module rec_lookup_accuracy_tb;
 	localparam int unsigned  NUM_NEWTON = MAX_NUM_NEWTON - MIN_NUM_NEWTON + 1;
 	// Inclusive count of coefficient steps.  The +1e-9 absorbs float rounding
 	// so an exactly-reachable END is not dropped by the floor of int'().
-	localparam int unsigned  NUM_COEFF  = int'((NEWTON_COEFF_END - NEWTON_COEFF_START) / NEWTON_COEFF_STEP + 1.0e-9) + 1;
+	localparam int unsigned  NUM_COEFF_SWEEP = int'((NEWTON_COEFF_END - NEWTON_COEFF_START) / NEWTON_COEFF_STEP + 1.0e-9) + 1;
+	// Coefficient-axis length: a single heuristic point when armed, else the
+	// full sweep. Compile-time constant -- sizes NUM_INST and the II
+	// flattening below.
+	localparam int unsigned  NUM_COEFF  = USE_NEWTON_COEFF_HEURISTIC ? 1 : NUM_COEFF_SWEEP;
 	localparam int unsigned  NUM_INST   = NUM_NEWTON * NUM_ADDR * NUM_WORD * NUM_COEFF;
 
 	// Global Control
@@ -122,6 +128,14 @@ module rec_lookup_accuracy_tb;
 		return $bitstoshortreal($shortrealtobits(shortreal'(2.0 + d * d / (1.0 + d * d))));
 	endfunction : newton_coeff
 
+	// Decode a coefficient-sweep index into the real NEWTON_COEFF. Only used
+	// when the coefficient heuristic is disabled; mirrors newton_coeff_swept in
+	// rec_bipartite_accuracy_tb (there the sweep is fixed-point milli-units,
+	// here it is the NEWTON_COEFF_START..END real grid).
+	function automatic shortreal newton_coeff_swept(input int unsigned  coeff_idx);
+		return shortreal'(NEWTON_COEFF_START + real'(coeff_idx) * NEWTON_COEFF_STEP);
+	endfunction : newton_coeff_swept
+
 	// Parallel DUT instances
 	for(genvar  ni = 0; ni < NUM_NEWTON; ni++) begin : gNewton
 		localparam int unsigned  NS = MIN_NUM_NEWTON + ni;
@@ -133,7 +147,12 @@ module rec_lookup_accuracy_tb;
 				localparam int unsigned  WW = MIN_WORD_WIDTH + wi * STEP_WORD_WIDTH;
 
 				for(genvar  ci = 0; ci < NUM_COEFF; ci++) begin : gCoeff
-					localparam real          C  = NEWTON_COEFF_START + ci * NEWTON_COEFF_STEP;
+					// NEWTON_COEFF source: the per-geometry bias-corrected
+					// heuristic (single point), or the swept real grid. Both
+					// arms are pure constant functions; passing the selected
+					// value straight into the parameter port mirrors the proven
+					// pre-change `.NEWTON_COEFF(C)` idiom (no intermediate real
+					// localparam).
 					localparam int unsigned  II = ((ni * NUM_ADDR + ai) * NUM_WORD + wi) * NUM_COEFF + ci;
 
 					uwire [31:0]  r;
@@ -144,7 +163,8 @@ module rec_lookup_accuracy_tb;
 						.WORD_WIDTH(WW),
 						.NUM_NEWTON_STEPS(NS),
 						.SUSTAINABLE_INTERVAL(SUSTAINABLE_INTERVAL),
-						.NEWTON_COEFF(C)
+						.NEWTON_COEFF(USE_NEWTON_COEFF_HEURISTIC ? newton_coeff(AW, WW)
+						                                         : newton_coeff_swept(ci))
 					) dut (
 						.clk, .rst,
 						.idat(x), .ivld(xvld), .irdy(xrdy_vec[II]),
@@ -155,10 +175,14 @@ module rec_lookup_accuracy_tb;
 						shortreal  x_sample;
 						shortreal  fr_local;
 						real       rec_ref, diff, rel_error;
+						// Coefficient for diagnostics (matches the value elaborated
+						// into this instance's NEWTON_COEFF above).
+						automatic shortreal  c_used = USE_NEWTON_COEFF_HEURISTIC ? newton_coeff(AW, WW)
+						                                                         : newton_coeff_swept(ci);
 
 						assert(num_evaluated[II] < NUM_SAMPLES) else begin
 							$error("Spurious output (NS=%0d AW=%0d WW=%0d C=%.6f) at sample %0d",
-								NS, AW, WW, C, num_evaluated[II]);
+								NS, AW, WW, c_used, num_evaluated[II]);
 							$stop;
 						end
 
@@ -219,7 +243,8 @@ module rec_lookup_accuracy_tb;
 				for(int unsigned  wi = 0; wi < NUM_WORD; wi++) begin
 					automatic int unsigned  WW = MIN_WORD_WIDTH + wi * STEP_WORD_WIDTH;
 					for(int unsigned  ci = 0; ci < NUM_COEFF; ci++) begin
-						automatic real          C  = NEWTON_COEFF_START + ci * NEWTON_COEFF_STEP;
+						automatic shortreal     C  = USE_NEWTON_COEFF_HEURISTIC ? newton_coeff(AW, WW)
+						                                                         : newton_coeff_swept(ci);
 						automatic int unsigned  II = ((ni * NUM_ADDR + ai) * NUM_WORD + wi) * NUM_COEFF + ci;
 						automatic real          rmsre;
 
