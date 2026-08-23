@@ -313,13 +313,13 @@ def add_legends(fig, ax) -> None:
     )
     ax.add_artist(legend1)
 
-    # Place the DSP legend just left of the Method legend, top-aligned. Measure
-    # the Method legend after a draw pass so placement adapts to its width.
+    # Place the DSP legend directly below the Method legend, right edges aligned.
+    # Measure the Method legend after a draw pass so placement adapts to its size.
     fig.canvas.draw()
     method_bbox = legend1.get_window_extent().transformed(ax.transAxes.inverted())
     ax.legend(
         handles=dsp_handles, title="DSP", loc="upper right",
-        bbox_to_anchor=(method_bbox.x0 + 0.01, method_bbox.y1 + 0.023),
+        bbox_to_anchor=(method_bbox.x1, method_bbox.y0 - 0.005),
         frameon=True, edgecolor="black", facecolor="white",
     )
 
