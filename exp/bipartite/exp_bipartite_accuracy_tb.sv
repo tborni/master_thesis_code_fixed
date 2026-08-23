@@ -37,26 +37,11 @@ module exp_bipartite_accuracy_tb;
 	localparam range_t ADDR_2     = make_range(.min( 4), .max( 7), .step(1));
 	localparam range_t WORD       = make_range(.min(10), .max(30), .step(1));
 
-	localparam bit  EXCLUDE_POS      = 0;
-	localparam bit  FORCE_BEHAVIORAL = 0;
-
-	// -------------------------------------------------------------------
-	// Heuristic enables.
-	//
-	// The DUT-legality filter (dut_legal) is ALWAYS applied so no elaborated
-	// instance trips its own $error/$finish.  The two heuristics below are
-	// optional Pareto-front narrowings on top of it:
-	//
-	//   USE_WORD_WIDTH_HEURISTIC : keep only WORD_WIDTH == word_width_heuristic(...)
-	//                              (plus the clamped WORD_WIDTH bounds).
-	//   USE_ADDR_WIDTH_HEURISTIC : keep only the addr-field relations that sit
-	//                              on the accuracy Pareto front (symmetric split).
-	//
-	// Set a flag to 0 to sweep that axis fully (still constrained to legal
-	// DUTs); set to 1 to instantiate only the heuristic-selected point.
-	// -------------------------------------------------------------------
 	localparam bit  USE_WORD_WIDTH_HEURISTIC = 1;
 	localparam bit  USE_ADDR_WIDTH_HEURISTIC = 1;
+
+	localparam bit  EXCLUDE_POS      = 0;
+	localparam bit  FORCE_BEHAVIORAL = 0;
 
 	// --- Function 1 (always active): DUT legality -----------------------
 	// Every constraint the exp_bipartite elaboration/runtime depends on:

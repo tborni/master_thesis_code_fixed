@@ -33,34 +33,9 @@ module rec_bipartite_accuracy_tb;
 	localparam range_t ADDR_2     = make_range(.min( 3), .max( 7), .step(1));
 	localparam range_t WORD       = make_range(.min( 8), .max(23), .step(1));
 
-	// Newton-coefficient sweep (used only when USE_NEWTON_COEFF_HEURISTIC == 0).
-	// range_t is integer-typed, so the axis is expressed in FIXED-POINT
-	// milli-units and divided by NEWTON_COEFF_SCALE to recover the real
-	// NEWTON_COEFF passed to the DUT. e.g. make_range(1950, 2050, 10) / 1000.0
-	// sweeps 1.95, 1.96, ... 2.05 (the textbook Newton constant is 2.0). Only
-	// exercised at NUM_NEWTON_STEPS >= 1 -- the pure seed (NS = 0) ignores it.
 	localparam range_t NEWTON_COEFF_RANGE = make_range(.min(1950), .max(2050), .step(10));
 	localparam real    NEWTON_COEFF_SCALE = 1000.0;
 
-	// -------------------------------------------------------------------
-	// Heuristic enables.
-	//
-	// The DUT-legality filter (dut_legal) is ALWAYS applied so no elaborated
-	// instance trips its own $error/$finish.  The two heuristics below are
-	// optional Pareto-front narrowings on top of it:
-	//
-	//   USE_WORD_WIDTH_HEURISTIC  : keep only WORD_WIDTH == word_width_heuristic(...)
-	//                               (plus the clamped WORD_WIDTH bounds).
-	//   USE_ADDR_WIDTH_HEURISTIC  : keep only the addr-field relations that sit
-	//                               on the accuracy Pareto front (symmetric split).
-	//   USE_NEWTON_COEFF_HEURISTIC: 1 -> NEWTON_COEFF = newton_coeff(...) (one
-	//                               bias-corrected coefficient per geometry, so the
-	//                               coefficient axis collapses to a single point);
-	//                               0 -> sweep NEWTON_COEFF_RANGE / NEWTON_COEFF_SCALE.
-	//
-	// Set a width/addr flag to 0 to sweep that axis fully (still constrained to
-	// legal DUTs); set to 1 to instantiate only the heuristic-selected point.
-	// -------------------------------------------------------------------
 	localparam bit  USE_WORD_WIDTH_HEURISTIC   = 1;
 	localparam bit  USE_ADDR_WIDTH_HEURISTIC   = 1;
 	localparam bit  USE_NEWTON_COEFF_HEURISTIC = 1;
