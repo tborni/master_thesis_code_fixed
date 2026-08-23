@@ -47,30 +47,20 @@ uint32_t rand_u32(void) {
 }
 
 /* Random fp sample generator
-	EXCLUDE_POS=0: any normal fp32 in [-87.0, 88.0]
-	EXCLUDE_POS=1: any normal fp32 in [-87.0,  0.0)
-   Uniform over fp32 bit patterns (mantissa and exponent-field each drawn
-   uniformly), matching the SV accuracy testbenches, rather than uniform over
-   the reals -- the latter concentrates almost all mass in the few largest
-   exponent bins and shifts the RMSRE-optimal magic toward large |x|.
-   Exclude denormalized numbers: the exponent field is drawn from {1,...,133}
-   so field 0 (subnormals/zero) never occurs. The top bin (field 133,
-   magnitudes in [64,128)) is capped to keep the admitted value-set in
-   [-87,88]: positive up to 88.0 (mantissa 0x300000), negative up to 87.0
-   (mantissa 0x2E0000); larger mantissas in that bin are redrawn. */
+	EXCLUDE_POS=0: any normal fp32 (or +-0) in [-87.0, 88.0]
+	EXCLUDE_POS=1: any normal fp32 (or +-0) in [-87.0,  0.0]
+   Sampling is uniform over reals not fp32 bit patterns (each representable value is not equally likely)
+   Exclude denormalized numbers */
 float rand_fp(void) {
-	const uint32_t MAN_LIM_POS = 0x300000u;   /* 88.0 in exp field 133 */
-	const uint32_t MAN_LIM_NEG = 0x2E0000u;   /* 87.0 in exp field 133 */
+	const double lo = -87.0;
+	const double hi = EXCLUDE_POS ? 0.0 : 88.0;
 	for (;;) {
-		uint32_t r         = rand_u32();
-		uint32_t man_field = r & 0x7FFFFFu;
-		uint32_t sign      = EXCLUDE_POS ? 1u : ((r >> 23) & 1u);
-		uint32_t exp_field = 1u + (rand_u32() % 133u);
-		if (exp_field == 133u) {
-			uint32_t lim = sign ? MAN_LIM_NEG : MAN_LIM_POS;
-			if (man_field > lim) continue;
-		}
-		return (union { uint32_t u; float f; }){.u = (sign << 31) | (exp_field << 23) | man_field}.f;
+		double   u         = (double)rand_u32() / 4294967296.0;
+		float    s         = (float)(lo + (hi - lo) * u);
+		uint32_t bits      = (union { float f; uint32_t u; }){.f = s}.u;
+		uint32_t exp_field = (bits >> 23) & 0xFFu;
+		uint32_t man_field =  bits        & 0x7FFFFFu;
+		if (exp_field != 0 || man_field == 0) return s;
 	}
 }
 
@@ -104,10 +94,10 @@ int main(int argc, char **argv) {
 	}
 
 	/* Search over int32 magic constants directly — every integer is a valid
-	   candidate for the standard Schraudolph integer-add formulation. Under
-	   bit-pattern-uniform sampling the optimum sits near ~1065292384 (the
-	   classic accuracy-tweaked Schraudolph constant); the window brackets it
-	   with generous margin so the first coarse pass captures the minimum. */
+	   candidate for the standard Schraudolph integer-add formulation. The
+	   window is widened past the bit-pattern-uniform optimum (~1065292384)
+	   because real-uniform sampling reweights toward large |x| and shifts
+	   the minimum; the first pass must bracket the new optimum. */
 	int32_t magic_min = 1063500000;
 	int32_t magic_max = 1066500000;
 
