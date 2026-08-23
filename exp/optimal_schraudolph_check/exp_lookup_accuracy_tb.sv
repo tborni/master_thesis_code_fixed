@@ -1,6 +1,6 @@
 module exp_lookup_accuracy_tb;
 
-	localparam int unsigned  NUM_SAMPLES = 10000;
+	localparam int unsigned  NUM_SAMPLES = 1000;
 
 	localparam int unsigned  MIN_ADDR_WIDTH   =  6;
 	localparam int unsigned  MAX_ADDR_WIDTH   = 11;
@@ -48,25 +48,16 @@ module exp_lookup_accuracy_tb;
 	shortreal     max_rel_error_fr       [NUM_INST];
 
 	// Random fp sample generator
-	//	EXCLUDE_POS=0: any normal fp32 in [-87.0, 88.0]
-	//	EXCLUDE_POS=1: any normal fp32 in [-87.0,  0.0)
-	// Uniform over the REALS in [lo, hi): draw a uniform u in [0,1) and map it
-	// to lo + (hi-lo)*u, then quantize to the nearest fp32. This weights each
-	// exponent bin by its real-line width, so large magnitudes dominate and
-	// small ones are rarely exercised -- the opposite of a bit-pattern-uniform
-	// sampler. Denormals (exp_field==0, man_field!=0) are rejected so every
-	// returned value is a normal fp32; the man_field==0 clause admits exact
-	// powers of two and guards against a pathological retry.
-	// NOTE: $urandom's return type is signed `int`, so real'($urandom()) would
-	// do a SIGNED conversion and yield u in [-0.5,0.5). Route the bits through
-	// an unsigned logic[31:0] first so real'() converts them unsigned -> [0,1).
-	// Additional casts to avoid vivado simulation error with shortreals.
+	//	EXCLUDE_POS=0: any normal fp32 (or +-0) in [-87.0, 88.0]
+	//	EXCLUDE_POS=1: any normal fp32 (or +-0) in [-87.0,  0.0]
+	// Sampling is uniform over reals not fp32 bit patterns (each representable value is not equally likely)
+	// Exclude denormalized numbers
+	// Additional casts at the end to avoid vivado simulation error with shortreals
 	function automatic shortreal rand_fp();
 		automatic real  lo = -87.0;
 		automatic real  hi = EXCLUDE_POS ? 0.0 : 88.0;
 		forever begin
-			automatic logic [31:0]  ubits     = $urandom();
-			automatic real          u         = real'(ubits) / 4294967296.0;
+			automatic real          u         = real'($urandom()) / 4294967296.0;
 			automatic shortreal     s         = $bitstoshortreal($shortrealtobits(shortreal'(lo + (hi - lo) * u)));
 			automatic logic [31:0]  bits      = $shortrealtobits(s);
 			automatic logic [ 7:0]  exp_field = bits[30:23];

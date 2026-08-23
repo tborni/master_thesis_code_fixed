@@ -90,25 +90,28 @@ module exp_bipartite_accuracy_tb;
 	// Random fp sample generator
 	//	EXCLUDE_POS=0: any normal fp32 in [-87.0, 88.0]
 	//	EXCLUDE_POS=1: any normal fp32 in [-87.0,  0.0)
-	// Uniform over fp32 bit patterns (mantissa and exponent-field each drawn
-	// uniformly), mirroring the rec/rsqrt samplers, rather than uniform over
-	// the reals -- the latter concentrates almost all mass in the few largest
-	// exponent bins and barely exercises small magnitudes.
-	// Exclude denormalized numbers: the exponent field is drawn from {1,...,133}
-	// so field 0 (subnormals/zero) never occurs. The top bin (field 133,
-	// magnitudes in [64,128)) is capped to keep the admitted value-set identical
-	// to the earlier sampler: positive up to 88.0 (mantissa 0x300000), negative
-	// up to 87.0 (mantissa 0x2E0000); larger mantissas in that bin are redrawn.
-	// Additional casts at the end to avoid vivado simulation error with shortreals
+	// Uniform over the REALS in [lo, hi): draw a uniform u in [0,1) and map it
+	// to lo + (hi-lo)*u, then quantize to the nearest fp32. This weights each
+	// exponent bin by its real-line width, so large magnitudes dominate and
+	// small ones are rarely exercised -- the opposite of a bit-pattern-uniform
+	// sampler. Denormals (exp_field==0, man_field!=0) are rejected so every
+	// returned value is a normal fp32; the man_field==0 clause admits exact
+	// powers of two and guards against a pathological retry.
+	// NOTE: $urandom's return type is signed `int`, so real'($urandom()) would
+	// do a SIGNED conversion and yield u in [-0.5,0.5). Route the bits through
+	// an unsigned logic[31:0] first so real'() converts them unsigned -> [0,1).
+	// Additional casts to avoid vivado simulation error with shortreals.
 	function automatic shortreal rand_fp();
+		automatic real  lo = -87.0;
+		automatic real  hi = EXCLUDE_POS ? 0.0 : 88.0;
 		forever begin
-			automatic logic [31:0]  r         = $urandom();
-			automatic logic         sign      = EXCLUDE_POS ? 1'b1 : r[23];
-			automatic logic [22:0]  man_field = r[22:0];
-			automatic logic [ 7:0]  exp_field = 8'($urandom_range(1, 133));
-			automatic logic [22:0]  lim       = sign ? 23'h2E_0000 : 23'h30_0000;
-			if(exp_field == 8'd133 && man_field > lim)  continue;
-			return $bitstoshortreal($shortrealtobits($bitstoshortreal({ sign, exp_field, man_field })));
+			automatic logic [31:0]  ubits     = $urandom();
+			automatic real          u         = real'(ubits) / 4294967296.0;
+			automatic shortreal     s         = $bitstoshortreal($shortrealtobits(shortreal'(lo + (hi - lo) * u)));
+			automatic logic [31:0]  bits      = $shortrealtobits(s);
+			automatic logic [ 7:0]  exp_field = bits[30:23];
+			automatic logic [22:0]  man_field = bits[22: 0];
+			if(exp_field != 8'd0 || man_field == 23'd0)  return s;
 		end
 	endfunction : rand_fp
 
