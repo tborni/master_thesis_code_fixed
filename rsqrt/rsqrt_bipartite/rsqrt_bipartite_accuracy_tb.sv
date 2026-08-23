@@ -63,7 +63,11 @@ module rsqrt_bipartite_accuracy_tb;
 	function int unsigned word_width_heuristic(input int unsigned  addr_width_0, input int unsigned  addr_width_1, input int unsigned  addr_width_2);
 		automatic int unsigned  range_0 = 2 * addr_width_0 + addr_width_1 + 2;
 		automatic int unsigned  range_1 = addr_width_0 + addr_width_1 + addr_width_2 + 1;
-		return ((range_0 < range_1) ? range_0 : range_1) + 3;
+		automatic int unsigned  word_width = ((range_0 < range_1) ? range_0 : range_1) + 3;
+		// Cap at 23: the fp32 output keeps only man_lookup[22:0], so table precision
+		// beyond 23 fractional bits is discarded before it reaches the result. Any
+		// wider value only grows the ROMs and the mantissa adder for no accuracy gain.
+		return (word_width > 23) ? 23 : word_width;
 	endfunction : word_width_heuristic
 
 	for(genvar  num_newton_steps = NUM_NEWTON.min; num_newton_steps <= NUM_NEWTON.max; num_newton_steps += NUM_NEWTON.step) begin : genNewton

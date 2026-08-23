@@ -39,7 +39,11 @@ module exp_bipartite_accuracy_tb;
 	);
 		automatic int unsigned  range_0 = 2*addr_width_0 + addr_width_1 + 2;
 		automatic int unsigned  range_1 =   addr_width_0 + addr_width_1 + addr_width_2;
-		return ((range_0 < range_1) ? range_0 : range_1) + 1 + 3;
+		automatic int unsigned  word_width = ((range_0 < range_1) ? range_0 : range_1) + 1 + 3;
+		// Cap at 23: the fp32 output keeps only 23 mantissa bits, so table precision
+		// beyond 23 fractional bits is discarded before it reaches the result. Any
+		// wider value only grows the ROMs and the mantissa adder for no accuracy gain.
+		return (word_width > 23) ? 23 : word_width;
 	endfunction : word_width_heuristic
 
 	function automatic bit config_enabled(
@@ -50,7 +54,6 @@ module exp_bipartite_accuracy_tb;
 	);
 		return (addr_width_1 == addr_width_2)
 			&& (word_width == word_width_heuristic(addr_width_0, addr_width_1, addr_width_2))
-			&& (word_width <= 23)
 			&& (addr_width_0 + addr_width_1 + addr_width_2 <= 23)
 			&& (addr_width_0 + addr_width_1 >= 3);
 	endfunction : config_enabled
