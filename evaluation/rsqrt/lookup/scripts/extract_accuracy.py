@@ -8,7 +8,7 @@ The accuracy report (``accuracy.txt``) contains one test result per line, e.g.::
 This script extracts the configuration parameters and error metrics from every
 such line and writes them to a CSV with the columns::
 
-    num_newton_steps, addr_width, word_width, RMSRE, max_rel_error
+    NUM_NEWTON_STEPS, ADDR_WIDTH, WORD_WIDTH, RMSRE, MAX_REL_ERROR
 
 Lines that do not match the expected format (blank lines, comments, ...) are
 skipped and reported on stderr.
@@ -34,7 +34,7 @@ DATA_DIR = PROJECT_ROOT / "data"
 DEFAULT_INPUT = DATA_DIR / "accuracy.txt"
 DEFAULT_OUTPUT = DATA_DIR / "accuracy.csv"
 
-CSV_HEADER = ("num_newton_steps", "addr_width", "word_width", "RMSRE", "max_rel_error")
+CSV_HEADER = ("NUM_NEWTON_STEPS", "ADDR_WIDTH", "WORD_WIDTH", "RMSRE", "MAX_REL_ERROR")
 
 # One regex captures every field of interest in a single line. Integer fields
 # use \d+; the metrics are parsed as floats to tolerate scientific notation or a

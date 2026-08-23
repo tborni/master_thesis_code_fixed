@@ -118,7 +118,7 @@ DATA_DIR = PROJECT_ROOT / "data"
 IMAGES_DIR = PROJECT_ROOT / "images"
 
 # Column layout of the CSVs consumed below (0-based indices):
-#   resources.csv : num_newton_steps, addr_width, word_width, LUT, BRAM
+#   resources.csv : num_newton_steps, addr_width, word_width, REG, LUT, DSP, BRAM, URAM
 #   accuracy.csv  : num_newton_steps, addr_width, word_width, RMSRE, max_rel_error
 XLABEL = "addr_width"
 YLABEL = "word_width"
@@ -143,7 +143,7 @@ if __name__ == '__main__':
 	YLABEL = "word_width"
 	X_COL_IDX = 1
 	Y_COL_IDX = 2
-	VALUE_IDX = 3			# LUT column
+	VALUE_IDX = 4			# LUT column
 	VALUE_FACTOR = 1
 	DATATYPE = "int"
 	FILTER_COL = None
