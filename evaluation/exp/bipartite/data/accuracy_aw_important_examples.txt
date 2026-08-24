@@ -1,0 +1,14 @@
+regarding aw1 = aw2:
+NS=0 A0=4 A1=4 A2=3 WW=15  RMSRE=9.874549e-05  max_rel_error=2.058102e-04  at x=-74.7353439  (dut=3.4909361e-33, ref=3.49021778e-33)
+NS=0 A0=4 A1=4 A2=4 WW=16  RMSRE=4.996043e-05  max_rel_error=1.151317e-04  at x=-25.3431969  (dut=9.85234117e-12, ref=9.85347561e-12)
+
+
+regarding aw1 = aw0 + (2 or 3)
+NS=0 A0=3 A1=6 A2=6 WW=18  RMSRE=1.195576e-05  max_rel_error=5.211238e-05  at x=28.4201984  (dut=2.20169922e+12, ref=2.20158449e+12)
+NS=0 A0=4 A1=5 A2=5 WW=18  RMSRE=1.338204e-05  max_rel_error=3.678800e-05  at x=19.4515266  (dut=280333312, ref=280343625)
+NS=0 A0=5 A1=4 A2=4 WW=17  RMSRE=2.484539e-05  max_rel_error=5.267983e-05  at x=-56.5106201  (dut=2.86927644e-25, ref=2.86912529e-25)
+
+NS=0 A0=3 A1=7 A2=7 WW=19  RMSRE=5.576310e-06  max_rel_error=3.010306e-05  at x=-79.7113953  (dut=2.40876241e-35, ref=2.4086899e-35)
+NS=0 A0=4 A1=6 A2=6 WW=20  RMSRE=4.397110e-06  max_rel_error=1.525380e-05  at x=-73.8195114  (dut=8.72168025e-33, ref=8.72154722e-33)
+
+

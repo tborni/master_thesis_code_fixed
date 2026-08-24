@@ -1,0 +1,18 @@
+exp_bipartite accuracy sweep
+  NUM_SAMPLES      = 10000
+  EXCLUDE_POS      = 0
+  NS=0 A0=5 A1=5 A2=5 WW=10  RMSRE=2.882412e-04  max_rel_error=1.374255e-03  at x=-42.9752159  (dut=2.16522797e-19, ref=2.16820764e-19)
+  NS=0 A0=5 A1=5 A2=5 WW=11  RMSRE=1.512092e-04  max_rel_error=8.701826e-04  at x=-62.3826523  (dut=8.08976858e-28, ref=8.08273513e-28)
+  NS=0 A0=5 A1=5 A2=5 WW=12  RMSRE=7.444932e-05  max_rel_error=3.042162e-04  at x=-9.70412254  (dut=6.10128045e-05, ref=6.10313712e-05)
+  NS=0 A0=5 A1=5 A2=5 WW=13  RMSRE=3.776386e-05  max_rel_error=2.036527e-04  at x=-32.577755  (dut=7.10802944e-15, ref=7.10658217e-15)
+  NS=0 A0=5 A1=5 A2=5 WW=14  RMSRE=1.956335e-05  max_rel_error=6.448566e-05  at x=-15.9366074  (dut=1.19907781e-07, ref=1.1990005e-07)
+  NS=0 A0=5 A1=5 A2=5 WW=15  RMSRE=1.139871e-05  max_rel_error=4.725523e-05  at x=-18.7149296  (dut=7.45126272e-09, ref=7.45091062e-09)
+  NS=0 A0=5 A1=5 A2=5 WW=16  RMSRE=7.988847e-06  max_rel_error=3.144755e-05  at x=-62.3826523  (dut=8.08298931e-28, ref=8.08273513e-28)
+  NS=0 A0=5 A1=5 A2=5 WW=17  RMSRE=6.887506e-06  max_rel_error=2.141392e-05  at x=-80.319046  (dut=1.31187006e-35, ref=1.31184197e-35)
+  NS=0 A0=5 A1=5 A2=5 WW=18  RMSRE=6.605818e-06  max_rel_error=1.737315e-05  at x=-80.2286377  (dut=1.43599492e-35, ref=1.43596997e-35)
+  NS=0 A0=5 A1=5 A2=5 WW=19  RMSRE=6.538610e-06  max_rel_error=1.737693e-05  at x=-75.6376801  (dut=1.41573013e-33, ref=1.41570553e-33)
+  NS=0 A0=5 A1=5 A2=5 WW=20  RMSRE=6.523902e-06  max_rel_error=1.685797e-05  at x=-75.6376801  (dut=1.4157294e-33, ref=1.41570553e-33)
+  NS=0 A0=5 A1=5 A2=5 WW=21  RMSRE=6.513405e-06  max_rel_error=1.711745e-05  at x=-75.6376801  (dut=1.41572976e-33, ref=1.41570553e-33)
+  NS=0 A0=5 A1=5 A2=5 WW=22  RMSRE=6.513931e-06  max_rel_error=1.711745e-05  at x=-75.6376801  (dut=1.41572976e-33, ref=1.41570553e-33)
+  NS=0 A0=5 A1=5 A2=5 WW=23  RMSRE=6.514038e-06  max_rel_error=1.698771e-05  at x=-75.6376801  (dut=1.41572958e-33, ref=1.41570553e-33)
+  
