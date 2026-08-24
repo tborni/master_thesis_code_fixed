@@ -36,6 +36,16 @@ METHODS: dict[str, str] = {
     "bipartite": "Bipartite",
     "ip_core": "IP-Core",
     "lookup": "Lookup",
+    "splitting": "Splitting",
+}
+
+# Per-method restrictions on the *resource* rows, applied before the accuracy
+# join. Each entry maps a resource-identifier column to the single value we keep
+# (case-insensitive on the string cell). IP-Core reports both BRAM and non-BRAM
+# variants; we only plot the non-BRAM ones, so its extra BRAM configurations are
+# dropped here. A folder with no entry (or lacking the column) is left untouched.
+RESOURCE_ROW_FILTERS: dict[str, dict[str, str]] = {
+    "ip_core": {"bram_usage": "no"},
 }
 
 # Metric columns we care about. Everything else shared between the two files is
@@ -93,6 +103,24 @@ def combine_method(folder: str, display_name: str) -> Path | None:
             raise ValueError(
                 f"[{folder}] '{metric.upper()}' column missing in resources.csv"
             )
+
+    # Restrict the resource rows for methods that expose several variants of
+    # which we only want one (e.g. IP-Core: BRAM_USAGE == "No"). Matching is
+    # case-insensitive on the stringified cell so "No"/"no" both work; a missing
+    # column raises rather than silently keeping every row.
+    for col, wanted in RESOURCE_ROW_FILTERS.get(folder, {}).items():
+        if col not in df_res.columns:
+            raise ValueError(
+                f"[{folder}] resource filter column '{col.upper()}' not found in "
+                f"resources.csv (have: {', '.join(df_res.columns)})"
+            )
+        keep = df_res[col].astype(str).str.strip().str.lower() == wanted.lower()
+        if not keep.any():
+            raise ValueError(
+                f"[{folder}] resource filter {col.upper()} == '{wanted}' matched "
+                f"no rows"
+            )
+        df_res = df_res[keep].reset_index(drop=True)
 
     # Join keys = every column shared by both files that is not a metric,
     # kept in their original order in resources.csv (NUM_NEWTON_STEPS,

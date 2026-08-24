@@ -34,16 +34,19 @@ from matplotlib.transforms import Affine2D
 
 METHOD_TO_COLOR: dict[str, str] = {
     "Bipartite": "#E69F00",
+    "Schraudolph": "#0072B2",
     "IP-Core": "red",
     "Lookup": "#83C19D",
+    "Splitting": "#9467bd",
 }
 
-# Marker per DSP count. Covers the DSP values actually present in the rec data
-# ({0, 2, 8}); anything unexpected falls back to "X" (and is flagged).
+# Marker per DSP count. Covers the DSP values we distinguish in the legend
+# ({0, 1, 2}); anything else (e.g. IP-Core's 7-DSP "Full" variant) falls back to
+# "X" and is flagged.
 DSP_TO_MARKER: dict[int, str] = {
     0: "o",
-    2: "^",
-    8: "P",
+    1: "^",
+    2: "s",
 }
 FALLBACK_MARKER = "X"
 
@@ -288,20 +291,30 @@ def scatter_group(ax, group: pd.DataFrame, color: str, marker: str,
         )
 
 
-def add_legends(fig, ax) -> None:
-    """Add the twin Method + DSP legends used by all three figures."""
+def add_legends(fig, ax, frames: list[pd.DataFrame]) -> None:
+    """Add the twin Method + DSP legends used by all three figures.
+
+    Only methods and DSP counts that are actually drawn get a legend entry, so
+    methods without data yet (e.g. Bipartite, Schraudolph) do not clutter the
+    figure; both lists keep their canonical order (``METHOD_TO_COLOR`` /
+    ``DSP_TO_MARKER``). DSP values without a catalogued marker are drawn with the
+    fallback marker and are intentionally omitted from the DSP legend.
+    """
+    drawn_methods = {df["method"].iloc[0] for df in frames}
+    drawn_dsp = {int(v) for df in frames for v in df["dsp"].unique()}
+
     rot_marker = MarkerStyle("d")
     rot_marker._transform = rot_marker.get_transform() + Affine2D().rotate_deg(90)
 
     method_handles = [
         Line2D([0], [0], marker=rot_marker, color="w", label=m,
                markerfacecolor=c, markeredgecolor="black", markersize=8)
-        for m, c in METHOD_TO_COLOR.items()
+        for m, c in METHOD_TO_COLOR.items() if m in drawn_methods
     ]
     dsp_handles = [
         Line2D([0], [0], marker=m, color="black", label=f"{n} DSP",
                linestyle="None", markersize=8)
-        for n, m in DSP_TO_MARKER.items()
+        for n, m in DSP_TO_MARKER.items() if n in drawn_dsp
     ]
 
     legend1 = ax.legend(
@@ -351,7 +364,7 @@ def plot_diagram(frames: list[pd.DataFrame]) -> None:
         color = METHOD_TO_COLOR.get(df["method"].iloc[0], "gray")
         for dsp_val, group in df.groupby("dsp"):
             scatter_group(ax, group, color, marker_for(dsp_val), pareto_mask=None)
-    add_legends(fig, ax)
+    add_legends(fig, ax, frames)
     format_axes(ax)
     finalize(fig, "diagram.png")
 
@@ -376,7 +389,7 @@ def plot_pareto(frames: list[pd.DataFrame]) -> None:
     ax.step(front["rmsre"], front["lut"], where="post",
             color="black", linestyle="-", linewidth=1.2, alpha=0.7, zorder=3)
 
-    add_legends(fig, ax)
+    add_legends(fig, ax, frames)
     format_axes(ax)
     finalize(fig, "pareto.png")
 
@@ -406,7 +419,7 @@ def plot_full_pareto(frames: list[pd.DataFrame]) -> None:
         ax.step(group["rmsre"], group["lut"], where="post",
                 color="gray", linestyle="-", linewidth=0.9, alpha=0.6, zorder=3)
 
-    add_legends(fig, ax)
+    add_legends(fig, ax, frames)
     format_axes(ax)
     finalize(fig, "full_pareto.png")
 

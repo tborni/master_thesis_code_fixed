@@ -2,11 +2,11 @@
 # Bounds are inclusive; an empty methods list means all; see plots.py for details.
 
 [display]
-pareto_per_method_only = true
+pareto_per_method_only = false
 
 [bounds]
 lut_min = 0
-lut_max = 600
+lut_max = 100000
 dsp_min = 0
 dsp_max = 1000
 rmsre_min = 0.0
