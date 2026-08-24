@@ -1,0 +1,8 @@
+# settings: BLOCKING mode, optimize goal: resources, result has ready signal, use maximum latency (latency 30, cycles/operation = 1), ARESETn signal
+DSP_USAGE,BRAM_USAGE,clock_period,WNS,Critical path timing,Max frequency,REG,LUT,DSP,BRAM,URAM
+No,No,4.0,1.556,2.444,409,1129,1367,0,0,0
+Medium,No,4.0,1.397,2.603,384,724,936,1,0,0
+Full,No,4.0,1.534,2.466,406,730,786,7,0,0
+No,Full,4.0,2.173,1.827,547,1125,894,0,1,0
+Medium,Full,4.0,2.110,1.890,529,720,463,1,1,0
+Full,Full,4.0,1.904,2.096,477,679,313,7,1,0
