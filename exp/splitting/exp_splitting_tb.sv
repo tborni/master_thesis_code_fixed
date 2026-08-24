@@ -76,8 +76,7 @@ module exp_splitting_tb;
 	function automatic bit word_width_heuristic_ok(
 		input int unsigned  word_width
 	);
-		return (word_width == 22)
-			&& (word_width >= 1) && (word_width <= 22);
+		return (word_width == 22);
 	endfunction : word_width_heuristic_ok
 
 	// --- Function 3 (gated by USE_ADDR_WIDTH_HEURISTIC): addr-field relations --
