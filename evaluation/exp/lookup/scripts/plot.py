@@ -117,65 +117,62 @@ PROJECT_ROOT = SCRIPT_DIR.parent
 DATA_DIR = PROJECT_ROOT / "data"
 IMAGES_DIR = PROJECT_ROOT / "images"
 
-# Column layout of the CSVs consumed below (0-based indices):
-#   resources.csv : num_newton_steps, addr_width, word_width, REG, LUT, DSP, BRAM, URAM
-#   accuracy.csv  : num_newton_steps, addr_width, word_width, RMSRE, max_rel_error
+# Column layout of the CSVs consumed below (0-based indices). This is a plain
+# addr_width x word_width sweep with no Newton dimension, so neither file has a
+# leading num_newton_steps column and no row filtering is needed.
+#   resources.csv : SIMD, addr_width, word_width, EXCLUDE_POS, clock_period, WNS,
+#                   Critical path timing, Max frequency, REG, LUT, DSP, BRAM, URAM
+#   accuracy.csv  : addr_width, word_width, RMSRE, max_rel_error
 XLABEL = "addr_width"
 YLABEL = "word_width"
-X_COL_IDX = 1
-Y_COL_IDX = 2
-VALUE_IDX = 3
+X_COL_IDX = 0
+Y_COL_IDX = 1
+VALUE_IDX = 2
 VALUE_FACTOR = 1
 DATATYPE = "int"	# "int", "float_1" (1 digit after the point), "percent", "sci"
 # Optional row filter: keep only rows where column FILTER_COL == FILTER_VAL.
-# Used to pin a single num_newton_steps when the file spans several.
+# Unused here (single sweep), but kept for parity with the other plotters.
 FILTER_COL = None
 FILTER_VAL = None
-# num_newton_steps to plot accuracy for (column 0 in both CSVs).
-NEWTON_STEPS = (0, 1, 2)
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':
 
-	# Plot resources: LUT usage over the (addr_width, word_width) grid, one figure
-	# per num_newton_steps so the three sweeps present in resources.csv do not
-	# overwrite each other in the same cells.
+	# Plot resources: LUT usage over the (addr_width, word_width) grid.
+	# resources.csv columns: SIMD, addr_width(1), word_width(2), ..., LUT(9), ...
 	XLABEL = "addr_width"
 	YLABEL = "word_width"
 	X_COL_IDX = 1			# addr_width
 	Y_COL_IDX = 2			# word_width
-	VALUE_IDX = 4			# LUT column
+	VALUE_IDX = 9			# LUT column
 	VALUE_FACTOR = 1
 	DATATYPE = "int"
-	FILTER_COL = 0			# num_newton_steps column
-	for FILTER_VAL in NEWTON_STEPS:
-		plot_heatmap(
-					filepath=DATA_DIR / "resources.csv",
-					output_path=IMAGES_DIR / f"resources_newton{FILTER_VAL}.png",
-					title="",
-					xlabel=XLABEL,
-					ylabel=YLABEL,
-					cell_width=2.6
-				)
+	FILTER_COL = None
+	plot_heatmap(
+				filepath=DATA_DIR / "resources.csv",
+				output_path=IMAGES_DIR / "resources.png",
+				title="",
+				xlabel=XLABEL,
+				ylabel=YLABEL,
+				cell_width=2.6
+			)
 
-	# Plot accuracy: RMSRE over the (addr_width, word_width) grid, one figure per
-	# num_newton_steps so the three sweeps present in accuracy.csv do not
-	# overwrite each other in the same cells. Labels show RMSRE as a percentage
-	# with 4 decimals.
+	# Plot accuracy: RMSRE over the (addr_width, word_width) grid. Labels show
+	# RMSRE as a percentage with 4 decimals.
+	# accuracy.csv columns: addr_width(0), word_width(1), RMSRE(2), max_rel_error(3)
 	XLABEL = "addr_width"
 	YLABEL = "word_width"
-	X_COL_IDX = 1			# addr_width
-	Y_COL_IDX = 2			# word_width
-	VALUE_IDX = 3			# RMSRE column
+	X_COL_IDX = 0			# addr_width
+	Y_COL_IDX = 1			# word_width
+	VALUE_IDX = 2			# RMSRE column
 	VALUE_FACTOR = 100
 	DATATYPE = "percent"
-	FILTER_COL = 0			# num_newton_steps column
-	for FILTER_VAL in NEWTON_STEPS:
-		plot_heatmap(
-					filepath=DATA_DIR / "accuracy.csv",
-					output_path=IMAGES_DIR / f"accuracy_newton{FILTER_VAL}.png",
-					title="",
-					xlabel=XLABEL,
-					ylabel=YLABEL,
-					cell_width=2.6
-				)
+	FILTER_COL = None
+	plot_heatmap(
+				filepath=DATA_DIR / "accuracy.csv",
+				output_path=IMAGES_DIR / "accuracy.png",
+				title="",
+				xlabel=XLABEL,
+				ylabel=YLABEL,
+				cell_width=2.6
+			)
