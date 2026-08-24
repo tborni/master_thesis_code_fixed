@@ -34,7 +34,7 @@ from matplotlib.transforms import Affine2D
 
 METHOD_TO_COLOR: dict[str, str] = {
     "Bipartite": "#E69F00",
-    "Schraudolph": "#0072B2",
+    "Bit-Hacking": "#0072B2",
     "IP-Core": "red",
     "Lookup": "#83C19D",
     "Splitting": "#9467bd",
@@ -295,7 +295,7 @@ def add_legends(fig, ax, frames: list[pd.DataFrame]) -> None:
     """Add the twin Method + DSP legends used by all three figures.
 
     Only methods and DSP counts that are actually drawn get a legend entry, so
-    methods without data yet (e.g. Bipartite, Schraudolph) do not clutter the
+    methods without data yet (e.g. Bipartite) do not clutter the
     figure; both lists keep their canonical order (``METHOD_TO_COLOR`` /
     ``DSP_TO_MARKER``). DSP values without a catalogued marker are drawn with the
     fallback marker and are intentionally omitted from the DSP legend.
