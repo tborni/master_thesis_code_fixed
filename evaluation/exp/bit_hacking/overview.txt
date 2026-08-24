@@ -1,0 +1,6 @@
+exp_bit_hacking accuracy sweep
+  NUM_SAMPLES      = 10000 beats (1 lanes each)
+  EXCLUDE_POS      = 0
+  FORCE_BEHAVIORAL = 0
+  SIMD=1  RMSRE=1.764034e-02  max_rel_error=3.937535e-02  at x=-35.3103561  (dut=4.44079681e-16, ref=4.62282203e-16)
+  

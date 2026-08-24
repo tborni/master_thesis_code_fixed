@@ -1,0 +1,2 @@
+SIMD,EXCLUDE_POS,clock_period,WNS,Critical path timing,Max frequency,REG,LUT,DSP,BRAM,URAM
+1,0,4.0,0.461,3.539,283,69,265,1,0,0
