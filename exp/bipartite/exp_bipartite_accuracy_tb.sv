@@ -102,14 +102,16 @@ module exp_bipartite_accuracy_tb;
 	endfunction : word_width_heuristic_ok
 
 	// --- Function 3 (gated by USE_ADDR_WIDTH_HEURISTIC): addr-field relations --
-	// The accuracy Pareto front for 2^x: a symmetric middle/lower split
-	// (A1 == A2), which balances the two tables' error terms.
+	// The accuracy Pareto front for invsqrt: a symmetric middle/lower split
+	// (A1 == A2) with the upper field offset one or two bits above the top
+	// field (A1 == A0+2 or A0+3), which balances the two tables' error terms.
 	function automatic bit addr_width_heuristic_ok(
 		input int unsigned  addr_width_0,
 		input int unsigned  addr_width_1,
 		input int unsigned  addr_width_2
 	);
-		return (addr_width_1 == addr_width_2);
+		return (addr_width_1 == addr_width_2)
+			&& ((addr_width_1 == addr_width_0 + 2) || (addr_width_1 == addr_width_0 + 3));
 	endfunction : addr_width_heuristic_ok
 
 	// Combined per-config enable: legality always, heuristics only when armed.
