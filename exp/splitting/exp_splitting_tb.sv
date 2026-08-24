@@ -2,42 +2,116 @@ module exp_splitting_tb;
 
 	localparam int unsigned  NUM_SAMPLES = 10000;
 
-	// Parameter sweep ranges. Filtered Pareto-front:
-	//   - ADDR_WIDTH_1 == ADDR_WIDTH_2 (symmetric split)
-	//   - WORD_WIDTH set by the splitting-error heuristic (see below)
-	// so only ~ (#ADDR_0 * #ADDR_1) DUTs are actually instantiated.
-	localparam int unsigned  MIN_ADDR_0   = 5;
-	localparam int unsigned  MAX_ADDR_0   = 7;
-	localparam int unsigned  MIN_ADDR_1   = 5;
-	localparam int unsigned  MAX_ADDR_1   = 7;
-	localparam int unsigned  MIN_ADDR_2   = 5;
-	localparam int unsigned  MAX_ADDR_2   = 7;
-	localparam int unsigned  MIN_WORD     = 22;
-	localparam int unsigned  MAX_WORD     = 22;
+	// -------------------------------------------------------------------
+	// Parameter sweep ranges.
+	//
+	// make_range(min, max, step) packs an inclusive sweep axis (bounds +
+	// derived count) into one struct so the generate loops and the report
+	// loop can share a single source of truth. This mirrors the scheme in
+	// exp_bipartite_accuracy_tb.sv; only the per-function specifics
+	// (legality constraints and the two heuristics) differ.
+	// -------------------------------------------------------------------
+	typedef struct packed {
+		int unsigned min;
+		int unsigned max;
+		int unsigned step;
+		int unsigned num;
+	} range_t;
+	function automatic range_t make_range(input int unsigned  min, input int unsigned  max, input int unsigned  step);
+		return '{
+			min:  min,
+			max:  max,
+			step: step,
+			num:  (max - min) / step + 1
+		};
+	endfunction : make_range
 
-	localparam int unsigned  NUM_ADDR_0 = MAX_ADDR_0 - MIN_ADDR_0 + 1;
-	localparam int unsigned  NUM_ADDR_1 = MAX_ADDR_1 - MIN_ADDR_1 + 1;
-	localparam int unsigned  NUM_ADDR_2 = MAX_ADDR_2 - MIN_ADDR_2 + 1;
-	localparam int unsigned  NUM_WORD   = MAX_WORD   - MIN_WORD   + 1;
-	localparam int unsigned  NUM_INST   = NUM_ADDR_0 * NUM_ADDR_1 * NUM_ADDR_2 * NUM_WORD;
+	localparam range_t ADDR_0 = make_range(.min( 5), .max( 7), .step(1));
+	localparam range_t ADDR_1 = make_range(.min( 5), .max( 7), .step(1));
+	localparam range_t ADDR_2 = make_range(.min( 5), .max( 7), .step(1));
+	localparam range_t WORD   = make_range(.min(22), .max(22), .step(1));
 
-	localparam bit           EXCLUDE_POS      = 0;
-	localparam bit           FORCE_BEHAVIORAL = 0;
-	
+	localparam bit  USE_WORD_WIDTH_HEURISTIC = 1;
+	localparam bit  USE_ADDR_WIDTH_HEURISTIC = 1;
+
+	localparam bit  EXCLUDE_POS      = 0;
+	localparam bit  FORCE_BEHAVIORAL = 0;
+
+	// --- Function 1 (always active): DUT legality -----------------------
+	// Every elaboration/runtime constraint the exp_splitting DUT depends on:
+	//   * A0 + A1 + A2 <= 23         : x_0|x_1|x_2 are contiguous fields of
+	//                                  fdat[22:0]; their widths must fit the
+	//                                  23-bit fp32 mantissa (DUT $finish).
+	//   * A0, A1, A2   >= 1          : every table needs at least one address
+	//                                  bit (DUT $finish).
+	//   * 1 <= WORD_WIDTH <= 22      : WORD_WIDTH >= 1 (DUT $finish) and
+	//                                  WORD_WIDTH < 23 so {sign-guard, implicit
+	//                                  1, mantissa} fits the 24-bit DSP58 B
+	//                                  datapath (DUT $finish).
+	// NOTE: the DUT also $finishes at runtime if a leading-zero table
+	// collapses (Z_1_RAW >= WORD_WIDTH or Z_2_RAW >= WORD_WIDTH, see
+	// compute_leading_zeros in exp_splitting.sv). Z_1_RAW and Z_2_RAW grow
+	// only with A0 and A0+A1; across this sweep (A* <= 7, WORD_WIDTH == 22)
+	// they stay <= 14 << 22, so the guard is unreachable here and is not
+	// re-encoded. Widening the ADDR axes upward or shrinking WORD_WIDTH
+	// toward A0+A1 would require reinstating that check.
+	function automatic bit dut_legal(
+		input int unsigned  addr_width_0,
+		input int unsigned  addr_width_1,
+		input int unsigned  addr_width_2,
+		input int unsigned  word_width
+	);
+		return (addr_width_0 + addr_width_1 + addr_width_2 <= 23)
+			&& (addr_width_0 >= 1) && (addr_width_1 >= 1) && (addr_width_2 >= 1)
+			&& (word_width >= 1) && (word_width <= 22);
+	endfunction : dut_legal
+
+	// --- Function 2 (gated by USE_WORD_WIDTH_HEURISTIC): WORD_WIDTH match --
+	// The splitting datapath fuses all three factors through a single DSP58
+	// whose 24-bit B port bounds the mantissa at WORD_WIDTH <= 22. The
+	// accuracy Pareto point saturates that bound: WORD_WIDTH == 22 keeps the
+	// full fp32 mantissa precision the tables can carry. The extra
+	// legality clause is redundant with dut_legal but kept so the WORD axis
+	// is fully self-describing.
+	function automatic bit word_width_heuristic_ok(
+		input int unsigned  word_width
+	);
+		return (word_width == 22)
+			&& (word_width >= 1) && (word_width <= 22);
+	endfunction : word_width_heuristic_ok
+
+	// --- Function 3 (gated by USE_ADDR_WIDTH_HEURISTIC): addr-field relations --
+	// The accuracy Pareto front for the three-way split keeps the tables
+	// balanced: no two address widths may differ by more than one bit.
 	function automatic bit addr_widths_allowed(input int unsigned  addr_width_a, input int unsigned  addr_width_b);
-	   if(addr_width_a > addr_width_b + 1) return 0;
-	   if(addr_width_b > addr_width_a + 1) return 0;
-	   return 1;
+		if(addr_width_a > addr_width_b + 1) return 0;
+		if(addr_width_b > addr_width_a + 1) return 0;
+		return 1;
 	endfunction : addr_widths_allowed
 
+	function automatic bit addr_width_heuristic_ok(
+		input int unsigned  addr_width_0,
+		input int unsigned  addr_width_1,
+		input int unsigned  addr_width_2
+	);
+		return addr_widths_allowed(addr_width_0, addr_width_1)
+			&& addr_widths_allowed(addr_width_0, addr_width_2)
+			&& addr_widths_allowed(addr_width_1, addr_width_2);
+	endfunction : addr_width_heuristic_ok
+
+	// Combined per-config enable: legality always, heuristics only when armed.
 	function automatic bit config_enabled(
 		input int unsigned  addr_width_0,
 		input int unsigned  addr_width_1,
 		input int unsigned  addr_width_2,
 		input int unsigned  word_width
 	);
-		return addr_widths_allowed(addr_width_0, addr_width_1) && addr_widths_allowed(addr_width_0, addr_width_2) && addr_widths_allowed(addr_width_1, addr_width_2);
+		return dut_legal(addr_width_0, addr_width_1, addr_width_2, word_width)
+			&& (!USE_WORD_WIDTH_HEURISTIC || word_width_heuristic_ok(word_width))
+			&& (!USE_ADDR_WIDTH_HEURISTIC || addr_width_heuristic_ok(addr_width_0, addr_width_1, addr_width_2));
 	endfunction : config_enabled
+
+	localparam int unsigned  NUM_INST = ADDR_0.num * ADDR_1.num * ADDR_2.num * WORD.num;
 
 	// Global Control
 	logic  clk = 0;
@@ -99,22 +173,22 @@ module exp_splitting_tb;
 		end
 	endfunction : rand_fp
 
-	// Index flattening: II = ((a0 * NUM_ADDR_1 + a1) * NUM_ADDR_2 + a2) * NUM_WORD + w
+	// Index flattening: II = ((a0 * ADDR_1.num + a1) * ADDR_2.num + a2) * WORD.num + w
 	// keeps the WORD axis fastest-varying, matching the report loop below.
 
 	// Parallel DUT instances
-	for(genvar  a0i = 0; a0i < NUM_ADDR_0; a0i++) begin : gA0
-		localparam int unsigned  A0 = MIN_ADDR_0 + a0i;
+	for(genvar  a0i = 0; a0i < ADDR_0.num; a0i++) begin : gA0
+		localparam int unsigned  A0 = ADDR_0.min + a0i * ADDR_0.step;
 
-		for(genvar  a1i = 0; a1i < NUM_ADDR_1; a1i++) begin : gA1
-			localparam int unsigned  A1 = MIN_ADDR_1 + a1i;
+		for(genvar  a1i = 0; a1i < ADDR_1.num; a1i++) begin : gA1
+			localparam int unsigned  A1 = ADDR_1.min + a1i * ADDR_1.step;
 
-			for(genvar  a2i = 0; a2i < NUM_ADDR_2; a2i++) begin : gA2
-				localparam int unsigned  A2 = MIN_ADDR_2 + a2i;
+			for(genvar  a2i = 0; a2i < ADDR_2.num; a2i++) begin : gA2
+				localparam int unsigned  A2 = ADDR_2.min + a2i * ADDR_2.step;
 
-				for(genvar  wi = 0; wi < NUM_WORD; wi++) begin : gW
-					localparam int unsigned  WW = MIN_WORD + wi;
-					localparam int unsigned  II = ((a0i * NUM_ADDR_1 + a1i) * NUM_ADDR_2 + a2i) * NUM_WORD + wi;
+				for(genvar  wi = 0; wi < WORD.num; wi++) begin : gW
+					localparam int unsigned  WW = WORD.min + wi * WORD.step;
+					localparam int unsigned  II = ((a0i * ADDR_1.num + a1i) * ADDR_2.num + a2i) * WORD.num + wi;
 
 					if(config_enabled(A0, A1, A2, WW)) begin : gEna
 						uwire [31:0]  r;
@@ -197,8 +271,8 @@ module exp_splitting_tb;
 		end
 		xvld_int <= 0;
 
-		// Drain the pipeline. exp_splitting latency = range_reduction (9)
-		// + local 4-stage = 13 cycles; pad generously.
+		// Drain the pipeline. exp_splitting latency = range_reduction (6)
+		// + local 4-stage = 10 cycles; pad generously.
 		repeat(64) @(posedge clk);
 
 		$display("=========================================================================");
@@ -207,15 +281,15 @@ module exp_splitting_tb;
 		$display("  EXCLUDE_POS      = %0d", EXCLUDE_POS);
 		$display("  FORCE_BEHAVIORAL = %0d", FORCE_BEHAVIORAL);
 
-		for(int unsigned  a0i = 0; a0i < NUM_ADDR_0; a0i++) begin
-			automatic int unsigned  A0 = MIN_ADDR_0 + a0i;
-			for(int unsigned  a1i = 0; a1i < NUM_ADDR_1; a1i++) begin
-				automatic int unsigned  A1 = MIN_ADDR_1 + a1i;
-				for(int unsigned  a2i = 0; a2i < NUM_ADDR_2; a2i++) begin
-					automatic int unsigned  A2 = MIN_ADDR_2 + a2i;
-					for(int unsigned  wi = 0; wi < NUM_WORD; wi++) begin
-						automatic int unsigned  WW = MIN_WORD + wi;
-						automatic int unsigned  II = ((a0i * NUM_ADDR_1 + a1i) * NUM_ADDR_2 + a2i) * NUM_WORD + wi;
+		for(int unsigned  a0i = 0; a0i < ADDR_0.num; a0i++) begin
+			automatic int unsigned  A0 = ADDR_0.min + a0i * ADDR_0.step;
+			for(int unsigned  a1i = 0; a1i < ADDR_1.num; a1i++) begin
+				automatic int unsigned  A1 = ADDR_1.min + a1i * ADDR_1.step;
+				for(int unsigned  a2i = 0; a2i < ADDR_2.num; a2i++) begin
+					automatic int unsigned  A2 = ADDR_2.min + a2i * ADDR_2.step;
+					for(int unsigned  wi = 0; wi < WORD.num; wi++) begin
+						automatic int unsigned  WW = WORD.min + wi * WORD.step;
+						automatic int unsigned  II = ((a0i * ADDR_1.num + a1i) * ADDR_2.num + a2i) * WORD.num + wi;
 						automatic real          rmsre;
 
 						if(!config_enabled(A0, A1, A2, WW))  continue;
