@@ -104,14 +104,16 @@ module rec_bipartite_accuracy_tb;
 	endfunction : word_width_heuristic_ok
 
 	// --- Function 3 (gated by USE_ADDR_WIDTH_HEURISTIC): addr-field relations --
-	// The accuracy Pareto front for the reciprocal: a symmetric middle/lower
-	// split (A1 == A2), which balances the two tables' error terms.
+	// The accuracy Pareto front for invsqrt: a symmetric middle/lower split
+	// (A1 == A2) with the upper field offset one or two bits above the top
+	// field (A1 == A0+1 or A0+2), which balances the two tables' error terms.
 	function automatic bit addr_width_heuristic_ok(
 		input int unsigned  addr_width_0,
 		input int unsigned  addr_width_1,
 		input int unsigned  addr_width_2
 	);
-		return (addr_width_1 == addr_width_2);
+		return (addr_width_1 == addr_width_2)
+			&& ((addr_width_1 == addr_width_0 + 1) || (addr_width_1 == addr_width_0 + 2));
 	endfunction : addr_width_heuristic_ok
 
 	// Combined per-config enable: legality always, heuristics only when armed.
@@ -194,31 +196,12 @@ module rec_bipartite_accuracy_tb;
 		real  d;
 		// RMSRE for NS = 0
 		case(((addr_width_0 * 10 + addr_width_1) * 10 + addr_width_2) * 100 + word_width)
-			23311:  d = 1.068728e-03;
-			24412:  d = 4.107992e-04;
-			25513:  d = 1.882719e-04;
-			26614:  d = 9.147795e-05;
-			27715:  d = 4.506498e-05;
-			33313:  d = 4.362955e-04;
-			34414:  d = 1.348261e-04;
-			35515:  d = 5.187148e-05;
-			36616:  d = 2.359834e-05;
-			37717:  d = 1.149383e-05;
-			43314:  d = 2.055342e-04;
-			44416:  d = 5.489595e-05;
-			45517:  d = 1.686220e-05;
-			46618:  d = 6.518152e-06;
-			47719:  d = 2.950319e-06;
-			53315:  d = 1.010053e-04;
-			54417:  d = 2.574804e-05;
-			55519:  d = 6.864644e-06;
-			56620:  d = 2.093365e-06;
-			57721:  d = 8.123573e-07;
-			63316:  d = 5.050462e-05;
-			64418:  d = 1.265969e-05;
-			65520:  d = 3.223586e-06;
-			66622:  d = 8.532496e-07;
-			67723:  d = 2.571051e-07;
+			23311: d = 1.057613e-03;
+			24412: d = 4.047164e-04;
+			34414: d = 1.330765e-04;
+			35515: d = 5.131228e-05;
+			45517: d = 1.663595e-05;
+			46618: d = 6.373545e-06;
 			default:  d = 0.0;
 		endcase
 		return $bitstoshortreal($shortrealtobits(shortreal'(2.0 + d * d / (1.0 + d * d))));
