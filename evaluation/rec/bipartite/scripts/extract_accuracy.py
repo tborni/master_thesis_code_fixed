@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
-"""Parse the rsqrt bipartite accuracy report into a tidy CSV.
+"""Parse the rec_bipartite accuracy report into a tidy CSV.
 
 The bipartite design sweeps three address widths (one per table) plus the shared
-word width, so every measurement carries five configuration parameters. Two line
-formats appear across the various bipartite reports and both are accepted:
+word width, so every measurement carries five configuration parameters. The
+rec_bipartite sweep additionally emits a correction coefficient ``C`` between the
+word width and the error metrics. Two line formats appear across the various
+bipartite reports and both are accepted:
 
 Compact sweep format (``accuracy.txt``, ``accuracy_aw_sweep.txt``, ...)::
 
-    NS=0 A0=3 A1=4 A2=4 WW=15  RMSRE=6.181652e-05  max_rel_error=2.674653e-04  at x=2.86e-14  (dut=..., ref=...)
+    NS=0 A0=3 A1=4 A2=4 WW=14 C=2.000000  RMSRE=1.330765e-04  max_rel_error=5.623835e-04  at x=6.87e+10  (dut=..., ref=...)
 
-Verbose "Test (...)" format (``accuracy_ww_sweep.txt``, ...)::
+Verbose "Test (...)" format (as produced by the rsqrt lookup harness, accepted
+for cross-compatibility)::
 
     Test (Newton = 0, ADDR_0 = 5, ADDR_1 = 5, ADDR_2 = 5, WORD = 20): RMSRE = 0.0000032932, MAX_REL_ERROR = 0.0000121402, WORST_INPUT = ...
 
 Both are parsed into the columns::
 
-    NUM_NEWTON_STEPS, ADDR_WIDTH_0, ADDR_WIDTH_1, ADDR_WIDTH_2, WORD_WIDTH, RMSRE, MAX_REL_ERROR
+    NUM_NEWTON_STEPS, ADDR_WIDTH_0, ADDR_WIDTH_1, ADDR_WIDTH_2, WORD_WIDTH, C, RMSRE, MAX_REL_ERROR
 
-This mirrors the lookup variant's extractor but with the bipartite design's three
-address widths. Lines that do not match either format (headers, blank lines,
-comments, ...) are skipped and reported on stderr.
+The ``C`` column is preserved so no information from the report is lost; the
+plotting tools that consume the CSV simply ignore it, and it is left empty for
+lines (such as the verbose format) that carry no coefficient. This mirrors the
+rec_lookup extractor but with the bipartite design's three address widths. Lines
+that do not match either format (headers, blank lines, comments, ...) are skipped
+and reported on stderr.
 """
 
 from __future__ import annotations
@@ -48,24 +54,31 @@ CSV_HEADER = (
     "ADDR_WIDTH_1",
     "ADDR_WIDTH_2",
     "WORD_WIDTH",
+    "C",
     "RMSRE",
     "MAX_REL_ERROR",
 )
 
-# A float, possibly in scientific notation, reused for both metric fields.
+# A float, possibly in scientific notation, reused for the coefficient and both
+# metric fields.
 _FLOAT = r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?"
 
 # Two regexes, one per report format. Each captures the five integer
 # configuration fields and the two metric fields under the same group names, so
-# downstream handling is identical regardless of which format matched.
+# downstream handling is identical regardless of which format matched. The
+# coefficient ``C`` group is optional: the rec_bipartite sweep always emits it,
+# but the verbose format (and other bipartite reports) may not, in which case the
+# ``c`` group is ``None`` and the column is left empty.
 #
-# Compact sweep format: "NS=0 A0=3 A1=4 A2=4 WW=15  RMSRE=...  max_rel_error=..."
+# Compact sweep format:
+#   "NS=0 A0=3 A1=4 A2=4 WW=14 C=2.000000  RMSRE=...  max_rel_error=..."
 COMPACT_RE = re.compile(
     r"NS\s*=\s*(?P<newton>\d+)\s+"
     r"A0\s*=\s*(?P<addr0>\d+)\s+"
     r"A1\s*=\s*(?P<addr1>\d+)\s+"
     r"A2\s*=\s*(?P<addr2>\d+)\s+"
     r"WW\s*=\s*(?P<word>\d+)\s+"
+    r"(?:C\s*=\s*(?P<c>" + _FLOAT + r")\s+)?"
     r"RMSRE\s*=\s*(?P<rmsre>" + _FLOAT + r").*?"
     r"max_rel_error\s*=\s*(?P<max_rel>" + _FLOAT + r")",
     re.IGNORECASE,
@@ -78,6 +91,7 @@ VERBOSE_RE = re.compile(
     r"ADDR_1\s*=\s*(?P<addr1>\d+).*?"
     r"ADDR_2\s*=\s*(?P<addr2>\d+).*?"
     r"WORD\s*=\s*(?P<word>\d+).*?"
+    r"(?:C\s*=\s*(?P<c>" + _FLOAT + r").*?)?"
     r"RMSRE\s*=\s*(?P<rmsre>" + _FLOAT + r").*?"
     r"MAX_REL_ERROR\s*=\s*(?P<max_rel>" + _FLOAT + r")",
     re.IGNORECASE,
@@ -88,13 +102,19 @@ LINE_PATTERNS = (COMPACT_RE, VERBOSE_RE)
 
 @dataclass(frozen=True)
 class AccuracyRecord:
-    """A single parsed accuracy measurement."""
+    """A single parsed accuracy measurement.
+
+    ``c`` is the correction coefficient reported by the rec_bipartite sweep. It
+    is ``None`` for report formats that do not carry it, which serializes to an
+    empty CSV cell.
+    """
 
     num_newton_steps: int
     addr_width_0: int
     addr_width_1: int
     addr_width_2: int
     word_width: int
+    c: float | None
     rmsre: float
     max_rel_error: float
 
@@ -108,12 +128,14 @@ def parse_line(line: str) -> AccuracyRecord | None:
     for pattern in LINE_PATTERNS:
         match = pattern.search(line)
         if match is not None:
+            coeff = match["c"]
             return AccuracyRecord(
                 num_newton_steps=int(match["newton"]),
                 addr_width_0=int(match["addr0"]),
                 addr_width_1=int(match["addr1"]),
                 addr_width_2=int(match["addr2"]),
                 word_width=int(match["word"]),
+                c=float(coeff) if coeff is not None else None,
                 rmsre=float(match["rmsre"]),
                 max_rel_error=float(match["max_rel"]),
             )
