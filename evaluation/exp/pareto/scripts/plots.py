@@ -41,12 +41,14 @@ METHOD_TO_COLOR: dict[str, str] = {
 }
 
 # Marker per DSP count. Covers the DSP values we distinguish in the legend
-# ({0, 1, 2}); anything else (e.g. IP-Core's 7-DSP "Full" variant) falls back to
+# ({0, 1, 2, 7}); 7 is IP-Core's "Full" variant, drawn with "P" to match the
+# highest-DSP marker used in the rec/rsqrt figures. Anything else falls back to
 # "X" and is flagged.
 DSP_TO_MARKER: dict[int, str] = {
     0: "o",
     1: "^",
     2: "s",
+    7: "P",
 }
 FALLBACK_MARKER = "X"
 
