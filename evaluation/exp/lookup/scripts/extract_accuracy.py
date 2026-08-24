@@ -1,37 +1,28 @@
 #!/usr/bin/env python3
-"""Parse the exp_splitting accuracy report into a tidy CSV.
+"""Parse the rsqrt lookup accuracy report into a tidy CSV.
 
-The splitting design sweeps three table address widths plus the shared word
-width, so every measurement carries four configuration parameters. Unlike the
-rsqrt bipartite variant this was adapted from, there is no Newton-refinement
-stage, so the report lines carry no ``NS=`` field. A measurement line looks
-like::
+The accuracy report (``accuracy.txt``) contains one test result per line, e.g.::
 
-    A0=5 A1=5 A2=5 WW=22  RMSRE=1.420887e-05  max_rel_error=3.339388e-05  at x=-4.41949081  (dut=..., ref=...)
+    Test (Newton = 2, ADDR_W = 11, WORD_W = 16, II = 1): RMSRE = 0.0000000377, MAX_REL_ERROR = 0.0000001305, WORST_INPUT = 0.0000000000367782922172655
 
-Optional leading whitespace is tolerated (the sweep reports indent their rows),
-and matching is anchored on the ``A0=`` field so the surrounding preamble
-(``NUM_SAMPLES``, ``EXCLUDE_POS``, ...) and the trailing ``at x=... (dut=...,
-ref=...)`` diagnostics are ignored.
+This script extracts the configuration parameters and error metrics from every
+such line and writes them to a CSV with the columns::
 
-Lines are parsed into the columns::
+    NUM_NEWTON_STEPS, ADDR_WIDTH, WORD_WIDTH, RMSRE, MAX_REL_ERROR
 
-    ADDR_WIDTH_0, ADDR_WIDTH_1, ADDR_WIDTH_2, WORD_WIDTH, RMSRE, MAX_REL_ERROR
-
-which mirror the address/word-width columns of this experiment's
-``resources.csv``. Lines that do not match (headers, blank lines, comments, ...)
-are skipped and reported on stderr.
+Lines that do not match the expected format (blank lines, comments, ...) are
+skipped and reported on stderr.
 """
 
 from __future__ import annotations
 
 import argparse
 import csv
+import re
 import sys
 from dataclasses import astuple, dataclass
 from pathlib import Path
 from typing import Iterable, Iterator
-import re
 
 # Project root is the parent of this script's directory (scripts/), used to build
 # sensible default paths so the tool works regardless of the current working
@@ -43,30 +34,17 @@ DATA_DIR = PROJECT_ROOT / "data"
 DEFAULT_INPUT = DATA_DIR / "accuracy.txt"
 DEFAULT_OUTPUT = DATA_DIR / "accuracy.csv"
 
-CSV_HEADER = (
-    "ADDR_WIDTH_0",
-    "ADDR_WIDTH_1",
-    "ADDR_WIDTH_2",
-    "WORD_WIDTH",
-    "RMSRE",
-    "MAX_REL_ERROR",
-)
+CSV_HEADER = ("NUM_NEWTON_STEPS", "ADDR_WIDTH", "WORD_WIDTH", "RMSRE", "MAX_REL_ERROR")
 
-# A float, possibly in scientific notation, reused for both metric fields.
-_FLOAT = r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?"
-
-# Measurement-line format: the four integer configuration fields followed by the
-# two metric fields. ``.*?`` between metrics skips the intervening whitespace and
-# tolerates any field ordering of the trailing "at x=... (dut=..., ref=...)"
-# diagnostics, which we do not capture.
+# One regex captures every field of interest in a single line. Integer fields
+# use \d+; the metrics are parsed as floats to tolerate scientific notation or a
+# varying number of decimals.
 LINE_RE = re.compile(
-    r"A0\s*=\s*(?P<addr0>\d+)\s+"
-    r"A1\s*=\s*(?P<addr1>\d+)\s+"
-    r"A2\s*=\s*(?P<addr2>\d+)\s+"
-    r"WW\s*=\s*(?P<word>\d+)\s+"
-    r"RMSRE\s*=\s*(?P<rmsre>" + _FLOAT + r").*?"
-    r"max_rel_error\s*=\s*(?P<max_rel>" + _FLOAT + r")",
-    re.IGNORECASE,
+    r"Newton\s*=\s*(?P<newton>\d+).*?"
+    r"ADDR_W\s*=\s*(?P<addr>\d+).*?"
+    r"WORD_W\s*=\s*(?P<word>\d+).*?"
+    r"RMSRE\s*=\s*(?P<rmsre>[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?).*?"
+    r"MAX_REL_ERROR\s*=\s*(?P<max_rel>[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)"
 )
 
 
@@ -74,9 +52,8 @@ LINE_RE = re.compile(
 class AccuracyRecord:
     """A single parsed accuracy measurement."""
 
-    addr_width_0: int
-    addr_width_1: int
-    addr_width_2: int
+    num_newton_steps: int
+    addr_width: int
     word_width: int
     rmsre: float
     max_rel_error: float
@@ -85,15 +62,14 @@ class AccuracyRecord:
 def parse_line(line: str) -> AccuracyRecord | None:
     """Parse a single report line into an :class:`AccuracyRecord`.
 
-    Returns ``None`` when the line carries no measurement.
+    Returns ``None`` when the line does not contain a valid measurement.
     """
     match = LINE_RE.search(line)
     if match is None:
         return None
     return AccuracyRecord(
-        addr_width_0=int(match["addr0"]),
-        addr_width_1=int(match["addr1"]),
-        addr_width_2=int(match["addr2"]),
+        num_newton_steps=int(match["newton"]),
+        addr_width=int(match["addr"]),
         word_width=int(match["word"]),
         rmsre=float(match["rmsre"]),
         max_rel_error=float(match["max_rel"]),
@@ -144,14 +120,6 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=DEFAULT_OUTPUT,
         help=f"path to the output CSV (default: {DEFAULT_OUTPUT})",
     )
-    parser.add_argument(
-        "--reverse",
-        action="store_true",
-        help=(
-            "emit rows in reverse of the report order (last line first); "
-            "the default preserves the report's own ordering"
-        ),
-    )
     return parser.parse_args(argv)
 
 
@@ -165,11 +133,8 @@ def main(argv: list[str] | None = None) -> int:
     with args.input.open("r", encoding="utf-8") as handle:
         records = list(parse_report(handle))
 
-    # Preserve the report's ordering by default: the sweep is already written in
-    # ascending order (address widths, then word width). Use --reverse for
-    # reports written last-config-first.
-    if args.reverse:
-        records.reverse()
+    # Emit rows in reverse of the report order (last line first).
+    records.reverse()
 
     if not records:
         print(f"error: no valid records parsed from {args.input}", file=sys.stderr)
