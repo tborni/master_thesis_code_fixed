@@ -2,7 +2,7 @@
 # Bounds are inclusive; an empty methods list means all; see plots.py for details.
 
 [display]
-pareto_per_method_only = false
+pareto_per_method_only = true
 
 [bounds]
 lut_min = 0
