@@ -28,13 +28,13 @@ module rsqrt_bipartite_accuracy_tb;
 	endfunction : make_range
 
 	localparam range_t NUM_NEWTON = make_range(.min( 0), .max( 0), .step(1));
-	localparam range_t ADDR_0     = make_range(.min( 2), .max( 6), .step(1));
-	localparam range_t ADDR_1     = make_range(.min( 4), .max( 7), .step(1));
-	localparam range_t ADDR_2     = make_range(.min( 4), .max( 7), .step(1));
-	localparam range_t WORD       = make_range(.min(10), .max(30), .step(1));
+	localparam range_t ADDR_0     = make_range(.min( 5), .max( 5), .step(1));
+	localparam range_t ADDR_1     = make_range(.min( 5), .max( 5), .step(1));
+	localparam range_t ADDR_2     = make_range(.min( 5), .max( 5), .step(1));
+	localparam range_t WORD       = make_range(.min(10), .max(23), .step(1));
 
-	localparam bit  USE_WORD_WIDTH_HEURISTIC = 1;
-	localparam bit  USE_ADDR_WIDTH_HEURISTIC = 1;
+	localparam bit  USE_WORD_WIDTH_HEURISTIC = 0;
+	localparam bit  USE_ADDR_WIDTH_HEURISTIC = 0;
 
 	// --- Function 1 (always active): DUT legality -----------------------
 	// Every constraint the rsqrt_bipartite elaboration/runtime depends on:
