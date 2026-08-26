@@ -19,7 +19,7 @@ NS=1 AW= 6 WW= 6 C=2.000026  RMSRE=2.644705e-05  max_rel_error=9.972859e-05  at 
 - 2 notes:
 1: this minimizes RMSRE and not max_rel_error, minimal value in our case for:
 	NS=1 AW= 6 WW= 6 C=2.000062  RMSRE=4.698505e-05  max_rel_error=6.293688e-05  at x=1.72713211e+31  (dut=5.78958063e-32, ref=5.78994503e-32)
-2: for larger lookup table entries, however, things might look different (old heuristic, look at images for new data):
+2: for larger lookup table entries, however, things might look different:
 	-> getting closer to ULP range, hence, things become more messy, rounding, sampling etc. are more relevant
 	-> positive effect of this correction gets smaller with increasing accuracy of the lookup seed -> effect can even get negative as seen for some examples
 	- also there is a theory about choosing optimal lookup entries when taking subsequent newton step into account
