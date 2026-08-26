@@ -1,9 +1,9 @@
 accuracy (through simulation):
-Input Range [-87,88]:
+Input Range [-87,0]:
 NUM_SAMPLES = 1000:
-RMSRE: 2.9756321623809906e-08
-max_rel_error: 8.4282125783869188e-08
+RMSRE: 2.9333072883820794e-08
+max_rel_error: 9.1119863587667532e-08  at x = -86.638160705566406  (dut = 2.3633330200765052e-38, ref = 2.3633328047299424e-38)
 NUM_SAMPLES = 10000:
-RMSRE: 2.9343358377917317e-08
-max_rel_error: 9.3762373912745266e-08  at x = -80.393165588378906  (dut = 1.218124962110678e-35, ref = 1.2181248478964006e-35)
--> fp32 bit patterns of output: dut = 05818884, ref = 05818883 -> error of 1 ULP -> is correct
+RMSRE: 2.9442947353258092e-08
+max_rel_error: 9.4034409918048846e-08  at x = -4.1473207473754883  (dut = 0.015806708484888077, ref = 0.015806709971262722)
+-> fp32 bit patterns of output: dut = 3c817d12, ref = 3c817d13 -> error of 1 ULP -> is correct
