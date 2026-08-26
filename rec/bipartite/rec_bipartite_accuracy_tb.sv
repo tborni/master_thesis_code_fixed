@@ -27,17 +27,17 @@ module rec_bipartite_accuracy_tb;
 		};
 	endfunction : make_range
 
-	localparam range_t NUM_NEWTON = make_range(.min( 0), .max( 1), .step(1));
-	localparam range_t ADDR_0     = make_range(.min( 2), .max( 6), .step(1));
-	localparam range_t ADDR_1     = make_range(.min( 3), .max( 7), .step(1));
-	localparam range_t ADDR_2     = make_range(.min( 3), .max( 7), .step(1));
+	localparam range_t NUM_NEWTON = make_range(.min( 0), .max( 0), .step(1));
+	localparam range_t ADDR_0     = make_range(.min( 2), .max( 2), .step(1));
+	localparam range_t ADDR_1     = make_range(.min( 6), .max( 6), .step(1));
+	localparam range_t ADDR_2     = make_range(.min( 6), .max( 6), .step(1));
 	localparam range_t WORD       = make_range(.min( 8), .max(23), .step(1));
 
 	localparam range_t NEWTON_COEFF_RANGE = make_range(.min(1950), .max(2050), .step(10));
 	localparam real    NEWTON_COEFF_SCALE = 1000.0;
 
 	localparam bit  USE_WORD_WIDTH_HEURISTIC   = 1;
-	localparam bit  USE_ADDR_WIDTH_HEURISTIC   = 1;
+	localparam bit  USE_ADDR_WIDTH_HEURISTIC   = 0;
 	localparam bit  USE_NEWTON_COEFF_HEURISTIC = 1;
 
 	// Coefficient-axis length: a single heuristic point when armed, else the

@@ -3,18 +3,18 @@ module rec_lookup_accuracy_tb;
 	localparam int unsigned  NUM_SAMPLES = 10000;
 
 	localparam int unsigned  MIN_ADDR_WIDTH   =  6;
-	localparam int unsigned  MAX_ADDR_WIDTH   = 11;
+	localparam int unsigned  MAX_ADDR_WIDTH   =  6;
 	localparam int unsigned  STEP_ADDR_WIDTH  =  1;
 	localparam int unsigned  MIN_WORD_WIDTH   =  6;
-	localparam int unsigned  MAX_WORD_WIDTH   = 16;
+	localparam int unsigned  MAX_WORD_WIDTH   =  6;
 	localparam int unsigned  STEP_WORD_WIDTH  =  2;
-	localparam int unsigned  MIN_NUM_NEWTON   =  0;
+	localparam int unsigned  MIN_NUM_NEWTON   =  1;
 	localparam int unsigned  MAX_NUM_NEWTON   =  1;
-	localparam real          NEWTON_COEFF_START = 1.95;
-	localparam real          NEWTON_COEFF_END   = 2.05;
-	localparam real          NEWTON_COEFF_STEP  = 0.01;
+	localparam real          NEWTON_COEFF_START = 2.000000;
+	localparam real          NEWTON_COEFF_END   = 2.000066;
+	localparam real          NEWTON_COEFF_STEP  = 0.000001;
 
-	localparam bit  USE_NEWTON_COEFF_HEURISTIC = 1;
+	localparam bit  USE_NEWTON_COEFF_HEURISTIC = 0;
 
 	// Initiation interval sustained by the lookup+Newton datapath.  The Newton
 	// arithmetic (and hence the accuracy) is identical for every II; changing
