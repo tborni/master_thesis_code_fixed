@@ -10,7 +10,7 @@
 /* fp32 multiplicative constant for the Schraudolph approximation. */
 static const float SCHRAUDOLPH_A = 12102203.0f;
 
-static const int EXCLUDE_POS = 0;
+static const int EXCLUDE_POS = 1;
 
 FILE *fp;
 

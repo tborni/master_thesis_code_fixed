@@ -7,7 +7,7 @@ module exp_bit_hacking_tb;
 
 	// Schraudolph's default constants.
 	localparam shortreal     A = 12102203.0;
-	localparam int unsigned  D = 1064866936;
+	localparam int unsigned  D = 1064866072;
 
 	// Global Control
 	logic  clk = 0;

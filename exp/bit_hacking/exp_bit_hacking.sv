@@ -1,7 +1,7 @@
 module exp_bit_hacking #(
 	int unsigned  SIMD,
 	shortreal     A = 12102203.0,
-	int unsigned  D = 1064866936,
+	int unsigned  D = 1064866072,
 	bit  EXCLUDE_POS = 0,   // 1: assume input in (-inf, 0]
 	bit  FORCE_BEHAVIORAL = 0
 )(
