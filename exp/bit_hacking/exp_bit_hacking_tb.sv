@@ -1,7 +1,7 @@
 module exp_bit_hacking_tb;
 
 	localparam bit  FORCE_BEHAVIORAL = 0;
-	localparam bit  EXCLUDE_POS      = 0;   // mirror DUT generic
+	localparam bit  EXCLUDE_POS      = 1;   // mirror DUT generic
 	localparam int unsigned  SIMD   = 1;
 	localparam int unsigned  NUM_SAMPLES = 10000;   // SIMD beats; NUM_SAMPLES*SIMD relative errors
 

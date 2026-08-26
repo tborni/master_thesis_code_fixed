@@ -50,11 +50,13 @@ float rand_normal(float mu, float sigma) {
 	return z0 * sigma + mu;
 }
 
-/* DEAD (kept for reference): standard-normal sampler N(0,1), guarded so the
-   magnitude is a normalized fp32 (rejects |x| < FLT_MIN, i.e. subnormals and
-   zero). Its distribution does not match the fp32 range the SV rsqrt accuracy
-   testbenches and the hardware actually exercise. Superseded by
-   sample_standard() below; retained but no longer called. */
+/* Half-normal sampler: the positive part of N(0,1), i.e. |N(0,1)|. Guarded so
+   the magnitude is a normalized fp32 (rejects |x| < FLT_MIN, i.e. subnormals
+   and zero). Returning the magnitude keeps every sample a valid rsqrt input;
+   the signed N(0,1) it derives from produces ~50% negatives, for which
+   1/sqrt(x) is NaN and the sweep degenerates. Note this distribution still
+   does not match the fp32 range the SV rsqrt accuracy testbenches and the
+   hardware exercise (see sample_standard()). */
 float sample_from_distribution() {
 	float normal_rand;
 	do
@@ -62,7 +64,7 @@ float sample_from_distribution() {
 		normal_rand = rand_normal(0, 1);
 	} while (fabs(normal_rand) < FLT_MIN);
 
-	return normal_rand;
+	return fabsf(normal_rand);
 }
 
 /* xorshift32: produces all 32 bits uniformly. glibc rand() only delivers
@@ -98,13 +100,13 @@ int main(void) {
 	fp = fopen("determine_optimal_magic.csv", "w");
 	print_and_store("num_newton_steps, optimal_magic_constant, optimal_RMSRE\n");
 
-	const int NUM_NEWTON_STEPS = 1;
+	const int NUM_NEWTON_STEPS = 0;
 
 	// Parameters for sampling only
 	const int NUM_SAMPLES = 10000000;
 	float *samples = malloc(NUM_SAMPLES * sizeof(float));
 	for(int i = 0; i < NUM_SAMPLES; i++) {
-		samples[i] = sample_standard();
+		samples[i] = sample_from_distribution();
 	}
 
 	uint32_t magic_min_bound = 0x5F000000;

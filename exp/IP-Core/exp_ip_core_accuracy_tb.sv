@@ -1,6 +1,6 @@
 module exp_ip_core_accuracy_tb;
 	localparam int unsigned  NUM_SAMPLES = 10000;
-	localparam bit           EXCLUDE_POS = 0;
+	localparam bit           EXCLUDE_POS = 1;
 
 	// Global Control
 	logic  clk = 0;

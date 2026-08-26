@@ -34,7 +34,7 @@ module exp_splitting_tb;
 	localparam bit  USE_WORD_WIDTH_HEURISTIC = 1;
 	localparam bit  USE_ADDR_WIDTH_HEURISTIC = 1;
 
-	localparam bit  EXCLUDE_POS      = 0;
+	localparam bit  EXCLUDE_POS      = 1;
 	localparam bit  FORCE_BEHAVIORAL = 0;
 
 	// --- Function 1 (always active): DUT legality -----------------------

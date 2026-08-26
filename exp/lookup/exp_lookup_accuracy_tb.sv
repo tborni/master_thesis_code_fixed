@@ -13,7 +13,7 @@ module exp_lookup_accuracy_tb;
 	localparam int unsigned  NUM_WORD = (MAX_WORD_WIDTH - MIN_WORD_WIDTH) / STEP_WORD_WIDTH + 1;
 	localparam int unsigned  NUM_INST = NUM_ADDR * NUM_WORD;
 
-	localparam bit           EXCLUDE_POS      = 0;
+	localparam bit           EXCLUDE_POS      = 1;
 	localparam bit           FORCE_BEHAVIORAL = 0;
 
 	// Global Control
