@@ -91,6 +91,8 @@ def plot_heatmap(filepath, output_path=None, title=None, xlabel="x", ylabel="y",
 					label = str(int(v))
 				elif DATATYPE == "percent":
 					label = f'{v:.4f}%'
+				elif DATATYPE == "percent_1":
+					label = f'{v:.1f}%'
 				elif DATATYPE == "sci":
 					label = f'{v:.2e}'
 				else:	# "float_1"
@@ -129,7 +131,7 @@ X_COL_IDX = 1
 Y_COL_IDX = 2
 VALUE_IDX = 3
 VALUE_FACTOR = 1
-DATATYPE = "int"	# "int", "float_1" (1 digit after the point), "percent", "sci"
+DATATYPE = "int"	# "int", "float_1" (1 digit after the point), "percent", "percent_1", "sci"
 # Optional row filter: keep only rows where column FILTER_COL == FILTER_VAL.
 # Used to pin a single num_newton_steps when the file spans several.
 FILTER_COL = None
