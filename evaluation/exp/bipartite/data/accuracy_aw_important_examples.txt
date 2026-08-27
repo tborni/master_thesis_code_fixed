@@ -4,9 +4,9 @@ NS=0 A0=4 A1=4 A2=4 WW=16  RMSRE=5.015691e-05  max_rel_error=1.142189e-04  at x=
 
 
 regarding aw1 = aw0 + (2 or 3)
+NS=0 A0=2 A1=7 A2=7 WW=17  RMSRE=2.038623e-05  max_rel_error=1.207652e-04  at x=-46.4395943  (dut=6.78567276e-21, ref=6.78485338e-21)
 NS=0 A0=3 A1=6 A2=6 WW=18  RMSRE=1.214223e-05  max_rel_error=5.618298e-05  at x=-85.2558975  (dut=9.41582885e-38, ref=9.41529987e-38)
 NS=0 A0=4 A1=5 A2=5 WW=18  RMSRE=1.357589e-05  max_rel_error=3.701785e-05  at x=-56.5335083  (dut=2.80430585e-25, ref=2.80420205e-25)
-NS=0 A0=5 A1=4 A2=4 WW=17  RMSRE=2.496874e-05  max_rel_error=5.235973e-05  at x=-50.9831276  (dut=7.21658539e-23, ref=7.21620755e-23)
 
 NS=0 A0=3 A1=7 A2=7 WW=19  RMSRE=6.013648e-06  max_rel_error=3.239121e-05  at x=-77.631813  (dut=1.92728544e-34, ref=1.92722301e-34)
 NS=0 A0=4 A1=6 A2=6 WW=20  RMSRE=4.987571e-06  max_rel_error=1.665072e-05  at x=-57.5306053  (dut=1.0346246e-25, ref=1.03460738e-25)

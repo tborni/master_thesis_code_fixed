@@ -126,4 +126,6 @@ exp_bipartite accuracy sweep
   NS=0 A0=7 A1=7 A2=5 WW=23  RMSRE=1.924991e-06  max_rel_error=4.410183e-06  at x=-85.488327  (dut=7.46265253e-38, ref=7.46261962e-38)
   NS=0 A0=7 A1=7 A2=6 WW=23  RMSRE=1.709746e-06  max_rel_error=4.112878e-06  at x=-86.3469925  (dut=3.1621278e-38, ref=3.16211479e-38)
   NS=0 A0=7 A1=7 A2=7 WW=23  RMSRE=1.617467e-06  max_rel_error=3.959521e-06  at x=-85.488327  (dut=7.46264916e-38, ref=7.46261962e-38)
+
+  NS=0 A0=2 A1=7 A2=7 WW=17  RMSRE=2.038623e-05  max_rel_error=1.207652e-04  at x=-46.4395943  (dut=6.78567276e-21, ref=6.78485338e-21)
   
