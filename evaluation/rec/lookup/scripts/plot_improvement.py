@@ -95,15 +95,22 @@ def main() -> int:
         xlabel=XLABEL,
         ylabel=YLABEL,
         # Colour scheme for the RMSRE-reduction heatmap: viridis (not the reversed
-        # map the error heatmaps use, so a larger value reads brighter) with a low
-        # PowerNorm gamma. The gamma of 0.25 stretches the colour range over the
-        # high end where the improvements cluster (~18-28%), giving the cells more
-        # visible contrast than the default 0.7. The map is truncated at its low
-        # end (see truncated_viridis) so the 0.0% cells sit on a readable blue
-        # instead of near-black violet. plot_heatmap passes this through
-        # plt.get_cmap, which returns a Colormap object unchanged.
+        # map the error heatmaps use, so a larger value reads brighter). The map is
+        # truncated at its low end (see truncated_viridis) so the 0.0% cells sit on
+        # a readable blue instead of near-black violet; plot_heatmap passes this
+        # through plt.get_cmap, which returns a Colormap object unchanged.
+        #
+        # vmax_factor=1.0 drops the default headroom so the largest cell reaches
+        # viridis' yellow: the data then spans the full blue -> green -> yellow
+        # sweep instead of stopping in the blue-green half. A convex PowerNorm
+        # (gamma > 1) then spreads the high band the improvements cluster in
+        # (~18-28%) across that sweep, so neighbouring values stay distinguishable:
+        # at gamma=2.0 the 0% cells read blue, ~18-20% green and ~27-28% yellow,
+        # giving a CIELAB dE ~70 between the 18% and 28% cells (vs ~13 at the
+        # original concave gamma=0.25).
         cmap_name=truncated_viridis(),
-        gamma=0.25,
+        gamma=0.5,
+        vmax_factor=1.0,
         cell_width=2.6,
     )
     return 0

@@ -45,6 +45,7 @@ def load_triplets(filepath):
 
 
 def plot_heatmap(filepath, output_path=None, title=None, xlabel="x", ylabel="y", cmap_name='viridis_r', gamma=0.7,
+				 vmax_factor=1.3,
 				 fontsize_data=28, fontsize_labels=30, fontsize_ticks=25, cell_width=1.8, cell_height=1.2):
 	triplets = load_triplets(filepath)
 
@@ -60,7 +61,11 @@ def plot_heatmap(filepath, output_path=None, title=None, xlabel="x", ylabel="y",
 		data[y_idx[y], x_idx[x]] = v * VALUE_FACTOR
 
 	vmin = np.nanmin(data)
-	vmax = np.nanmax(data)*1.3	# Adjust for better image
+	# Headroom above the largest cell so the top of the colour range is not fully
+	# saturated (tuned for the error/resource heatmaps). Callers that want the
+	# data to span the whole colour map (e.g. reaching viridis' yellow) pass
+	# vmax_factor=1.0.
+	vmax = np.nanmax(data)*vmax_factor
 
 	linear = False
 	cmap = plt.get_cmap(cmap_name)
