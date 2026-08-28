@@ -125,4 +125,6 @@ rsqrt_bipartite accuracy sweep
   NS=0 A0=7 A1=7 A2=5 WW=23  RMSRE=2.001118e-07  max_rel_error=5.504228e-07  at x=4.95167738e+24  (dut=4.49390687e-13, ref=4.4939044e-13)
   NS=0 A0=7 A1=7 A2=6 WW=23  RMSRE=1.031130e-07  max_rel_error=3.294966e-07  at x=2.69888612e+36  (dut=6.08706393e-19, ref=6.08706192e-19)
   NS=0 A0=7 A1=7 A2=7 WW=23  RMSRE=6.013554e-08  max_rel_error=1.926670e-07  at x=268449.125  (dut=0.0019300516, ref=0.00193005197)
+
+  NS=0 A0=2 A1=6 A2=6 WW=15  RMSRE=3.444023e-05  max_rel_error=1.729428e-04  at x=538961152  (dut=4.3082051e-05, ref=4.30746015e-05)
   
