@@ -32,8 +32,8 @@ import pandas as pd
 # the folder<->label mapping is defined.
 METHODS: dict[str, str] = {
     "bipartite": "Bipartite",
-    "bit_hacking": "Bit-Hacking",
-    "ip_core": "IP-Core",
+    "bit_hacking": "Bit-hacking",
+    "ip_core": "IP core",
     "lookup": "Lookup",
 }
 

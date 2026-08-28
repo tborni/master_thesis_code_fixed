@@ -34,8 +34,8 @@ import pandas as pd
 # notice, so it is picked up automatically once its data lands.
 METHODS: dict[str, str] = {
     "bipartite": "Bipartite",
-    "bit_hacking": "Bit-Hacking",
-    "ip_core": "IP-Core",
+    "bit_hacking": "Bit-hacking",
+    "ip_core": "IP core",
     "lookup": "Lookup",
     "splitting": "Splitting",
 }

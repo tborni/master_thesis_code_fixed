@@ -34,7 +34,7 @@ import pandas as pd
 # notice, so it is picked up automatically once its data lands.
 METHODS: dict[str, str] = {
     "bipartite": "Bipartite",
-    "ip_core": "IP-Core",
+    "ip_core": "IP core",
     "lookup": "Lookup",
 }
 

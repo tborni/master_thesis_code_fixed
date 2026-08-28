@@ -13,4 +13,4 @@ rmsre_min = 0.0
 rmsre_max = 1.0
 
 [methods]
-include = ["Bipartite", "Bit-Hacking", "IP-Core", "Lookup"]
+include = ["Bipartite", "Bit-hacking", "IP core", "Lookup"]

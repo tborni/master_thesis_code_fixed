@@ -34,8 +34,8 @@ from matplotlib.transforms import Affine2D
 
 METHOD_TO_COLOR: dict[str, str] = {
     "Bipartite": "#E69F00",
-    "Bit-Hacking": "#56B4E9",
-    "IP-Core": "red",
+    "Bit-hacking": "#56B4E9",
+    "IP core": "red",
     "Lookup": "#83C19D",
 }
 
