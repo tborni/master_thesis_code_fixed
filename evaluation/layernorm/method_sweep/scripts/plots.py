@@ -318,20 +318,23 @@ def add_legends(fig, ax) -> None:
         for n, m in DSP_TO_MARKER.items()
     ]
 
+    # Draw the Method and DSP legends side by side in the bottom-left corner.
+    # The DSP legend is anchored immediately to the right of the Method legend
+    # using its actually-rendered width, so the two boxes sit flush regardless
+    # of label lengths or DPI.
+    pad = 0.02
     legend1 = ax.legend(
-        handles=method_handles, title="Method", loc="upper right",
-        bbox_to_anchor=(1.0, 1.0), frameon=True,
+        handles=method_handles, title="Method", loc="lower left",
+        bbox_to_anchor=(0.0, 0.0), frameon=True,
         edgecolor="black", facecolor="white",
     )
     ax.add_artist(legend1)
 
-    # Place the DSP legend directly below the Method legend, right edges aligned.
-    # Measure the Method legend after a draw pass so placement adapts to its size.
     fig.canvas.draw()
     method_bbox = legend1.get_window_extent().transformed(ax.transAxes.inverted())
     ax.legend(
-        handles=dsp_handles, title="DSP", loc="upper right",
-        bbox_to_anchor=(method_bbox.x1, method_bbox.y0 - 0.005),
+        handles=dsp_handles, title="DSP", loc="lower left",
+        bbox_to_anchor=(method_bbox.x1 + pad, 0.0),
         frameon=True, edgecolor="black", facecolor="white",
     )
 
