@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Render the full-LayerNorm method-sweep Pareto figures from the combined CSVs.
 
-Reads ``data_combined/*_combined.csv`` (produced by ``generate_combined.py``)
+Reads ``data/combined/*_combined.csv`` (produced by ``generate_combined.py``)
 and writes three publication-quality PNGs into ``images/``:
 
     diagram.png       raw scatter of every design point (no Pareto highlight)
@@ -63,7 +63,7 @@ FALLBACK_MARKER = "X"
 # Paths relative to this script, independent of the caller's cwd.
 SCRIPT_DIR = Path(__file__).resolve().parent          # scripts/
 PROJECT_ROOT = SCRIPT_DIR.parent                      # method_sweep/
-DATA_DIR = PROJECT_ROOT / "data_combined"             # combined CSVs
+COMBINED_DIR = PROJECT_ROOT / "data" / "combined"     # combined CSVs
 IMAGE_DIR = PROJECT_ROOT / "images"                   # output figures
 FILTER_PATH = PROJECT_ROOT / "filter.toml"            # optional display filter
 
@@ -163,9 +163,9 @@ def load_combined() -> list[pd.DataFrame]:
     Each returned frame carries ``label`` (full file stem) and ``method``
     (prefix before ``+``) columns.
     """
-    files = sorted(DATA_DIR.glob("*_combined.csv"), reverse=True)
+    files = sorted(COMBINED_DIR.glob("*_combined.csv"), reverse=True)
     if not files:
-        raise SystemExit(f"No *_combined.csv files found in {DATA_DIR}")
+        raise SystemExit(f"No *_combined.csv files found in {COMBINED_DIR}")
 
     bounds, methods, pareto_per_method = load_filter()
     if pareto_per_method:

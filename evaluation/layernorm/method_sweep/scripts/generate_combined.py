@@ -24,7 +24,7 @@ the bipartite InvSqrt (AW0=2, AW1=AW2=4, WW=13, NUM_NEWTON_STEPS=1).  Its
 resource counts depend on SIMD; ``REFERENCE_SIMD`` selects the line.  The whole
 accuracy sweep was measured at SIMD=2, so the reference is taken at SIMD=2 too.
 
-Each resulting ``data_combined/<Method>_combined.csv`` mirrors the rsqrt Pareto
+Each resulting ``data/combined/<Method>_combined.csv`` mirrors the rsqrt Pareto
 pipeline: the join (parameter) columns followed by ``LUT, DSP, RMSRE``, where
 LUT and DSP are the lifted full-LayerNorm counts.
 """
@@ -81,7 +81,7 @@ DATA_DIR = PROJECT_ROOT / "data"
 ACC_DIR = DATA_DIR / "accuracy_layernorm"             # extracted LayerNorm RMSRE
 RES_DIR = DATA_DIR / "resources"                      # InvSqrt-block resources
 REFERENCE_CSV = RES_DIR / "reference.csv"             # reference LayerNorm resources
-OUTPUT_DIR = PROJECT_ROOT / "data_combined"           # combined CSVs
+OUTPUT_DIR = DATA_DIR / "combined"                    # combined CSVs
 
 
 # --- Helpers ---------------------------------------------------------------

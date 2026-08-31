@@ -4,7 +4,7 @@
 #                   InvSqrt-only accuracy, build the combined CSVs, render figures
 #   make csv        only (re)extract data/accuracy_layernorm/*.csv from the reports
 #   make compare    only (re)write data/compare_report.txt (LayerNorm vs InvSqrt)
-#   make combined   only (re)generate data_combined/*_combined.csv
+#   make combined   only (re)generate data/combined/*_combined.csv
 #   make plots      only (re)render images/*.png from the combined CSVs
 #   make clean      remove every generated file (keeps the hand-authored inputs)
 #
@@ -16,7 +16,7 @@ PYTHON ?= $(ROOT)../../../.venv/bin/python
 
 SCRIPTS   := scripts
 DATA      := data
-COMBINED  := data_combined
+COMBINED  := data/combined
 IMAGES    := images
 
 # --- Scripts ----------------------------------------------------------------
