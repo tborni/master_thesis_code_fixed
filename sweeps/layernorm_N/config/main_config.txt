@@ -1,0 +1,17 @@
+tcl_parameters:
+	# top = layernorm
+	# part = xcvc1902-vsva2197-2MP-e-S
+	# clk_name = clk
+
+defaults:
+	# clock_period = 4.0
+	# N = 128
+	# SIMD = 2
+
+sweeps:
+	***
+		~ name: N
+		~ active: 1
+		~ mode: cartesian
+			# N = {2,4,8,16,32,64,128,256,512,1024}
+	***
