@@ -1,3 +1,4 @@
 vivado/
 style_check/
 .venv
+*.png
