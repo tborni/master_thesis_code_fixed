@@ -1,0 +1,16 @@
+# Controls which points from data_combined/ are shown in the Pareto figures.
+# Bounds are inclusive; an empty methods list means all; see plots.py for details.
+
+[display]
+pareto_per_method_only = true
+
+[bounds]
+lut_min = 0
+lut_max = 100000
+dsp_min = 0
+dsp_max = 100000
+rmsre_min = 0.0
+rmsre_max = 1.0
+
+[methods]
+include = ["Bipartite", "Bit-hacking", "IP core", "Lookup"]

@@ -1,0 +1,33 @@
+Relative RMSRE difference  |RMSRE_real - RMSRE_invsqrt| / |RMSRE_invsqrt|
+  real    (full LayerNorm) : /home/tb/Code/master_thesis_code_fixed/evaluation/layernorm/method_sweep/data/accuracy_layernorm
+  invsqrt (InvSqrt only)   : /home/tb/Code/master_thesis_code_fixed/evaluation/layernorm/method_sweep/data/accuracy_invsqrt
+  raw      = all matched configs
+  filtered = configs with min(real,invsqrt) RMSRE >= 1e-06 (drops noise-floor blow-ups)
+
+Bipartite
+               raw:      max rel-diff = 10.310096 (1031.0096%) at num_newton_steps=1, addr_width_0=3, addr_width_1=5, addr_width_2=5, word_width=16
+                         real RMSRE = 4.705e-07, invsqrt RMSRE = 4.16e-08
+               filtered: max rel-diff = 0.101559 (10.1559%) at num_newton_steps=0, addr_width_0=2, addr_width_1=3, addr_width_2=3, word_width=12
+                         real RMSRE = 0.000533081, invsqrt RMSRE = 0.0004839334
+               [matched 10, 2 only in invsqrt, 5 below 1e-06 noise floor]
+Lookup
+               raw:      max rel-diff = 20.391304 (2039.1304%) at num_newton_steps=2, addr_width=7, word_width=16
+                         real RMSRE = 9.84e-07, invsqrt RMSRE = 4.6e-08
+               filtered: max rel-diff = 0.200145 (20.0145%) at num_newton_steps=1, addr_width=8, word_width=14
+                         real RMSRE = 1.6598e-06, invsqrt RMSRE = 1.383e-06
+               [matched 108, 18 only in invsqrt, 48 below 1e-06 noise floor]
+Bit-hacking
+               raw:      max rel-diff = 0.539229 (53.9229%) at num_newton_steps=2
+                         real RMSRE = 3.7942e-06, invsqrt RMSRE = 2.465e-06
+               filtered: max rel-diff = 0.539229 (53.9229%) at num_newton_steps=2
+                         real RMSRE = 3.7942e-06, invsqrt RMSRE = 2.465e-06
+               [matched 3]
+IP-Core
+               raw:      max rel-diff = 15.326030 (1532.6030%) at num_newton_steps=3
+                         real RMSRE = 4.318e-07, invsqrt RMSRE = 2.644856052e-08
+               filtered: no comparable configs
+               [matched 1, 1 below 1e-06 noise floor]
+
+Overall maximum relative RMSRE difference:
+  raw      = 20.391304 (2039.1304%)
+  filtered = 0.539229 (53.9229%)

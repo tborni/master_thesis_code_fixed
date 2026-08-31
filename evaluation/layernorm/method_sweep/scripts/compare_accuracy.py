@@ -1,19 +1,26 @@
 #!/usr/bin/env python3
-"""Compare the "real" sweep CSVs against the ``invsqrt_accuracy`` CSVs.
+"""Compare the full-LayerNorm accuracy against the InvSqrt-only accuracy.
 
-For every approximation method (BIPARTITE, LOOKUP, FAST-INVSQRT) this script
-joins the two result sets on their shared *parameter* columns
+For every approximation method (Bipartite, Lookup, Bit-hacking, IP-Core) two
+RMSRE measurements exist for the same InvSqrt configuration:
+
+    real     -- RMSRE of the *full LayerNorm*      (data/accuracy_layernorm/)
+    invsqrt  -- RMSRE of the *InvSqrt component*   (data/accuracy_invsqrt/)
+
+This script joins the two result sets on their shared *parameter* columns
 (NEWTON steps, address/word widths, ...), computes the relative difference in
 RMSRE for each matched configuration, and reports the **maximum** relative
-difference per method.
+difference per method.  A small difference means the InvSqrt error dominates the
+end-to-end LayerNorm error, i.e. the surrounding LayerNorm arithmetic barely
+perturbs the accuracy the InvSqrt block already delivers.
 
 The two CSV families differ in header case, spacing and column order, e.g.
 
-    real:    NUM_NEWTON_STEPS,WORD_WIDTH,ADDR_WIDTH,RMSRE,MAX_REL_ERROR,WORST_INPUT
-    invsqrt: num_newton_steps, addr_width, word_width, RMSRE, max_rel_error
+    real:    NUM_NEWTON_STEPS,ADDR_WIDTH_0,ADDR_WIDTH_1,ADDR_WIDTH_2,WORD_WIDTH,RMSRE,...
+    invsqrt: num_newton_steps, addr_width_0, addr_width_1, addr_width_2, word_width, RMSRE, ...
 
 so columns are matched by a *normalised* name (lower-cased, stripped) rather
-than by position. Matching is an inner join on the parameter columns the two
+than by position.  Matching is an inner join on the parameter columns the two
 files have in common; configurations present in only one file are counted but
 excluded from the maximum.
 
@@ -29,28 +36,36 @@ the float noise floor (a ~1e-7 absolute gap on a ~1e-8 baseline reads as
     filtered -- configs whose smaller RMSRE is below --min-rmsre are dropped
 
 The summary is printed to stdout and, with ``--out-file``, also written verbatim
-to a text file. Both input CSVs are only read, never modified.
+to a text file.  Both input CSV families are only read, never modified.
 """
 
 from __future__ import annotations
 
 import argparse
 import csv
-import math
 import sys
 from dataclasses import dataclass
 from pathlib import Path
+
+# --- Paths -----------------------------------------------------------------
+
+SCRIPT_DIR = Path(__file__).resolve().parent          # scripts/
+PROJECT_ROOT = SCRIPT_DIR.parent                      # method_sweep/
+DATA_DIR = PROJECT_ROOT / "data"
+REAL_DIR = DATA_DIR / "accuracy_layernorm"            # extracted LayerNorm RMSRE
+INVSQRT_DIR = DATA_DIR / "accuracy_invsqrt"           # InvSqrt-only RMSRE
 
 # Normalised names of the metric columns (not part of the join key).
 _RMSRE = "rmsre"
 _METRIC_COLUMNS = {_RMSRE, "max_rel_error", "worst_input"}
 
-# The methods to compare, as (display name, shared CSV basename).
+# The methods to compare, as (display name, shared CSV basename).  Both the real
+# and the invsqrt directory use the same per-method file names.
 _METHODS = [
-    ("Bipartite", "Bipartite_accuracy.csv"),
-    ("Lookup", "Lookup_accuracy.csv"),
-    ("Fast-InvSqrt", "Fast-InvSqrt_accuracy.csv"),
-    ("IP-Core", "IP-Core_accuracy.csv"),
+    ("Bipartite", "bipartite.csv"),
+    ("Lookup", "lookup.csv"),
+    ("Bit-hacking", "bit_hacking.csv"),
+    ("IP-Core", "ip_core.csv"),
 ]
 
 
@@ -100,8 +115,8 @@ def _param_columns(fieldnames: list[str]) -> list[str]:
 def _key_columns(real_fields: list[str], inv_fields: list[str]) -> list[str]:
     """Shared parameter columns, ordered as they appear in the real file.
 
-    These form the join key. Requiring them on *both* sides means, e.g., the
-    Fast-InvSqrt files (real has MAGIC, invsqrt does not) join on NEWTON only.
+    These form the join key.  Requiring them on *both* sides means, e.g., the
+    Bit-hacking files (real has MAGIC, invsqrt does not) join on NEWTON only.
     """
     real_params = _param_columns(real_fields)
     inv_params = set(_param_columns(inv_fields))
@@ -276,9 +291,7 @@ def _format_result(res: MethodResult) -> str:
     lines = [f"{res.method}"]
 
     lines += _format_variant("raw:", res.key_cols, res.unthresholded)
-    lines += _format_variant(
-        f"filtered:", res.key_cols, res.thresholded
-    )
+    lines += _format_variant("filtered:", res.key_cols, res.thresholded)
 
     # Shared join / filtering statistics.
     notes = [f"matched {res.matched}"]
@@ -297,19 +310,20 @@ def _format_result(res: MethodResult) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
-    here = Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument(
         "--real-dir",
         type=Path,
-        default=here,
-        help="Directory with the reference CSVs (default: this script's folder).",
+        default=REAL_DIR,
+        help="Directory with the full-LayerNorm accuracy CSVs "
+             f"(default: {REAL_DIR.relative_to(PROJECT_ROOT)}).",
     )
     parser.add_argument(
         "--invsqrt-dir",
         type=Path,
-        default=here / "invsqrt_accuracy",
-        help="Directory with the invsqrt CSVs (default: ./invsqrt_accuracy).",
+        default=INVSQRT_DIR,
+        help="Directory with the InvSqrt-only accuracy CSVs "
+             f"(default: {INVSQRT_DIR.relative_to(PROJECT_ROOT)}).",
     )
     parser.add_argument(
         "--min-rmsre",
@@ -333,8 +347,8 @@ def main(argv: list[str] | None = None) -> int:
     # Accumulate the whole summary so stdout and the txt file are identical.
     out: list[str] = [
         "Relative RMSRE difference  |RMSRE_real - RMSRE_invsqrt| / |RMSRE_invsqrt|",
-        f"  real   : {args.real_dir}",
-        f"  invsqrt: {args.invsqrt_dir}",
+        "  real    (full LayerNorm) : " + str(args.real_dir),
+        "  invsqrt (InvSqrt only)   : " + str(args.invsqrt_dir),
         "  raw      = all matched configs",
         f"  filtered = configs with min(real,invsqrt) RMSRE >= {args.min_rmsre:g}"
         " (drops noise-floor blow-ups)",
@@ -387,6 +401,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.out_file is not None:
         try:
+            args.out_file.parent.mkdir(parents=True, exist_ok=True)
             args.out_file.write_text(summary, encoding="utf-8")
         except OSError as exc:
             print(f"ERROR: could not write {args.out_file}: {exc}", file=sys.stderr)
