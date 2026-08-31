@@ -1,0 +1,8 @@
+# Softmax SIMD-sweep fit parameters
+# Least-squares fits (numpy.polyfit). One [section] per fitting script;
+# each is regenerated in place on that script's run.
+
+[resources]
+# affine model  LUT = slope * SIMD + intercept
+# least-squares fit (numpy.polyfit) over 7 sampled SIMD points
+LUT = 340.563 * SIMD + 222.356   (R^2 = 0.998856)

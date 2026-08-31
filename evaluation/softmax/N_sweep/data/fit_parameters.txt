@@ -1,0 +1,8 @@
+# Softmax N-sweep fit parameters
+# Least-squares fits (numpy.polyfit). One [section] per fitting script;
+# each is regenerated in place on that script's run.
+
+[resources]
+# affine model  LUT = slope * N + intercept
+# least-squares fit (numpy.polyfit) over 10 sampled N points
+LUT = 2.84086 * N + 883.261   (R^2 = 0.996274)
