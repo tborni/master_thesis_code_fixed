@@ -1,0 +1,13 @@
+# LayerNorm N-sweep fit parameters
+# Least-squares fits (numpy.polyfit). One [section] per fitting script;
+# each is regenerated in place on that script's run.
+
+[accuracy]
+# power-law model  log(RMSRE) = slope * log(N) + intercept
+# least-squares fit (numpy.polyfit) over 14 sampled N points
+log(RMSRE) = 0.526206 * log(N) - 16.7508   (R^2 = 0.911928)   [i.e. RMSRE = 5.31168e-08 * N^0.526206]
+
+[resources]
+# affine model  LUT = slope * N + intercept
+# least-squares fit (numpy.polyfit) over 10 sampled N points
+LUT = 2.81874 * N + 379.785   (R^2 = 0.998001)

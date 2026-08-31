@@ -1,0 +1,4 @@
+# Bytecode cache generated when the plot scripts import the local fit_report
+# module; not source, so keep it out of version control.
+__pycache__/
+*.pyc

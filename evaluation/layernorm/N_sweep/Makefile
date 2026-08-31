@@ -9,15 +9,16 @@
 #
 # The sweep varies the vector length N (SIMD fixed) for two invsqrt
 # configurations (0 and 1 Newton refinement steps), so there is one accuracy
-# report per configuration. plot_accuracy.py overlays both as an RMSRE-vs-N
-# log-log figure; plot_resources.py fits LUT = m*N + n and renders it on a
-# linear- and a log-x axis.
+# report per configuration. plot_accuracy.py renders the 1-Newton RMSRE-vs-N
+# log-log figure with a power-law fit; plot_resources.py fits LUT = m*N + n and
+# renders it on a linear- and a log-x axis. Both scripts also record their fit
+# into the shared data/fit_parameters.txt (each owns one [section]).
 #
 # Targets:
 #   make            # build the accuracy CSVs and render every figure
 #   make csv        # only (re)generate the accuracy CSVs
-#   make plots      # only (re)render the PNGs
-#   make clean      # remove generated CSVs/PNGs (keeps resources.csv)
+#   make plots      # only (re)render the PNGs + the fit-parameters file
+#   make clean      # remove generated CSVs/PNGs/fit params (keeps resources.csv)
 
 # Directory of this Makefile, so `make` works from any working directory.
 ROOT    := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
@@ -30,6 +31,9 @@ IMAGES  := $(ROOT)images
 EXTRACT        := $(SCRIPTS)/extract_accuracy.py
 PLOT_ACCURACY  := $(SCRIPTS)/plot_accuracy.py
 PLOT_RESOURCES := $(SCRIPTS)/plot_resources.py
+# Shared fit-parameters writer imported by both plot scripts; a change to it must
+# re-run both, so it is a prerequisite of each plot rule below.
+FIT_REPORT     := $(SCRIPTS)/fit_report.py
 
 # One accuracy report per Newton-step configuration.
 NEWTON_STEPS  := 0 1
@@ -43,6 +47,9 @@ RESOURCES_CSV := $(DATA)/resources.csv
 ACCURACY_PNG      := $(IMAGES)/accuracy.png
 RESOURCES_LIN_PNG := $(IMAGES)/resources_lut_linear.png
 RESOURCES_LOG_PNG := $(IMAGES)/resources_lut_log.png
+# Shared fit-parameters file: both plot scripts write their own [section] of it
+# as a byproduct, so it is complete only once both have run.
+FIT_TXT           := $(DATA)/fit_parameters.txt
 
 .PHONY: all csv plots clean
 
@@ -50,23 +57,31 @@ all: csv plots
 
 csv: $(ACCURACY_CSVS)
 
-plots: $(ACCURACY_PNG) $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG)
+plots: $(ACCURACY_PNG) $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG) $(FIT_TXT)
 
 # Static pattern rule: each accuracy CSV is extracted from its matching report.
 $(ACCURACY_CSVS): $(DATA)/accuracy_%_newton.csv: $(DATA)/accuracy_%_newton.txt $(EXTRACT)
 	$(PYTHON) $(EXTRACT) --input $< --output $@
 
-# plot_accuracy.py resolves its own inputs (data/) and outputs (images/), so it
-# can be invoked from anywhere. It reads both accuracy CSVs.
-$(ACCURACY_PNG): $(PLOT_ACCURACY) $(ACCURACY_CSVS)
+# plot_accuracy.py resolves its own inputs (data/) and outputs (images/, data/),
+# so it can be invoked from anywhere. It reads the 1-Newton accuracy CSV, renders
+# accuracy.png and writes its [accuracy] section of fit_parameters.txt.
+$(ACCURACY_PNG): $(PLOT_ACCURACY) $(FIT_REPORT) $(ACCURACY_CSVS)
 	$(PYTHON) $(PLOT_ACCURACY)
 
 # plot_resources.py renders both LUT-vs-N figures from resources.csv in a single
-# run; the log-x PNG shares that invocation with the linear-x PNG.
-$(RESOURCES_LIN_PNG): $(PLOT_RESOURCES) $(RESOURCES_CSV)
+# run and writes its [resources] section of fit_parameters.txt; the log-x PNG
+# shares that invocation with the linear-x PNG.
+$(RESOURCES_LIN_PNG): $(PLOT_RESOURCES) $(FIT_REPORT) $(RESOURCES_CSV)
 	$(PYTHON) $(PLOT_RESOURCES)
 $(RESOURCES_LOG_PNG): $(RESOURCES_LIN_PNG)
 
+# fit_parameters.txt is written as a byproduct of both plot runs (each script
+# fills in its own [section]), so it is up to date once both PNGs are. No recipe
+# of its own; depending on both plot outputs ties it to their invocations.
+$(FIT_TXT): $(ACCURACY_PNG) $(RESOURCES_LIN_PNG)
+
 clean:
 	rm -f $(ACCURACY_CSVS) \
-	      $(ACCURACY_PNG) $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG)
+	      $(ACCURACY_PNG) $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG) \
+	      $(FIT_TXT)

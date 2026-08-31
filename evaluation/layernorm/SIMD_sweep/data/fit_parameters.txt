@@ -1,0 +1,4 @@
+# LayerNorm SIMD-sweep resource fits: affine model  metric = slope * SIMD + intercept
+# least-squares fit (numpy.polyfit) over 7 sampled SIMD points
+LUT = 138.748 * SIMD + 43.569   (R^2 = 0.967893)
+DSP = 5.03344 * SIMD + 0.821839   (R^2 = 0.999998)

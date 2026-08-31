@@ -18,8 +18,11 @@ Design notes
   sweep is shown exactly as sampled. The series is close to a straight line on
   these log-log axes, so a least-squares power-law fit
   ``log(RMSRE) = r*log(N) + n`` is overlaid; it draws as a straight line here and
-  its slope ``r`` (shown in the legend) is the empirical RMSRE-vs-N growth
-  exponent.
+  its slope ``r`` is the empirical RMSRE-vs-N growth exponent. The fit is
+  labelled simply "Power-law fit" in the legend; its coefficients (``r``, the
+  log-intercept and R^2) are printed to stdout and recorded in the shared
+  ``data/fit_parameters.txt`` under an ``[accuracy]`` section (written via
+  ``fit_report``, alongside the resources script's section).
 * The data markers are Okabe-Ito blue; the fit line is red so it contrasts
   clearly with the markers.
 * Text uses matplotlib's built-in STIX mathtext fontset, which gives
@@ -43,6 +46,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import LogLocator, NullLocator
 
+# Local sibling module (same scripts/ dir): the shared fit-parameters writer.
+import fit_report
+
 # ---------------------------------------------------------------------------
 # Paths: resolve data/ (input) and images/ (output) relative to this script's
 # directory (scripts/) so the figure lands in the right place regardless of the
@@ -54,10 +60,14 @@ DATA_DIR = PROJECT_ROOT / "data"
 IMAGES_DIR = PROJECT_ROOT / "images"
 
 OUTPUT_PNG = IMAGES_DIR / "accuracy.png"
+# Shared fit-parameters file; this script owns its "[accuracy]" section (the
+# resources script owns "[resources]"). See fit_report.update_section.
+OUTPUT_FIT_TXT = DATA_DIR / "fit_parameters.txt"
+FIT_SECTION = "accuracy"
 
 # The series to plot: (csv filename, legend label, colour, marker, fit).
 # Okabe-Ito blue with a circle marker. ``fit`` selects which series gets an
-# overlaid power-law fit line (log(RMSRE) = m*log(N) + n); the 1-Newton series is
+# overlaid power-law fit line (log(RMSRE) = r*log(N) + n); the 1-Newton series is
 # close to linear on the log-log axes, so it is fitted.
 SERIES = (
     ("accuracy_1_newton.csv", "Measured Accuracy", "#0072B2", "o", True),
@@ -90,17 +100,23 @@ def load_accuracy_csv(path: Path) -> tuple[list[float], list[float]]:
     return n_vals, rmsre
 
 
-def powerlaw_fit(n_vals: list[int], rmsre: list[float]) -> tuple[float, float]:
-    """Least-squares power-law fit in log-log space; return ``(m, n)``.
+def powerlaw_fit(n_vals: list[int], rmsre: list[float]) -> tuple[float, float, float]:
+    """Least-squares power-law fit in log-log space; return ``(r, n, r_squared)``.
 
-    Fits ``log(RMSRE) = m*log(N) + n`` (natural logs), i.e. the straight line the
-    data traces on the log-log axes. ``m`` is the growth exponent and ``n`` the
-    log-intercept; the fitted RMSRE is recovered as ``exp(n) * N**m``.
+    Fits ``log(RMSRE) = r*log(N) + n`` (natural logs), i.e. the straight line the
+    data traces on the log-log axes. ``r`` is the growth exponent and ``n`` the
+    log-intercept; the fitted RMSRE is recovered as ``exp(n) * N**r``.
+    ``r_squared`` is the coefficient of determination of the fit in log-log
+    space, so the figure/report can state honestly how power-law-like the data is.
     """
     log_n = np.log(np.asarray(n_vals, dtype=float))
     log_rmsre = np.log(np.asarray(rmsre, dtype=float))
-    m, intercept = np.polyfit(log_n, log_rmsre, deg=1)
-    return float(m), float(intercept)
+    r, intercept = np.polyfit(log_n, log_rmsre, deg=1)
+    predicted = r * log_n + intercept
+    ss_res = float(np.sum((log_rmsre - predicted) ** 2))
+    ss_tot = float(np.sum((log_rmsre - np.mean(log_rmsre)) ** 2))
+    r_squared = 1.0 - ss_res / ss_tot if ss_tot > 0 else float("nan")
+    return float(r), float(intercept), r_squared
 
 
 def configure_style() -> None:
@@ -150,13 +166,16 @@ def configure_style() -> None:
 
 
 def plot(series_data: list[tuple[str, str, str, bool, list[int], list[float]]],
+         fits: dict[str, tuple[float, float]],
          output_path: Path) -> None:
     """Render the log-log RMSRE-vs-N figure to ``output_path``.
 
     ``series_data`` is a list of ``(label, colour, marker, fit, n_vals, rmsre)``
     tuples, one per Newton configuration. Data points are drawn as bare markers
     (no connecting line); series with ``fit`` set additionally get an overlaid
-    power-law fit line ``log(RMSRE) = m*log(N) + n``.
+    power-law fit line ``log(RMSRE) = r*log(N) + n``, using the precomputed
+    ``(r, intercept)`` from ``fits[label]`` (so the drawn line matches the fit
+    reported to stdout / the fit-parameters file exactly).
     """
     fig, ax = plt.subplots(figsize=(8.6, 5.2))
 
@@ -169,15 +188,15 @@ def plot(series_data: list[tuple[str, str, str, bool, list[int], list[float]]],
             markeredgewidth=0.5, label=label, zorder=3,
         )
 
-    # Overlay a power-law fit for each flagged series. Evaluated on a dense
+    # Overlay the power-law fit for each flagged series. Evaluated on a dense
     # geometric N grid so it draws as a clean straight line across the log-log
-    # axes; the slope m (the RMSRE-vs-N growth exponent) is shown in the label.
-    for _label, color, _marker, fit, n_vals, rmsre in series_data:
+    # axes; the fitted exponent r is the RMSRE-vs-N growth rate.
+    for label, color, _marker, fit, n_vals, _rmsre in series_data:
         if not fit:
             continue
-        m, intercept = powerlaw_fit(n_vals, rmsre)
+        r, intercept = fits[label]
         grid = np.geomspace(min(n_vals), max(n_vals), 200)
-        fit_curve = np.exp(intercept) * grid ** m
+        fit_curve = np.exp(intercept) * grid ** r
         ax.plot(
             grid, fit_curve,
             color=COLOR_FIT, linestyle="--", linewidth=1.8, zorder=2,
@@ -229,8 +248,41 @@ def main() -> int:
         n_vals, rmsre = load_accuracy_csv(path)
         series_data.append((label, color, marker, fit, n_vals, rmsre))
 
+    # Fit each flagged series once here, so the drawn line, the stdout report and
+    # the fit-parameters file all use the exact same coefficients. ``fits`` maps
+    # a series label -> its (r, intercept) for the plotter; the R^2 is used only
+    # in the report line.
+    fits: dict[str, tuple[float, float]] = {}
+    report_lines: list[str] = []
+    n_points = 0
+    for label, _color, _marker, fit, n_vals, rmsre in series_data:
+        if not fit:
+            continue
+        r, intercept, r_squared = powerlaw_fit(n_vals, rmsre)
+        fits[label] = (r, intercept)
+        n_points = len(n_vals)
+        report_lines.append(
+            fit_report.format_powerlaw_line("RMSRE", "N", r, intercept, r_squared)
+        )
+
+    # Report to stdout and record in the shared fit-parameters file under this
+    # script's "[accuracy]" section (the resources script owns "[resources]").
+    if report_lines:
+        print(f"Power-law fit over {n_points} points:")
+        for line in report_lines:
+            print(f"  {line}")
+        fit_report.update_section(
+            OUTPUT_FIT_TXT,
+            FIT_SECTION,
+            [
+                "# power-law model  log(RMSRE) = slope * log(N) + intercept",
+                f"# least-squares fit (numpy.polyfit) over {n_points} sampled N points",
+                *report_lines,
+            ],
+        )
+
     configure_style()
-    plot(series_data, OUTPUT_PNG)
+    plot(series_data, fits, OUTPUT_PNG)
     return 0
 
 

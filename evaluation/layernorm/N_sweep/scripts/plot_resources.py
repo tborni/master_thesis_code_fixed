@@ -20,7 +20,9 @@ Rendering the identical ``m*N + n`` model on both axes lets the reader judge the
 fit under both viewpoints: the linear-x view shows the affine relationship
 directly, while the log-x view spreads the densely-packed small-N points apart.
 The fit is labelled simply "Linear fit" in the legend; the fitted slope,
-intercept and coefficient of determination (R^2) are printed to stdout.
+intercept and coefficient of determination (R^2) are printed to stdout and
+recorded in the shared ``data/fit_parameters.txt`` under a ``[resources]``
+section (written via ``fit_report``, alongside the accuracy script's section).
 
 Design notes
 ------------
@@ -50,6 +52,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import MaxNLocator, NullLocator
 
+# Local sibling module (same scripts/ dir): the shared fit-parameters writer.
+import fit_report
+
 # ---------------------------------------------------------------------------
 # Paths: resolve data/ (input) and images/ (output) relative to this script's
 # directory (scripts/) so the figures land in the right place regardless of the
@@ -63,6 +68,10 @@ IMAGES_DIR = PROJECT_ROOT / "images"
 INPUT_CSV = DATA_DIR / "resources.csv"
 OUTPUT_LINEAR_PNG = IMAGES_DIR / "resources_lut_linear.png"
 OUTPUT_LOG_PNG = IMAGES_DIR / "resources_lut_log.png"
+# Shared fit-parameters file; this script owns its "[resources]" section (the
+# accuracy script owns "[accuracy]"). See fit_report.update_section.
+OUTPUT_FIT_TXT = DATA_DIR / "fit_parameters.txt"
+FIT_SECTION = "resources"
 
 # Blue markers for the measured LUT points and a red line for the fit, so the
 # two are easy to tell apart (they also differ as markers vs. a dashed line).
@@ -238,9 +247,20 @@ def main() -> int:
 
     n_vals, lut = load_resources_csv(INPUT_CSV)
     m, intercept, r_squared = affine_fit(n_vals, lut)
-    print(
-        f"Affine fit over {len(n_vals)} points: "
-        f"LUT = {m:.6g} * N + {intercept:.6g}  (R^2 = {r_squared:.6f})"
+
+    # Report the fit to stdout and to the shared fit-parameters file, using the
+    # same formatted line for both so they can never drift. This script owns the
+    # "[resources]" section; the accuracy script owns "[accuracy]".
+    fit_line = fit_report.format_affine_line("LUT", "N", m, intercept, r_squared)
+    print(f"Affine fit over {len(n_vals)} points: {fit_line}")
+    fit_report.update_section(
+        OUTPUT_FIT_TXT,
+        FIT_SECTION,
+        [
+            f"# affine model  LUT = slope * N + intercept",
+            f"# least-squares fit (numpy.polyfit) over {len(n_vals)} sampled N points",
+            fit_line,
+        ],
     )
 
     configure_style()
