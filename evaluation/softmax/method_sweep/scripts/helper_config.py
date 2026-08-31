@@ -1,21 +1,16 @@
 """Shared configuration and helpers for the softmax method-sweep Pareto analysis.
 
-This is the method-sweep counterpart of ``pareto_ref/scripts/helper_config.py``.
-The analysis is identical -- extract the Pareto-optimal exp and rec component
-implementations, combine them into softmax implementations for a SIMD sweep, and
-plot the resulting fronts -- but the *input layout* differs:
+The analysis extracts the Pareto-optimal exp and rec component implementations,
+combines them into softmax implementations for a SIMD sweep, and plots the
+resulting fronts.  The input layout is *combined*:
 
-    pareto_ref/                         this folder (method_sweep)
-    -----------                         ------------------------------------
-    accuracy/<method>.csv  (params,     data/{exp,rec}/<Label>_combined.csv
-                            RMSRE)         (params, LUT, DSP, RMSRE all in
-    resources/<method>.csv (params,        ONE combined file per method)
-                            LUT, DSP)
-    resources/SIMD_sweep.csv            data/resources_SIMD.csv
+    data/{exp,rec}/<Label>_combined.csv   params, LUT, DSP, RMSRE all in ONE
+                                          file per method
+    data/resources_SIMD.csv               total softmax resources vs. SIMD
 
-So there is no accuracy<->resource inner join here: each method's RMSRE, LUT and
-DSP already live together in one *combined* CSV.  ``step1_components.py`` reads
-those directly.
+So there is no accuracy<->resource inner join: each method's RMSRE, LUT and DSP
+already live together in one *combined* CSV.  ``step1_components.py`` reads those
+directly.
 
 This module centralises every tunable constant and every piece of logic reused
 across the pipeline steps, so the Pareto/domination definition is guaranteed
@@ -35,14 +30,16 @@ them to be fed through the pipeline:
 * ``categorical`` -- keyed by non-numeric configuration columns
   (``DSP_USAGE``/``BRAM_USAGE``); IP core.  Kept as string-valued params.
 
-The RMSRE floor (``RMSRE_MIN``) is applied uniformly to every kind.  IP core's
-measured RMSRE (~2.7e-8) sits *below* that floor, so those rows drop out during
-component extraction exactly like any other numerically-perfect point -- they
-are still read and reported, just not carried onto the front.
+Which points survive is governed by ``filter.toml`` (see ``load_filter``): six
+inclusive metric bounds plus a per-method ``y``/``n`` include flag, applied
+uniformly to every kind during component extraction.  With the default
+``rmsre_min = 1e-7`` floor, IP core's measured RMSRE (~2.7e-8) sits below it, so
+those rows drop out like any other numerically-perfect point -- still read and
+reported, just not carried onto the front.
 
 Design notes
 ------------
-* We deliberately depend only on the stdlib (``csv``, ``math``); the plot uses
+* We depend only on the stdlib (``csv``, ``math``, ``tomllib``); the plot uses
   ``matplotlib``.  The data volume is tiny so a DataFrame engine buys us nothing.
 * Every implementation is reduced to a small record::
 
@@ -59,7 +56,8 @@ from __future__ import annotations
 
 import csv
 import os
-from typing import Dict, Iterable, List, Sequence, Tuple
+import tomllib
+from typing import Dict, Iterable, List, Sequence, Set, Tuple
 
 # --------------------------------------------------------------------------- #
 # Paths
@@ -69,11 +67,14 @@ SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(SCRIPTS_DIR)
 
 DATA_DIR = os.path.join(ROOT, "data")
-# Combined per-method component CSVs (params + LUT + DSP + RMSRE together).
+# Combined per-method component CSVs (params + LUT + DSP + RMSRE together) live
+# in the exp/ and rec/ subfolders of data/.
 EXP_DATA_DIR = os.path.join(DATA_DIR, "exp")
 REC_DATA_DIR = os.path.join(DATA_DIR, "rec")
 
-PROCESSED_DIR = os.path.join(ROOT, "processed_data")  # generated CSVs
+# Generated CSVs (exp.csv, rec.csv, softmax_SIMD_<v>.csv) are written to their
+# own subfolder so they stay clearly separated from the raw inputs in data/.
+OUTPUT_DIR = os.path.join(DATA_DIR, "generated")
 # Figures are written to two parallel trees with identical structure:
 #   images/          - each diagram auto-scales its own axes
 #   images_aligned/  - all diagrams share one common x- and y-range (the global
@@ -87,12 +88,12 @@ def _images_root(aligned: bool) -> str:
 
 
 # The exp/rec component fronts are SIMD-independent (step 1 does not use SIMD),
-# so they live at the top of processed_data/ and are computed once.
-EXP_CSV = os.path.join(PROCESSED_DIR, "exp.csv")
-REC_CSV = os.path.join(PROCESSED_DIR, "rec.csv")
+# so they live in data/generated/ and are computed once.
+EXP_CSV = os.path.join(OUTPUT_DIR, "exp.csv")
+REC_CSV = os.path.join(OUTPUT_DIR, "rec.csv")
 
 # Everything below is produced per SIMD value:
-#   processed_data/softmax_SIMD_<v>.csv                        (step 2)
+#   data/generated/softmax_SIMD_<v>.csv                        (step 2)
 #   images/SIMD_<v>/{dsp_only,method_dsp}/{diagram,pareto,full_pareto}.png (step 3)
 # The two image modes are:
 #   dsp_only/   - DSP determines colour AND marker; single DSP legend
@@ -108,8 +109,8 @@ def simd_tag(simd: int) -> str:
 
 def softmax_csv(simd: int) -> str:
     """Path to the per-SIMD softmax CSV (step 2 output), e.g.
-    processed_data/softmax_SIMD_4.csv."""
-    return os.path.join(PROCESSED_DIR, f"softmax_{simd_tag(simd)}.csv")
+    data/generated/softmax_SIMD_4.csv."""
+    return os.path.join(OUTPUT_DIR, f"softmax_{simd_tag(simd)}.csv")
 
 
 def image_dir(simd: int, mode: str, aligned: bool = False) -> str:
@@ -127,9 +128,8 @@ def image_paths(simd: int, mode: str, aligned: bool = False):
 
 
 # Total-softmax resources as a function of SIMD (the base build), used by step 2
-# to recover the "everything else" skeleton.  In pareto_ref this was
-# resources/SIMD_sweep.csv; here it is data/resources_SIMD.csv (same columns:
-# N, SIMD, ..., LUT, DSP, ...).
+# to recover the "everything else" skeleton.  data/resources_SIMD.csv columns:
+# N, SIMD, ..., LUT, DSP, ...
 SIMD_SWEEP_CSV = os.path.join(DATA_DIR, "resources_SIMD.csv")
 
 # --------------------------------------------------------------------------- #
@@ -141,16 +141,22 @@ SIMD_SWEEP_CSV = os.path.join(DATA_DIR, "resources_SIMD.csv")
 # 1, 2, 4, 8, 16, 32, 64).  We mirror the reference sweep of 1, 2, 4.
 SIMD_SWEEP = [1, 2, 4]
 
-# Implementations whose RMSRE is at or below this floor are considered
-# "numerically perfect" and dropped (they only add resources without a
-# meaningful accuracy trade-off).  Strictly-greater keeps a point.  This is what
-# removes the IP-core rows (RMSRE ~ 2.7e-8) from the fronts.
-RMSRE_MIN: float = 1e-7
-
 # Residual RMSRE contribution of everything in the softmax datapath that is
 # neither the exp nor the reciprocal approximation (quantisation of the
 # subtract/normalise stages, etc.).  Combined in quadrature.
 RMSRE_OTHER: float = 1.918e-7
+
+# Weight on the exp-component variance in the softmax RMSRE model:
+#   RMSRE(softmax)^2 = B_EXP * RMSRE(exp)^2 + RMSRE(rec)^2 + RMSRE(other)^2
+# B_EXP > 1 amplifies the exp error's contribution relative to the rec error,
+# reflecting that the exp approximation error propagates into the softmax output
+# with a slightly larger effective gain.  Matches combine_accuracy.py's B_EXP.
+RMSRE_B_EXP: float = 1.0456234249238079
+
+# NOTE: the "numerically perfect" RMSRE floor that used to live here as
+# RMSRE_MIN is now filter.toml's [bounds].rmsre_min (default 1e-7), applied by
+# step 1 together with the LUT/DSP bounds and the method include/exclude flags.
+# See load_filter() below.
 
 # --------------------------------------------------------------------------- #
 # Method schemas
@@ -227,6 +233,149 @@ def method_file(method: str) -> str:
     spec = METHODS[method]
     base = EXP_DATA_DIR if spec["family"] == "exp" else REC_DATA_DIR
     return os.path.join(base, spec["file"])
+
+
+def methods_of_family(family: str) -> List[str]:
+    """The METHODS keys of one family, in declaration order."""
+    return EXP_METHODS if family == "exp" else REC_METHODS
+
+
+def labels_of_family(family: str) -> List[str]:
+    """The human-readable labels of one family, in declaration order."""
+    return [METHODS[m]["label"] for m in methods_of_family(family)]
+
+
+# --------------------------------------------------------------------------- #
+# filter.toml  (which component points feed the pipeline)
+# --------------------------------------------------------------------------- #
+# The filter is read here (single source of truth) and applied by step 1 during
+# component extraction, so a point that fails a bound or belongs to an excluded
+# method is gone before the exp/rec fronts, the softmax combination and the
+# plots.  Two parts:
+#
+#   [bounds]        six INCLUSIVE metric bounds (lut/dsp/rmsre _min/_max)
+#   [methods.exp]   per-method "y"/"n" flags; "y" includes, anything else
+#   [methods.rec]   excludes.  exp and rec list their own method sets.
+#
+# Defaults (used when the file, a section, or a key is absent) are permissive
+# except rmsre_min, which keeps the original 1e-7 "numerically perfect" floor.
+FILTER_PATH = os.path.join(ROOT, "filter.toml")
+
+BOUND_KEYS = ("lut_min", "lut_max", "dsp_min", "dsp_max", "rmsre_min", "rmsre_max")
+
+# rmsre_min defaults to the historical floor (drops IP core at ~2.7e-8); all
+# other bounds default wide open so nothing else is filtered unless asked.
+DEFAULT_BOUNDS: Dict[str, float] = {
+    "lut_min": 0.0, "lut_max": float("inf"),
+    "dsp_min": 0.0, "dsp_max": float("inf"),
+    "rmsre_min": 1e-7, "rmsre_max": float("inf"),
+}
+
+# A method flag equal to this (case-insensitive) means "include"; any other
+# value means "exclude".  One-letter toggle: y <-> n.
+_INCLUDE_FLAG = "y"
+
+
+class FilterError(Exception):
+    """Raised on a malformed filter.toml (unknown/missing method, bad bound)."""
+
+
+def _parse_bounds(raw: dict) -> Dict[str, float]:
+    bounds = dict(DEFAULT_BOUNDS)
+    for key, value in raw.items():
+        if key not in DEFAULT_BOUNDS:
+            raise FilterError(
+                f"unknown bound '{key}' in {os.path.basename(FILTER_PATH)}; "
+                f"valid bounds are {list(BOUND_KEYS)}."
+            )
+        try:
+            bounds[key] = float(value)
+        except (TypeError, ValueError):
+            raise FilterError(
+                f"bound '{key}' in {os.path.basename(FILTER_PATH)} is not a "
+                f"number: {value!r}."
+            )
+    return bounds
+
+
+def _parse_family_methods(raw_methods: dict, family: str) -> Set[str]:
+    """Resolve one family's [methods.<family>] y/n table to included labels.
+
+    Every known label for the family must appear exactly once (so a typo or an
+    omission is caught, not silently treated as excluded), and no unknown label
+    may appear.  Returns the set of INCLUDED labels.
+    """
+    known = labels_of_family(family)
+    table = raw_methods.get(family)
+    if table is None:
+        # Section absent -> include every method of this family (permissive).
+        return set(known)
+    if not isinstance(table, dict):
+        raise FilterError(
+            f"[methods.{family}] must be a table of <label> = \"y\"/\"n\", "
+            f"got {type(table).__name__}."
+        )
+
+    known_set = set(known)
+    seen = set(table)
+    unknown = seen - known_set
+    if unknown:
+        raise FilterError(
+            f"[methods.{family}] has unknown method(s) {sorted(unknown)}; "
+            f"valid methods are {known}."
+        )
+    missing = known_set - seen
+    if missing:
+        raise FilterError(
+            f"[methods.{family}] is missing flag(s) for {sorted(missing)}; "
+            f"every method needs an explicit \"y\"/\"n\" (found {sorted(seen)})."
+        )
+
+    included = {
+        label for label, flag in table.items()
+        if str(flag).strip().lower() == _INCLUDE_FLAG
+    }
+    return included
+
+
+def load_filter():
+    """Read filter.toml -> (bounds, included_labels).
+
+    ``bounds`` is the full six-key inclusive-bounds dict (defaults fill any gap).
+    ``included_labels`` maps family -> set of included method LABELS.  A missing
+    file yields permissive defaults (all methods, only the rmsre_min floor).
+    """
+    if not os.path.exists(FILTER_PATH):
+        return dict(DEFAULT_BOUNDS), {
+            "exp": set(labels_of_family("exp")),
+            "rec": set(labels_of_family("rec")),
+        }
+
+    with open(FILTER_PATH, "rb") as fh:
+        cfg = tomllib.load(fh)
+
+    bounds = _parse_bounds(cfg.get("bounds", {}))
+    raw_methods = cfg.get("methods", {})
+    included = {
+        "exp": _parse_family_methods(raw_methods, "exp"),
+        "rec": _parse_family_methods(raw_methods, "rec"),
+    }
+    return bounds, included
+
+
+def method_included(method: str, included_labels: Dict[str, Set[str]]) -> bool:
+    """True if ``method`` (a METHODS key) is included by the filter."""
+    spec = METHODS[method]
+    return spec["label"] in included_labels[spec["family"]]
+
+
+def passes_bounds(rmsre: float, lut: int, dsp: int, bounds: Dict[str, float]) -> bool:
+    """True if a point lies inside every INCLUSIVE metric bound."""
+    return (
+        bounds["lut_min"] <= lut <= bounds["lut_max"]
+        and bounds["dsp_min"] <= dsp <= bounds["dsp_max"]
+        and bounds["rmsre_min"] <= rmsre <= bounds["rmsre_max"]
+    )
 
 
 # --------------------------------------------------------------------------- #

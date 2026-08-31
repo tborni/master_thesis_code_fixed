@@ -1,8 +1,7 @@
 """Step 2 - combine Exp x Rec into softmax implementations.
 
-Method-sweep variant of ``pareto_ref``'s step 2.  The combination maths are
-identical; only the resource *sources* differ, because here LUT/DSP live in the
-combined method files rather than in separate resource files:
+LUT/DSP live in the combined method files (not in separate resource files), so
+the resource *sources* are:
 
   * the base-case LUT/DSP are read from the combined files
     ``data/{exp,rec}/<Label>_combined.csv`` (same files step 1 consumes)
@@ -10,8 +9,8 @@ combined method files rather than in separate resource files:
 
 For every (exp, rec) pair from the step-1 Pareto fronts:
 
-  RMSRE(softmax)^2 = RMSRE(exp)^2 + RMSRE(rec)^2 + RMSRE(other)^2
-      with RMSRE(other) = 1.918e-7
+  RMSRE(softmax)^2 = B_EXP*RMSRE(exp)^2 + RMSRE(rec)^2 + RMSRE(other)^2
+      with B_EXP = 1.0456234249238079 and RMSRE(other) = 1.918e-7
 
   Resources(softmax) = 1*Resources(rec)
                      + SIMD*Resources(exp)
@@ -28,7 +27,7 @@ Runs once per SIMD value.  Usage:
   step2_softmax.py            -> sweep every value in helper_config.SIMD_SWEEP
   step2_softmax.py <simd>     -> just that value
 
-Output: processed_data/softmax_SIMD_<v>.csv
+Output: data/generated/softmax_SIMD_<v>.csv
 """
 
 from __future__ import annotations
@@ -114,7 +113,10 @@ def combine(simd: int) -> None:
     combined = []
     for e in exp:
         for r in rec:
-            rmsre = math.sqrt(e["rmsre"] ** 2 + r["rmsre"] ** 2 + other_sq)
+            # RMSRE(softmax)^2 = B_EXP*RMSRE(exp)^2 + RMSRE(rec)^2 + RMSRE(other)^2
+            rmsre = math.sqrt(
+                C.RMSRE_B_EXP * e["rmsre"] ** 2 + r["rmsre"] ** 2 + other_sq
+            )
             lut = r["lut"] + simd * e["lut"] + base_lut
             dsp = r["dsp"] + simd * e["dsp"] + base_dsp
             combined.append({

@@ -1,17 +1,16 @@
 """Step 1 - build the pareto-optimal Exp and Rec component sets.
 
-This is the method-sweep variant of ``pareto_ref``'s step 1.  The reference read
-two files per method (an accuracy CSV and a resource CSV) and inner-joined them
-on the method parameters.  Here each method already has ONE *combined* CSV
-(``data/{exp,rec}/<Label>_combined.csv``) carrying the parameters together with
-LUT, DSP and RMSRE, so there is no join: one row is one fully-specified
-implementation.
+Each method has ONE *combined* CSV (``data/{exp,rec}/<Label>_combined.csv``)
+carrying the parameters together with LUT, DSP and RMSRE, so there is no
+accuracy<->resource join to do: one row is one fully-specified implementation.
 
 For every implementation method we:
-  1. read its combined CSV
-  2. drop points with RMSRE <= RMSRE_MIN (1e-7)
-  3. combine all methods of a family and keep only the Pareto front over
-     (RMSRE, LUT, DSP)
+  1. skip the method entirely if filter.toml excludes it ("n" flag)
+  2. read its combined CSV
+  3. drop points outside filter.toml's inclusive (LUT, DSP, RMSRE) bounds
+     (rmsre_min defaults to 1e-7, the "numerically perfect" floor)
+  4. combine all included methods of a family and keep only the Pareto front
+     over (RMSRE, LUT, DSP)
 
 The combined files come in three shapes (see helper_config.METHODS ``kind``):
   * parametric  - keyed by integer approximation parameters (Bipartite, Lookup,
@@ -20,18 +19,20 @@ The combined files come in three shapes (see helper_config.METHODS ``kind``):
                   Bit-hacking)
   * categorical - keyed by string configuration columns such as DSP_USAGE
                   (IP core)
-The RMSRE floor is applied uniformly to all three.  IP core's RMSRE (~2.7e-8)
-is below the floor, so all of its rows drop here - it is still read and counted
-in the per-method report, just never carried onto the front.
+The bounds are applied uniformly to all three.  With the default rmsre_min=1e-7,
+IP core's RMSRE (~2.7e-8) is below the floor, so all of its rows drop here - it
+is still read and counted in the per-method report, just never carried onto the
+front.
 
 Within a single file duplicate keys are a data error (an ambiguous point) and
 abort immediately.
 
-Outputs: processed_data/exp.csv and processed_data/rec.csv
+Outputs: data/generated/exp.csv and data/generated/rec.csv
 """
 
 from __future__ import annotations
 
+import os
 import sys
 from typing import Dict, List, Tuple
 
@@ -58,10 +59,12 @@ def _params(row: Dict[str, str], keys: Tuple[str, ...]) -> Dict[str, str]:
     return {k: row[k] for k in keys}
 
 
-def load_method(method: str) -> List[dict]:
-    """Read one method's combined CSV and apply the RMSRE floor.
+def load_method(method: str, bounds: Dict[str, float]) -> List[dict]:
+    """Read one method's combined CSV and apply the filter bounds.
 
-    Returns component records; prints a per-method report of what was dropped.
+    Rows outside any inclusive (LUT, DSP, RMSRE) bound from filter.toml are
+    dropped (this is where the rmsre_min floor removes IP core).  Returns the
+    surviving component records; prints a per-method report of what was dropped.
     Aborts on a duplicate identity key within the file (ambiguous point).
     """
     spec = C.METHODS[method]
@@ -82,7 +85,7 @@ def load_method(method: str) -> List[dict]:
             )
 
     records: List[dict] = []
-    n_below = 0
+    n_bounds = 0
     seen_keys: Dict[Tuple, int] = {}
     for i, r in enumerate(rows):
         key = _row_key(r, keys)
@@ -94,27 +97,34 @@ def load_method(method: str) -> List[dict]:
         seen_keys[key] = i
 
         rmsre = float(r["RMSRE"])
-        if rmsre <= C.RMSRE_MIN:
-            n_below += 1
+        lut = int(r["LUT"])
+        dsp = int(r["DSP"])
+        if not C.passes_bounds(rmsre, lut, dsp, bounds):
+            n_bounds += 1
             continue
         records.append({
             "method": method,
             "params": _params(r, keys),
             "rmsre": rmsre,
-            "lut": int(r["LUT"]),
-            "dsp": int(r["DSP"]),
+            "lut": lut,
+            "dsp": dsp,
         })
 
     print(f"  [{method:<16}] label={label:<11} kind={kind:<11} "
-          f"rows={len(rows):>3}  rmsre<=1e-7={n_below:>3}  kept={len(records):>3}")
+          f"rows={len(rows):>3}  out_of_bounds={n_bounds:>3}  kept={len(records):>3}")
     return records
 
 
-def build_family(family: str, methods: List[str], out_path: str) -> List[dict]:
+def build_family(family: str, methods: List[str], out_path: str,
+                 bounds: Dict[str, float], included) -> List[dict]:
     print(f"[{family.upper()}] extracting components:")
     combined: List[dict] = []
     for m in methods:
-        combined.extend(load_method(m))
+        if not C.method_included(m, included):
+            print(f"  [{m:<16}] label={C.METHODS[m]['label']:<11} "
+                  f"EXCLUDED by filter.toml")
+            continue
+        combined.extend(load_method(m, bounds))
 
     front = C.pareto_front(combined)
     C.write_components(out_path, front)
@@ -126,8 +136,16 @@ def build_family(family: str, methods: List[str], out_path: str) -> List[dict]:
 
 
 def main() -> None:
-    build_family("exp", C.EXP_METHODS, C.EXP_CSV)
-    build_family("rec", C.REC_METHODS, C.REC_CSV)
+    bounds, included = C.load_filter()
+    print(f"[FILTER] {os.path.relpath(C.FILTER_PATH, C.ROOT)}")
+    print(f"  bounds : LUT[{bounds['lut_min']:g},{bounds['lut_max']:g}]  "
+          f"DSP[{bounds['dsp_min']:g},{bounds['dsp_max']:g}]  "
+          f"RMSRE[{bounds['rmsre_min']:g},{bounds['rmsre_max']:g}]")
+    print(f"  exp methods included: {sorted(included['exp']) or '(none)'}")
+    print(f"  rec methods included: {sorted(included['rec']) or '(none)'}\n")
+
+    build_family("exp", C.EXP_METHODS, C.EXP_CSV, bounds, included)
+    build_family("rec", C.REC_METHODS, C.REC_CSV, bounds, included)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,23 @@
+# Controls which component points feed the softmax Pareto pipeline (steps 1-3).
+# Bounds are inclusive; rmsre_min=1e-7 drops IP core; see helper_config.py.
+
+[bounds]
+lut_min   = 0
+lut_max   = 100000
+dsp_min   = 0
+dsp_max   = 100000
+rmsre_min = 1e-7
+rmsre_max = 1.0
+
+# Per-method include flag: "y" includes, anything else excludes (toggle 1 letter).
+[methods.exp]
+Bipartite     = "y"
+Lookup        = "y"
+Splitting     = "y"
+"Bit-hacking" = "y"
+"IP core"     = "y"
+
+[methods.rec]
+Bipartite = "y"
+Lookup    = "y"
+"IP core" = "y"

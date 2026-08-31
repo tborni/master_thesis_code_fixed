@@ -1,9 +1,7 @@
 """Step 3 - plot the pareto-optimal softmax implementations.
 
-Identical in behaviour to ``pareto_ref``'s step 3: it consumes only the
-generated ``processed_data/softmax_SIMD_<v>.csv`` files and helper_config, so it
-is decoupled from the combined-vs-separate input-file difference that motivated
-the rest of this folder.
+This step consumes only the generated ``data/generated/softmax_SIMD_<v>.csv`` files and
+helper_config, so it is decoupled from the shape of the raw input data.
 
 Runs once per SIMD value (usage mirrors step 2):
   step3_plot.py            -> every value in helper_config.SIMD_SWEEP
