@@ -117,15 +117,13 @@ def _key_columns(real_fields: list[str], inv_fields: list[str]) -> list[str]:
 
     These form the join key.  Requiring them on *both* sides means, e.g., the
     Bit-hacking files (real has MAGIC, invsqrt does not) join on NEWTON only.
+    May be empty: some methods (e.g. IP-Core, a single fixed design) have an
+    invsqrt file with no parameter columns at all, in which case the caller
+    pairs the two single rows positionally instead of by key.
     """
     real_params = _param_columns(real_fields)
     inv_params = set(_param_columns(inv_fields))
-    shared = [c for c in real_params if c in inv_params]
-    if not shared:
-        raise CompareError(
-            f"no shared parameter columns between {real_fields} and {inv_fields}"
-        )
-    return shared
+    return [c for c in real_params if c in inv_params]
 
 
 def _canonical_int(value: str) -> str:
@@ -229,19 +227,37 @@ def compare_method(
     inv_fields, inv_rows = _read_csv(inv_path)
 
     key_cols = _key_columns(real_fields, inv_fields)
-    real_idx = _index_by_key(real_rows, key_cols, real_path)
-    inv_idx = _index_by_key(inv_rows, key_cols, inv_path)
 
-    real_keys = set(real_idx)
-    inv_keys = set(inv_idx)
-    shared_keys = real_keys & inv_keys
+    if key_cols:
+        # Standard case: match configurations by their shared parameter columns.
+        real_idx = _index_by_key(real_rows, key_cols, real_path)
+        inv_idx = _index_by_key(inv_rows, key_cols, inv_path)
+        real_keys = set(real_idx)
+        inv_keys = set(inv_idx)
+        shared_keys = real_keys & inv_keys
+        matched = [(key, real_idx[key], inv_idx[key]) for key in shared_keys]
+        only_real = len(real_keys - inv_keys)
+        only_inv = len(inv_keys - real_keys)
+    else:
+        # No shared parameter columns (e.g. IP-Core: a single fixed design whose
+        # invsqrt file carries only metrics).  Only well defined when each file
+        # is a single row; pair them positionally under an empty key.
+        if len(real_rows) != 1 or len(inv_rows) != 1:
+            raise CompareError(
+                f"no shared parameter columns and files are not single-row "
+                f"(real={len(real_rows)}, invsqrt={len(inv_rows)}); "
+                f"cannot pair configurations unambiguously"
+            )
+        matched = [((), real_rows[0], inv_rows[0])]
+        only_real = 0
+        only_inv = 0
 
     configs: list[tuple[tuple[str, ...], float, float]] = []
     skipped_zero = 0
-    for key in shared_keys:
+    for key, real_row, inv_row in matched:
         try:
-            real_rmsre = float(real_idx[key][_RMSRE])
-            inv_rmsre = float(inv_idx[key][_RMSRE])
+            real_rmsre = float(real_row[_RMSRE])
+            inv_rmsre = float(inv_row[_RMSRE])
         except ValueError as exc:
             raise CompareError(
                 f"{method}: non-numeric RMSRE at {_format_key(key_cols, key)}: {exc}"
@@ -258,9 +274,9 @@ def compare_method(
         unthresholded=_max_diff(configs, floor=0.0),
         thresholded=_max_diff(configs, floor=min_rmsre),
         min_rmsre=min_rmsre,
-        matched=len(shared_keys),
-        only_real=len(real_keys - inv_keys),
-        only_inv=len(inv_keys - real_keys),
+        matched=len(matched),
+        only_real=only_real,
+        only_inv=only_inv,
         skipped_zero=skipped_zero,
     )
 
@@ -273,9 +289,12 @@ def _format_variant(label: str, key_cols: list[str], md: MaxDiff) -> list[str]:
     if md.max_rel_diff is None:
         return [f"{_INDENT}{label:<9} no comparable configs"]
     pct = md.max_rel_diff * 100.0
+    # Methods with no parameter columns (e.g. IP-Core) have an empty key, so
+    # omit the "at ..." clause rather than print a dangling "at".
+    at = _format_key(key_cols, md.at_key)
+    head = f"{_INDENT}{label:<9} max rel-diff = {md.max_rel_diff:.6f} ({pct:.4f}%)"
     lines = [
-        f"{_INDENT}{label:<9} max rel-diff = {md.max_rel_diff:.6f} ({pct:.4f}%) "
-        f"at {_format_key(key_cols, md.at_key)}",
+        f"{head} at {at}" if at else head,
         f"{_INDENT}          real RMSRE = {md.real_rmsre:.10g}, "
         f"invsqrt RMSRE = {md.inv_rmsre:.10g}",
     ]

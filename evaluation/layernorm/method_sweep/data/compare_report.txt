@@ -5,29 +5,29 @@ Relative RMSRE difference  |RMSRE_real - RMSRE_invsqrt| / |RMSRE_invsqrt|
   filtered = configs with min(real,invsqrt) RMSRE >= 1e-06 (drops noise-floor blow-ups)
 
 Bipartite
-               raw:      max rel-diff = 10.310096 (1031.0096%) at num_newton_steps=1, addr_width_0=3, addr_width_1=5, addr_width_2=5, word_width=16
-                         real RMSRE = 4.705e-07, invsqrt RMSRE = 4.16e-08
-               filtered: max rel-diff = 0.101559 (10.1559%) at num_newton_steps=0, addr_width_0=2, addr_width_1=3, addr_width_2=3, word_width=12
-                         real RMSRE = 0.000533081, invsqrt RMSRE = 0.0004839334
+               raw:      max rel-diff = 10.415292 (1041.5292%) at num_newton_steps=1, addr_width_0=3, addr_width_1=5, addr_width_2=5, word_width=16
+                         real RMSRE = 4.705e-07, invsqrt RMSRE = 4.121664e-08
+               filtered: max rel-diff = 0.109256 (10.9256%) at num_newton_steps=0, addr_width_0=2, addr_width_1=3, addr_width_2=3, word_width=12
+                         real RMSRE = 0.000533081, invsqrt RMSRE = 0.0004805752
                [matched 10, 2 only in invsqrt, 5 below 1e-06 noise floor]
 Lookup
-               raw:      max rel-diff = 20.391304 (2039.1304%) at num_newton_steps=2, addr_width=7, word_width=16
-                         real RMSRE = 9.84e-07, invsqrt RMSRE = 4.6e-08
-               filtered: max rel-diff = 0.200145 (20.0145%) at num_newton_steps=1, addr_width=8, word_width=14
-                         real RMSRE = 1.6598e-06, invsqrt RMSRE = 1.383e-06
-               [matched 108, 18 only in invsqrt, 48 below 1e-06 noise floor]
+               raw:      max rel-diff = 20.344902 (2034.4902%) at num_newton_steps=2, addr_width=7, word_width=16
+                         real RMSRE = 9.84e-07, invsqrt RMSRE = 4.61e-08
+               filtered: max rel-diff = 0.200926 (20.0926%) at num_newton_steps=1, addr_width=8, word_width=14
+                         real RMSRE = 1.6598e-06, invsqrt RMSRE = 1.3821e-06
+               [matched 108, 48 below 1e-06 noise floor]
 Bit-hacking
-               raw:      max rel-diff = 0.539229 (53.9229%) at num_newton_steps=2
-                         real RMSRE = 3.7942e-06, invsqrt RMSRE = 2.465e-06
-               filtered: max rel-diff = 0.539229 (53.9229%) at num_newton_steps=2
-                         real RMSRE = 3.7942e-06, invsqrt RMSRE = 2.465e-06
+               raw:      max rel-diff = 0.533878 (53.3878%) at num_newton_steps=2
+                         real RMSRE = 3.7942e-06, invsqrt RMSRE = 2.4736e-06
+               filtered: max rel-diff = 0.533878 (53.3878%) at num_newton_steps=2
+                         real RMSRE = 3.7942e-06, invsqrt RMSRE = 2.4736e-06
                [matched 3]
 IP-Core
-               raw:      max rel-diff = 15.326030 (1532.6030%) at num_newton_steps=3
+               raw:      max rel-diff = 15.326030 (1532.6030%)
                          real RMSRE = 4.318e-07, invsqrt RMSRE = 2.644856052e-08
                filtered: no comparable configs
                [matched 1, 1 below 1e-06 noise floor]
 
 Overall maximum relative RMSRE difference:
-  raw      = 20.391304 (2039.1304%)
-  filtered = 0.539229 (53.9229%)
+  raw      = 20.344902 (2034.4902%)
+  filtered = 0.533878 (53.3878%)
