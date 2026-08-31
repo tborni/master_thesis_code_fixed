@@ -97,44 +97,18 @@ module layernorm_accuracy_tb;
 	endfunction : mk_bithack
 
 	// The method sweep. Order is preserved in the report. Extend freely.
-	localparam int unsigned  NUM_METHODS = 36;
+	localparam int unsigned  NUM_METHODS = 10;
 	localparam method_t  METHODS[NUM_METHODS] = '{
-mk_lookup   (.newton(2), .word_width(6), .addr_width(6)),
-		mk_lookup   (.newton(2), .word_width(8), .addr_width(6)),
-		mk_lookup   (.newton(2), .word_width(10), .addr_width(6)),
-		mk_lookup   (.newton(2), .word_width(12), .addr_width(6)),
-		mk_lookup   (.newton(2), .word_width(14), .addr_width(6)),
-		mk_lookup   (.newton(2), .word_width(16), .addr_width(6)),
-		mk_lookup   (.newton(2), .word_width(6), .addr_width(7)),
-		mk_lookup   (.newton(2), .word_width(8), .addr_width(7)),
-		mk_lookup   (.newton(2), .word_width(10), .addr_width(7)),
-		mk_lookup   (.newton(2), .word_width(12), .addr_width(7)),
-		mk_lookup   (.newton(2), .word_width(14), .addr_width(7)),
-		mk_lookup   (.newton(2), .word_width(16), .addr_width(7)),
-		mk_lookup   (.newton(2), .word_width(6), .addr_width(8)),
-		mk_lookup   (.newton(2), .word_width(8), .addr_width(8)),
-		mk_lookup   (.newton(2), .word_width(10), .addr_width(8)),
-		mk_lookup   (.newton(2), .word_width(12), .addr_width(8)),
-		mk_lookup   (.newton(2), .word_width(14), .addr_width(8)),
-		mk_lookup   (.newton(2), .word_width(16), .addr_width(8)),
-		mk_lookup   (.newton(2), .word_width(6), .addr_width(9)),
-		mk_lookup   (.newton(2), .word_width(8), .addr_width(9)),
-		mk_lookup   (.newton(2), .word_width(10), .addr_width(9)),
-		mk_lookup   (.newton(2), .word_width(12), .addr_width(9)),
-		mk_lookup   (.newton(2), .word_width(14), .addr_width(9)),
-		mk_lookup   (.newton(2), .word_width(16), .addr_width(9)),
-		mk_lookup   (.newton(2), .word_width(6), .addr_width(10)),
-		mk_lookup   (.newton(2), .word_width(8), .addr_width(10)),
-		mk_lookup   (.newton(2), .word_width(10), .addr_width(10)),
-		mk_lookup   (.newton(2), .word_width(12), .addr_width(10)),
-		mk_lookup   (.newton(2), .word_width(14), .addr_width(10)),
-		mk_lookup   (.newton(2), .word_width(16), .addr_width(10)),
-		mk_lookup   (.newton(2), .word_width(6), .addr_width(11)),
-		mk_lookup   (.newton(2), .word_width(8), .addr_width(11)),
-		mk_lookup   (.newton(2), .word_width(10), .addr_width(11)),
-		mk_lookup   (.newton(2), .word_width(12), .addr_width(11)),
-		mk_lookup   (.newton(2), .word_width(14), .addr_width(11)),
-		mk_lookup   (.newton(2), .word_width(16), .addr_width(11))
+        mk_bipartite(.newton(0), .word_width(12), .aw0(2), .aw1(3), .aw2(3)),
+        mk_bipartite(.newton(0), .word_width(13), .aw0(2), .aw1(4), .aw2(4)),
+        mk_bipartite(.newton(0), .word_width(15), .aw0(3), .aw1(4), .aw2(4)),
+        mk_bipartite(.newton(0), .word_width(16), .aw0(3), .aw1(5), .aw2(5)),
+        mk_bipartite(.newton(0), .word_width(18), .aw0(4), .aw1(5), .aw2(5)),
+        mk_bipartite(.newton(1), .word_width(12), .aw0(2), .aw1(3), .aw2(3)),
+        mk_bipartite(.newton(1), .word_width(13), .aw0(2), .aw1(4), .aw2(4)),
+        mk_bipartite(.newton(1), .word_width(15), .aw0(3), .aw1(4), .aw2(4)),
+        mk_bipartite(.newton(1), .word_width(16), .aw0(3), .aw1(5), .aw2(5)),
+        mk_bipartite(.newton(1), .word_width(18), .aw0(4), .aw1(5), .aw2(5))
 	};
 
 	// Short human-readable tag for a method configuration, used in the report.
