@@ -1,36 +1,54 @@
 # Makefile for the Softmax method-sweep evaluation.
 #
+# This folder holds TWO independent analyses over the same measured data:
+#
+#   A) Accuracy comparison  (theory vs. measured softmax RMSRE)
+#      combine_accuracy.py cross-references each measured setup in
+#      data/accuracy_softmax/accuracy.txt with the component RMSRE recorded in
+#      the combined per-method CSVs and tabulates the measured softmax RMSRE
+#      against the theoretical model, writing
+#      data/accuracy_softmax/theory_accuracy_comparison.csv. verify_combined.py
+#      independently re-derives every value from hand-transcribed ground truth
+#      and asserts the CSV matches.
+#
+#   B) Pareto pipeline      (component -> softmax -> plots), a 3-step port of
+#      pareto_ref/ adapted to this folder's COMBINED data files (each method's
+#      params + LUT + DSP + RMSRE live together in one data/{exp,rec}/*.csv,
+#      instead of pareto_ref's separate accuracy/ and resources/ files):
+#        step1_components.py -> processed_data/{exp,rec}.csv
+#        step2_softmax.py    -> processed_data/softmax_SIMD_<v>.csv
+#        step3_plot.py       -> images{,_aligned}/SIMD_<v>/{dsp_only,method_dsp}/*.png
+#
 # Layout:
 #   data/accuracy_softmax/  the measured report (accuracy.txt), the
 #                    correction_factor.txt notes, and the generated
 #                    theory_accuracy_comparison.csv
-#   data/exp/, data/rec/    the per-method component RMSRE CSVs
-#   scripts/         python tools (combine_accuracy.py, verify_combined.py)
-#   images/          generated PNGs (none yet)
-#
-# The sweep measures the full softmax RMSRE for every combination of an exp
-# approximation method (EXP) and a reciprocal approximation method (REC), at
-# fixed N=64, SIMD=2. combine_accuracy.py cross-references each measured setup in
-# data/accuracy_softmax/accuracy.txt with the component RMSRE recorded in
-# data/exp/ and data/rec/, then tabulates the measured softmax RMSRE against the
-# theoretical model sqrt(RMSRE(rec)^2 + B_EXP*RMSRE(exp)^2 + D_OTHER^2) and their
-# relative difference, writing data/accuracy_softmax/theory_accuracy_comparison.csv.
-# verify_combined.py independently re-derives every value from hand-transcribed
-# ground truth and asserts the CSV matches.
+#   data/exp/, data/rec/    the per-method COMBINED component CSVs
+#   data/resources_SIMD.csv total softmax resources vs. SIMD (base build)
+#   scripts/         python tools (both analyses)
+#   processed_data/  generated component + softmax fronts   (analysis B)
+#   images/, images_aligned/  generated PNGs                (analysis B)
 #
 # Targets:
-#   make            # (re)generate the comparison CSV
-#   make csv        # same as `make`
-#   make verify     # regenerate the CSV, then independently verify it
-#   make clean      # remove the generated CSV; keeps all inputs
+#   make            # run BOTH analyses: comparison CSV + all Pareto plots
+#   make csv        # (A) (re)generate the accuracy comparison CSV
+#   make verify     # (A) regenerate the CSV, then independently verify it
+#   make components # (B) processed_data/{exp,rec}.csv                  (step 1)
+#   make softmax    # (B) processed_data/softmax_SIMD_<v>.csv           (step 2)
+#   make plots      # (B) images{,_aligned}/SIMD_<v>/*/*.png            (step 3)
+#   make clean      # remove ALL generated artifacts; keeps every input
 
 # Directory of this Makefile, so `make` works from any working directory.
 ROOT    := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
-PYTHON  := $(ROOT)../../../.venv/bin/python
+# PYTHONDONTWRITEBYTECODE keeps the tree free of __pycache__ directories.
+PYTHON  := PYTHONDONTWRITEBYTECODE=1 $(ROOT)../../../.venv/bin/python
 SCRIPTS := $(ROOT)scripts
 DATA    := $(ROOT)data
 
+# --------------------------------------------------------------------------- #
+# Analysis A: accuracy comparison
+# --------------------------------------------------------------------------- #
 COMBINE := $(SCRIPTS)/combine_accuracy.py
 VERIFY  := $(SCRIPTS)/verify_combined.py
 
@@ -51,10 +69,62 @@ COMPONENT_CSVS := \
 
 COMPARISON_CSV := $(DATA)/accuracy_softmax/theory_accuracy_comparison.csv
 
-.PHONY: all csv verify clean
+# --------------------------------------------------------------------------- #
+# Analysis B: Pareto pipeline
+# --------------------------------------------------------------------------- #
+PROCESSED := $(ROOT)processed_data
+IMAGES    := $(ROOT)images
+IMAGES_AL := $(ROOT)images_aligned
+MODES     := dsp_only method_dsp
+FIGNAMES  := diagram.png pareto.png full_pareto.png
 
-all: csv
+CONFIG  := $(SCRIPTS)/helper_config.py
+STEP1   := $(SCRIPTS)/step1_components.py
+STEP2   := $(SCRIPTS)/step2_softmax.py
+STEP3   := $(SCRIPTS)/step3_plot.py
 
+# SIMD sweep range - single source of truth is helper_config.SIMD_SWEEP; we read
+# it here so the two can never drift apart.  Every value must exist in
+# data/resources_SIMD.csv.
+SIMD_VALUES := $(shell $(PYTHON) -c "import sys; sys.path.insert(0,'$(SCRIPTS)'); import helper_config as C; print(' '.join(map(str, C.SIMD_SWEEP)))")
+ifeq ($(strip $(SIMD_VALUES)),)
+$(error Could not read SIMD_SWEEP from $(SCRIPTS)/helper_config.py)
+endif
+
+# Combined per-method component CSVs feeding step 1.  Same space-in-filename
+# caveat as above (IP core), so list the step-1 inputs explicitly.  These are
+# the files whose RMSRE/LUT/DSP determine the fronts.
+STEP1_INPUTS := \
+	$(DATA)/exp/Bipartite_combined.csv \
+	$(DATA)/exp/Lookup_combined.csv \
+	$(DATA)/exp/Splitting_combined.csv \
+	$(DATA)/exp/Bit-hacking_combined.csv \
+	$(DATA)/exp/IP\ core_combined.csv \
+	$(DATA)/rec/Bipartite_combined.csv \
+	$(DATA)/rec/Lookup_combined.csv \
+	$(DATA)/rec/IP\ core_combined.csv
+
+EXP_CSV := $(PROCESSED)/exp.csv
+REC_CSV := $(PROCESSED)/rec.csv
+
+# All per-SIMD softmax fronts.  The aligned figures need a common axis range
+# computed from every front, so step 3 reads ALL of these regardless of which
+# SIMD value it renders - hence every plot target depends on all of them.
+ALL_SOFTMAX := $(foreach v,$(SIMD_VALUES),$(PROCESSED)/softmax_SIMD_$(v).csv)
+
+# Per-SIMD plot outputs, accumulated by the eval loop below.
+PLOTS :=
+
+.PHONY: all csv verify components softmax plots clean
+
+# --------------------------------------------------------------------------- #
+# Default: run both analyses end to end.
+# --------------------------------------------------------------------------- #
+all: csv plots
+
+# --------------------------------------------------------------------------- #
+# Analysis A rules
+# --------------------------------------------------------------------------- #
 csv: $(COMPARISON_CSV)
 
 # combine_accuracy.py resolves its own inputs (data/) and output, so it can be
@@ -67,5 +137,42 @@ $(COMPARISON_CSV): $(COMBINE) $(ACCURACY_TXT) $(COMPONENT_CSVS)
 verify: $(COMPARISON_CSV)
 	$(PYTHON) $(VERIFY)
 
+# --------------------------------------------------------------------------- #
+# Analysis B rules
+# --------------------------------------------------------------------------- #
+# Step 1: extract pareto-optimal exp and rec components (SIMD-independent).
+# A single run writes both CSVs; the grouped-target form ties them to one recipe.
+components: $(EXP_CSV) $(REC_CSV)
+$(EXP_CSV) $(REC_CSV): $(STEP1) $(CONFIG) $(STEP1_INPUTS)
+	$(PYTHON) $(STEP1)
+
+# Per-SIMD rules for steps 2 and 3, generated for each value in $(SIMD_VALUES).
+define SIMD_rules
+SOFTMAX_$(1) := $(PROCESSED)/softmax_SIMD_$(1).csv
+# Both figure trees (images/ and images_aligned/) for this SIMD value.
+PLOTS_$(1) := \
+  $$(foreach m,$(MODES),$$(foreach n,$(FIGNAMES),$(IMAGES)/SIMD_$(1)/$$(m)/$$(n))) \
+  $$(foreach m,$(MODES),$$(foreach n,$(FIGNAMES),$(IMAGES_AL)/SIMD_$(1)/$$(m)/$$(n)))
+PLOTS += $$(PLOTS_$(1))
+
+# Step 2: combine into the pareto-optimal softmax front for this SIMD value.
+$$(SOFTMAX_$(1)): $(STEP2) $(CONFIG) $(EXP_CSV) $(REC_CSV) $(DATA)/resources_SIMD.csv
+	$(PYTHON) $(STEP2) $(1)
+
+# Step 3: one script run emits all twelve PNGs for this SIMD value (six per
+# tree). Depends on ALL softmax fronts because the aligned tree needs the global
+# axis range.
+$$(PLOTS_$(1)): $(STEP3) $(CONFIG) $(ALL_SOFTMAX)
+	$(PYTHON) $(STEP3) $(1)
+endef
+$(foreach v,$(SIMD_VALUES),$(eval $(call SIMD_rules,$(v))))
+
+softmax: $(ALL_SOFTMAX)
+plots:   $(PLOTS)
+
+# --------------------------------------------------------------------------- #
+# Clean: remove every generated artifact from both analyses; keep all inputs.
+# --------------------------------------------------------------------------- #
 clean:
 	rm -f $(COMPARISON_CSV)
+	rm -rf $(PROCESSED) $(IMAGES) $(IMAGES_AL) $(SCRIPTS)/__pycache__
