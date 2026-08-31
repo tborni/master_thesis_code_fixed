@@ -27,7 +27,7 @@ PLOT_SCRIPT    := $(SCRIPTS)/plots.py
 FILTER         := filter.toml
 
 # --- Hand-authored inputs (never generated, never cleaned) ------------------
-ACC_REPORTS  := $(wildcard $(DATA)/accuracy_layerorm/*.txt)
+ACC_REPORTS  := $(wildcard $(DATA)/accuracy_layernorm/*.txt)
 INVSQRT_CSV  := $(wildcard $(DATA)/accuracy_invsqrt/*.csv)
 RESOURCE_CSV := $(wildcard $(DATA)/resources/*.csv)
 
@@ -69,11 +69,11 @@ $(FIGURES): $(PLOT_SCRIPT) $(FILTER) $(COMBINED_STAMP)
 	$(PYTHON) $(PLOT_SCRIPT)
 
 # --- Housekeeping -----------------------------------------------------------
-# Removes only generated files; the hand-authored inputs under
-# data/accuracy_layerorm, data/accuracy_invsqrt and data/resources are kept.
+# Removes only generated files; the hand-authored inputs (the .txt reports in
+# data/accuracy_layernorm, plus data/accuracy_invsqrt and data/resources) stay.
 clean:
 	rm -f $(DATA)/accuracy_layernorm/*.csv $(ACC_STAMP)
 	rm -f $(COMPARE_REPORT)
 	rm -f $(COMBINED)/*_combined.csv $(COMBINED_STAMP)
 	rm -f $(IMAGES)/*.png
-	@rmdir $(DATA)/accuracy_layernorm $(COMBINED) 2>/dev/null || true
+	@rmdir $(COMBINED) 2>/dev/null || true

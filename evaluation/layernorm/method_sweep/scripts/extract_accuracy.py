@@ -2,7 +2,7 @@
 """Turn the full-LayerNorm accuracy reports into tidy per-method CSVs.
 
 Each candidate InvSqrt method contributes one text report under
-``data/accuracy_layerorm/<method>.txt`` whose lines look like ::
+``data/accuracy_layernorm/<method>.txt`` whose lines look like ::
 
     Test (METHOD = BIPARTITE, NEWTON = 0 [WORD_WIDTH = 12, ADDR_WIDTH_0/1/2 = 2/3/3], N = 64, SIMD = 2): RMSRE = 0.0005330810, MAX_REL_ERROR = 0.0016477636, WORST_INPUT = 32376.585 (elements = 32551)
 
@@ -42,9 +42,8 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent          # scripts/
 PROJECT_ROOT = SCRIPT_DIR.parent                      # method_sweep/
 DATA_DIR = PROJECT_ROOT / "data"
-# Note: the source folder name is spelled "accuracy_layerorm" in the dataset;
-# we read from it verbatim but write to a correctly-spelled sibling folder.
-IN_DIR = DATA_DIR / "accuracy_layerorm"
+# The .txt reports and the generated .csv files share this one folder.
+IN_DIR = DATA_DIR / "accuracy_layernorm"
 OUT_DIR = DATA_DIR / "accuracy_layernorm"
 
 # --- Shared regex fragments ------------------------------------------------
