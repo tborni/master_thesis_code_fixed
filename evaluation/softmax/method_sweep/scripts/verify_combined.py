@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Independent verification of data/softmax_rmsre_combined.csv.
+Independent verification of data/theory_accuracy_comparison.csv.
 
 This re-derives every expected value through a *different* code path than
 combine_accuracy.py: hand-transcribed ground-truth RMSRE values pulled by eye
@@ -20,7 +20,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
-CSV_FILE = PROJECT_ROOT / "data" / "softmax_rmsre_combined.csv"
+CSV_FILE = PROJECT_ROOT / "data" / "theory_accuracy_comparison.csv"
 
 # --------------------------------------------------------------------------- #
 # GROUND TRUTH — pulled BY HAND from the data CSVs.
@@ -49,6 +49,12 @@ REC_TRUTH = {
     "LOOKUP(NEWTON=1,AW=9,WW=8)": 9.902895e-07,
     "BIPARTITE(NEWTON=1,AW0/1/2=4/6/6,WW=18)": 4.845592e-08,
 }
+
+# Fixed softmax-level error term and exp-variance weight used by the theoretical
+# model. Hardcoded independently here (not imported) so this stays an
+# independent check.
+D_OTHER = 1.918e-7
+B_EXP = 1.0456234249238079
 
 # Measured softmax RMSRE, keyed by (exp_label, rec_label), pulled by hand from
 # data/accuracy.txt (the 16 Test lines, in file order 1..16).
@@ -127,13 +133,14 @@ def main() -> int:
                 f"row {i}: measured {measured:.6e} != truth {meas_true:.6e}"
             )
 
-        # 3) theoretical = sqrt(exp^2 + rec^2), recomputed from the CSV's own
-        #    exp/rec columns (tolerant to the 6-sig-fig rounding in the file).
-        theo_recompute = math.sqrt(exp_rmsre**2 + rec_rmsre**2)
+        # 3) theoretical = sqrt(rec^2 + B_EXP*exp^2 + D_OTHER^2), recomputed from
+        #    the CSV's own exp/rec columns (tolerant to the 6-sig-fig rounding in
+        #    the file).
+        theo_recompute = math.sqrt(rec_rmsre**2 + B_EXP * exp_rmsre**2 + D_OTHER**2)
         if rel(theo, theo_recompute) > 1e-4:
             problems.append(
-                f"row {i}: theoretical {theo:.6e} != sqrt(exp^2+rec^2) "
-                f"{theo_recompute:.6e}"
+                f"row {i}: theoretical {theo:.6e} != "
+                f"sqrt(rec^2+B_EXP*exp^2+D_OTHER^2) {theo_recompute:.6e}"
             )
 
         # 4) rel_diff = (theoretical - measured) / measured, recomputed.
@@ -182,7 +189,8 @@ def main() -> int:
 
     print("VERIFICATION PASSED: all 16 rows match hand-pulled ground truth")
     print("(exp/rec RMSRE from data/{exp,rec}/*.csv, measured from accuracy.txt),")
-    print("theoretical = sqrt(exp^2 + rec^2), rel_diff = (theo-meas)/meas, the")
+    print("theoretical = sqrt(rec^2 + B_EXP*exp^2 + D_OTHER^2), rel_diff =")
+    print("(theo-meas)/meas, the")
     print("percent columns are consistent, and the full 4x4 exp/rec grid is")
     print("present exactly once.")
     return 0

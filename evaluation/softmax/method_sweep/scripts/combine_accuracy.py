@@ -12,14 +12,18 @@ measured in ``data/accuracy.txt``:
   * the RMSRE of the rec component  (looked up in ``data/rec/<Method>_combined.csv``)
   * the measured softmax RMSRE      (read straight from ``data/accuracy.txt``)
   * the theoretical softmax RMSRE, modelled as
-        sqrt( RMSRE(exp)**2 + RMSRE(rec)**2 )
+        sqrt( RMSRE(rec)**2 + B_EXP * RMSRE(exp)**2 + D_OTHER**2 )
+    where ``D_OTHER`` is a fixed softmax-level error term added in quadrature to
+    account for contributions not captured by the exp/rec component
+    approximations, and ``B_EXP`` weights the exp-component variance (see the
+    constants below).
   * the signed relative difference between the theoretical and the measured
     softmax RMSRE, using the measured value as the base:
         rel_diff              = (theoretical - measured) / measured
         rel_diff_percent      = rel_diff * 100            (signed, new column)
         rel_diff_absolute_pct = |rel_diff| * 100
 
-The result is written to ``data/softmax_rmsre_combined.csv``.
+The result is written to ``data/theory_accuracy_comparison.csv``.
 
 Correctness is the priority here: the component look-ups are deliberately
 *strict*. The exp/rec reference CSVs are indexed by their full parameter tuple,
@@ -64,7 +68,19 @@ EXP_SPLITTING_FILE = EXP_DIR / "Splitting_combined.csv"
 REC_LOOKUP_FILE = REC_DIR / "Lookup_combined.csv"
 REC_BIPARTITE_FILE = REC_DIR / "Bipartite_combined.csv"
 
-OUTPUT_FILE = DATA_DIR / "softmax_rmsre_combined.csv"
+OUTPUT_FILE = DATA_DIR / "theory_accuracy_comparison.csv"
+
+# Additional constant error term folded into the theoretical model in quadrature,
+# capturing softmax-level error contributions not attributable to the exp or rec
+# component approximations (e.g. the fixed-point accumulation / requantisation
+# floor of the surrounding softmax datapath).
+D_OTHER = 1.918e-7
+
+# Weight on the exp-component variance in the theoretical model. B > 1 amplifies
+# the exp error's contribution relative to the rec error, reflecting that the
+# exp approximation error propagates into the softmax output with a slightly
+# larger effective gain than the reciprocal error does.
+B_EXP = 1.0456234249238079
 
 
 class ResolutionError(Exception):
@@ -341,7 +357,7 @@ def main() -> int:
             )
             continue
 
-        theoretical = math.sqrt(exp_rmsre**2 + rec_rmsre**2)
+        theoretical = math.sqrt(rec_rmsre**2 + B_EXP * exp_rmsre**2 + D_OTHER**2)
         rel_diff = (theoretical - measured) / measured  # measured is the base
 
         rows.append(

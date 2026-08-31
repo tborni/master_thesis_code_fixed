@@ -3,7 +3,7 @@
 # Layout:
 #   data/            input report (accuracy.txt) and the per-method component
 #                    RMSRE CSVs under data/exp/ and data/rec/; the generated
-#                    softmax_rmsre_combined.csv
+#                    theory_accuracy_comparison.csv
 #   scripts/         python tools (combine_accuracy.py, verify_combined.py)
 #   images/          generated PNGs (none yet)
 #
@@ -13,14 +13,15 @@
 # data/accuracy.txt with the component RMSRE recorded in data/exp/ and data/rec/,
 # then tabulates the measured softmax RMSRE against the theoretical model
 # sqrt(RMSRE(exp)^2 + RMSRE(rec)^2) and their relative difference, writing
-# data/softmax_rmsre_combined.csv. verify_combined.py independently re-derives
-# every value from hand-transcribed ground truth and asserts the CSV matches.
+# data/theory_accuracy_comparison.csv. verify_combined.py independently
+# re-derives every value from hand-transcribed ground truth and asserts the CSV
+# matches.
 #
 # Targets:
-#   make            # (re)generate the combined CSV
+#   make            # (re)generate the comparison CSV
 #   make csv        # same as `make`
 #   make verify     # regenerate the CSV, then independently verify it
-#   make clean      # remove the generated CSV (and stamps); keeps all inputs
+#   make clean      # remove the generated CSV; keeps all inputs
 
 # Directory of this Makefile, so `make` works from any working directory.
 ROOT    := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
@@ -47,27 +48,23 @@ COMPONENT_CSVS := \
 	$(DATA)/rec/Lookup_combined.csv \
 	$(DATA)/rec/Bipartite_combined.csv
 
-COMBINED_CSV   := $(DATA)/softmax_rmsre_combined.csv
-VERIFY_STAMP   := $(DATA)/.verify.stamp
+COMPARISON_CSV := $(DATA)/theory_accuracy_comparison.csv
 
 .PHONY: all csv verify clean
 
 all: csv
 
-csv: $(COMBINED_CSV)
+csv: $(COMPARISON_CSV)
 
 # combine_accuracy.py resolves its own inputs (data/) and output, so it can be
 # invoked from anywhere.
-$(COMBINED_CSV): $(COMBINE) $(ACCURACY_TXT) $(COMPONENT_CSVS)
+$(COMPARISON_CSV): $(COMBINE) $(ACCURACY_TXT) $(COMPONENT_CSVS)
 	$(PYTHON) $(COMBINE)
 
-# Independent check of the generated CSV; the stamp records the last successful
-# verification so it only re-runs when the CSV or the verifier changes.
-verify: $(VERIFY_STAMP)
-
-$(VERIFY_STAMP): $(VERIFY) $(COMBINED_CSV)
+# Independent check of the generated CSV. Phony so it always re-runs the
+# verifier; it first ensures the CSV is up to date.
+verify: $(COMPARISON_CSV)
 	$(PYTHON) $(VERIFY)
-	@touch $@
 
 clean:
-	rm -f $(COMBINED_CSV) $(VERIFY_STAMP)
+	rm -f $(COMPARISON_CSV)

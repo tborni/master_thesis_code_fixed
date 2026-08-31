@@ -1,4 +1,0 @@
-# Bytecode cache generated when python imports the local modules; not source,
-# so keep it out of version control.
-__pycache__/
-*.pyc
