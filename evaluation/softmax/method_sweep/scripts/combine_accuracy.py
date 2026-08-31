@@ -6,11 +6,11 @@ of the method sweep into a single table.
 The softmax of this sweep is implemented as ``exp(x) * reciprocal(sum exp(x))``,
 so its error decomposes into an exp-approximation error and a
 reciprocal-approximation error. This script cross-references, for every setup
-measured in ``data/accuracy.txt``:
+measured in ``data/accuracy_softmax/accuracy.txt``:
 
   * the RMSRE of the exp component  (looked up in ``data/exp/<Method>_combined.csv``)
   * the RMSRE of the rec component  (looked up in ``data/rec/<Method>_combined.csv``)
-  * the measured softmax RMSRE      (read straight from ``data/accuracy.txt``)
+  * the measured softmax RMSRE      (read straight from ``data/accuracy_softmax/accuracy.txt``)
   * the theoretical softmax RMSRE, modelled as
         sqrt( RMSRE(rec)**2 + B_EXP * RMSRE(exp)**2 + D_OTHER**2 )
     where ``D_OTHER`` is a fixed softmax-level error term added in quadrature to
@@ -23,11 +23,11 @@ measured in ``data/accuracy.txt``:
         rel_diff_percent      = rel_diff * 100            (signed, new column)
         rel_diff_absolute_pct = |rel_diff| * 100
 
-The result is written to ``data/theory_accuracy_comparison.csv``.
+The result is written to ``data/accuracy_softmax/theory_accuracy_comparison.csv``.
 
 Correctness is the priority here: the component look-ups are deliberately
 *strict*. The exp/rec reference CSVs are indexed by their full parameter tuple,
-and every configuration named in ``data/accuracy.txt`` must resolve to exactly
+and every configuration named in ``data/accuracy_softmax/accuracy.txt`` must resolve to exactly
 one reference row. If a configuration is missing, ambiguous (duplicate rows),
 or a source CSV itself contains a duplicate key, the script aborts with a clear
 diagnostic and writes no output — it never silently substitutes a "close"
@@ -55,7 +55,11 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
 DATA_DIR = PROJECT_ROOT / "data"
 
-ACCURACY_FILE = DATA_DIR / "accuracy.txt"
+# The measured softmax report and the generated comparison table live together
+# in the accuracy_softmax/ subfolder; the per-method component CSVs stay in
+# exp/ and rec/.
+ACCURACY_DIR = DATA_DIR / "accuracy_softmax"
+ACCURACY_FILE = ACCURACY_DIR / "accuracy.txt"
 EXP_DIR = DATA_DIR / "exp"
 REC_DIR = DATA_DIR / "rec"
 
@@ -68,7 +72,7 @@ EXP_SPLITTING_FILE = EXP_DIR / "Splitting_combined.csv"
 REC_LOOKUP_FILE = REC_DIR / "Lookup_combined.csv"
 REC_BIPARTITE_FILE = REC_DIR / "Bipartite_combined.csv"
 
-OUTPUT_FILE = DATA_DIR / "theory_accuracy_comparison.csv"
+OUTPUT_FILE = ACCURACY_DIR / "theory_accuracy_comparison.csv"
 
 # Additional constant error term folded into the theoretical model in quadrature,
 # capturing softmax-level error contributions not attributable to the exp or rec

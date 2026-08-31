@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-Independent verification of data/theory_accuracy_comparison.csv.
+Independent verification of data/accuracy_softmax/theory_accuracy_comparison.csv.
 
 This re-derives every expected value through a *different* code path than
 combine_accuracy.py: hand-transcribed ground-truth RMSRE values pulled by eye
 from data/exp/*.csv and data/rec/*.csv, plus the measured softmax RMSRE pulled
-by eye from data/accuracy.txt. It then asserts the produced CSV matches, and
+by eye from data/accuracy_softmax/accuracy.txt. It then asserts the produced
+CSV matches, and
 re-checks the theoretical and relative-difference arithmetic independently.
 
 If combine_accuracy.py and this file disagree, one of them is wrong — the point
@@ -20,7 +21,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
-CSV_FILE = PROJECT_ROOT / "data" / "theory_accuracy_comparison.csv"
+CSV_FILE = PROJECT_ROOT / "data" / "accuracy_softmax" / "theory_accuracy_comparison.csv"
 
 # --------------------------------------------------------------------------- #
 # GROUND TRUTH — pulled BY HAND from the data CSVs.
@@ -57,7 +58,7 @@ D_OTHER = 1.918e-7
 B_EXP = 1.0456234249238079
 
 # Measured softmax RMSRE, keyed by (exp_label, rec_label), pulled by hand from
-# data/accuracy.txt (the 16 Test lines, in file order 1..16).
+# data/accuracy_softmax/accuracy.txt (the 16 Test lines, in file order 1..16).
 MEASURED_TRUTH = {
     ("BIT_HACKING(A=12102203,D=1065277304)", "BIPARTITE(NEWTON=0,AW0/1/2=2/3/3,WW=11)"): 0.0194088375,
     ("BIT_HACKING(A=12102203,D=1065277304)", "LOOKUP(NEWTON=0,AW=11,WW=16)"): 0.0193145144,
