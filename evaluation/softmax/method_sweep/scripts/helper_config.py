@@ -381,19 +381,22 @@ def passes_bounds(rmsre: float, lut: int, dsp: int, bounds: Dict[str, float]) ->
 # --------------------------------------------------------------------------- #
 # Plot style
 # --------------------------------------------------------------------------- #
-# Colour encodes DSP.  The palette is chosen per DSP-count so the ends are
-# anchored and extra hues fill the middle, going low->high DSP:
-#   orange, blue  ... always anchor the low end
-#   green,  red   ... always anchor the high end
-#   yellow, then purple fill the middle for 5 and 6 values
-# i.e. the template is [orange, blue, (yellow), (purple), green, red].
+# Colour encodes DSP, going low->high DSP within each palette.
+#
+# The 5- and 6-value palettes keep the original scheme (orange/blue anchor the
+# low end, green/red the high end, yellow/purple fill the middle).  The 3- and
+# 4-value palettes use a separate hand-picked set of hues.
 _ORANGE, _BLUE, _YELLOW, _PURPLE, _GREEN, _RED = (
     "#E69F00", "#0072B2", "#F0E442", "#a97bd4", "#018763", "#ed4546")
+# Hues used by the 3- and 4-value palettes.  Both go low->high DSP:
+#   3-value: amber, cyan, pink
+#   4-value: amber, cyan, ink (black), pink
+_INK, _AMBER, _CYAN, _PINK = ("#374151", "#F59E0B", "#0284C7", "#EC4899")
 DSP_COLORS = {
-    1: [_ORANGE],
-    2: [_ORANGE, _BLUE],
-    3: [_ORANGE, _BLUE, _YELLOW],
-    4: [_ORANGE, _BLUE, _GREEN, _YELLOW],
+    1: [_AMBER],
+    2: [_AMBER, _CYAN],
+    3: [_AMBER, _CYAN, _PINK],
+    4: [_AMBER, _CYAN, _INK, _PINK],
     5: [_ORANGE, _BLUE, _RED, _GREEN, _YELLOW],
     6: [_ORANGE, _BLUE, _RED, _PURPLE, _GREEN, _YELLOW],
 }
@@ -407,8 +410,14 @@ def dsp_palette(n: int):
 
 # In dsp_only mode the marker is tied to the DSP *colour* (not its position), so
 # a given colour always draws the same shape regardless of how many DSP values a
-# plot has.  This matches the 6-value (SIMD=4) assignment.
+# plot has.  Every colour that can appear in any palette above needs an entry.
 DSP_MARKER_FOR_COLOR = {
+    # 3-/4-value ramp (low->high DSP): circle, triangle, square, diamond.
+    _INK:    "o",   # circle
+    _AMBER:  "^",   # triangle up
+    _CYAN:   "s",   # square
+    _PINK:   "D",   # diamond
+    # 5-/6-value palette.
     _ORANGE: "o",   # circle
     _BLUE:   "^",   # triangle up
     _RED:    "s",   # square
