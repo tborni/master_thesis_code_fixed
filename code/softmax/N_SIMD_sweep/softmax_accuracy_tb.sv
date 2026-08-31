@@ -41,8 +41,8 @@ module softmax_accuracy_tb;
 		return  v;
 	endfunction : range_value
 
-	localparam range_t N    = make_geo_range(.min(2), .max(16384), .step(2));
-	localparam range_t SIMD = make_geo_range(.min(2), .max(2), .step(2));
+	localparam range_t N    = make_geo_range(.min(4), .max(32), .step(2));
+	localparam range_t SIMD = make_geo_range(.min(1), .max(4), .step(2));
 
 	// Set to 1 to replace the DSPFP32 hard-macro instances by their behavioral fp32 models,
 	// mirroring the option threaded through the DUT. Leave at 0 to match the bipartite

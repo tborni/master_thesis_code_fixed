@@ -97,18 +97,11 @@ module layernorm_accuracy_tb;
 	endfunction : mk_bithack
 
 	// The method sweep. Order is preserved in the report. Extend freely.
-	localparam int unsigned  NUM_METHODS = 10;
+	localparam int unsigned  NUM_METHODS = 3;
 	localparam method_t  METHODS[NUM_METHODS] = '{
-        mk_bipartite(.newton(0), .word_width(12), .aw0(2), .aw1(3), .aw2(3)),
-        mk_bipartite(.newton(0), .word_width(13), .aw0(2), .aw1(4), .aw2(4)),
-        mk_bipartite(.newton(0), .word_width(15), .aw0(3), .aw1(4), .aw2(4)),
-        mk_bipartite(.newton(0), .word_width(16), .aw0(3), .aw1(5), .aw2(5)),
-        mk_bipartite(.newton(0), .word_width(18), .aw0(4), .aw1(5), .aw2(5)),
-        mk_bipartite(.newton(1), .word_width(12), .aw0(2), .aw1(3), .aw2(3)),
-        mk_bipartite(.newton(1), .word_width(13), .aw0(2), .aw1(4), .aw2(4)),
-        mk_bipartite(.newton(1), .word_width(15), .aw0(3), .aw1(4), .aw2(4)),
-        mk_bipartite(.newton(1), .word_width(16), .aw0(3), .aw1(5), .aw2(5)),
-        mk_bipartite(.newton(1), .word_width(18), .aw0(4), .aw1(5), .aw2(5))
+        mk_bithack(.newton(0), .use_default_magic(0), .magic(32'h5F34C8C3)),
+        mk_bithack(.newton(1), .use_default_magic(0), .magic(32'h5F360742)),
+        mk_bithack(.newton(2), .use_default_magic(0), .magic(32'h5F3759DF))
 	};
 
 	// Short human-readable tag for a method configuration, used in the report.
