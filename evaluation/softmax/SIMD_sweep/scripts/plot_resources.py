@@ -122,6 +122,13 @@ LABEL_LUT_FIT = "LUT linear fit"
 LABEL_DSP_DATA = "Synthesized DSPs"
 LABEL_DSP_FIT = "DSP linear fit"
 
+# Extra padding (points) between the base-2 log x-axis tick *labels* and the tick
+# marks. The SIMD ticks are rendered as ``2^k`` powers, whose raised exponent
+# would otherwise crowd the axis; the default x tick pad is ~3.5 pt, so this
+# widens the gap enough that the superscripts clear the tick lines. Applied to
+# the log panels only (the linear panel's ticks are unchanged).
+LOG_XTICK_PAD = 8.0
+
 
 def load_resources_csv(
     path: Path,
@@ -166,6 +173,22 @@ def affine_fit(x: np.ndarray, y: np.ndarray) -> tuple[float, float, float]:
     return float(m), float(intercept), r_squared
 
 
+def power_of_two_label(value: float) -> str:
+    """Format a power-of-two SIMD ``value`` as a ``$2^{k}$`` mathtext label.
+
+    The SIMD sweep samples exact powers of two (1, 2, 4, ...), so the base-2 log
+    x-axis is labelled with the exponent (``2^0, 2^1, ...``) rather than the raw
+    value. ``k`` is recovered as ``round(log2(value))``, which is robust to any
+    floating-point noise in the stored SIMD column. If ``value`` is not an exact
+    power of two (``2**k != value``) the exponent would be misleading, so the
+    plain integer is returned instead as a safe fallback.
+    """
+    k = int(round(np.log2(value)))
+    if 2 ** k == int(round(value)):
+        return rf"$2^{{{k}}}$"
+    return str(int(round(value)))
+
+
 def configure_style() -> None:
     """Apply the shared publication rcParams style (see the sibling figures).
 
@@ -181,10 +204,10 @@ def configure_style() -> None:
             "axes.unicode_minus": True,
             "font.size": 16,
             "axes.titlesize": 18,
-            "axes.labelsize": 18,
-            "xtick.labelsize": 15,
-            "ytick.labelsize": 15,
-            "legend.fontsize": 15,
+            "axes.labelsize": 20,
+            "xtick.labelsize": 17,
+            "ytick.labelsize": 17,
+            "legend.fontsize": 17,
             "axes.linewidth": 0.8,
             "axes.edgecolor": "black",
             "xtick.direction": "out",
@@ -303,7 +326,9 @@ def draw_dual_axis(
     else:
         ax_lut.tick_params(axis="y", labelleft=False)
     if show_dsp_labels:
-        ax_dsp.set_ylabel(r"DSP count")
+        # labelpad nudges "DSP count" a touch further from its (right-side) tick
+        # labels; the default ~4 pt would sit a little close to the 3-digit ticks.
+        ax_dsp.set_ylabel(r"DSP count", labelpad=8.0)
     else:
         ax_dsp.tick_params(axis="y", labelright=False)
 
@@ -319,11 +344,15 @@ def draw_dual_axis(
     # --- X-axis ---------------------------------------------------------------
     if log_x:
         # Base-2 log x-axis (SIMD is a power of two): one major tick per sampled
-        # SIMD, labelled with its integer value, base-2 minor ticks suppressed.
+        # SIMD, labelled as the corresponding power of two (2^0, 2^1, ...) via
+        # STIX mathtext, base-2 minor ticks suppressed. The tick labels sit a
+        # touch further from the axis (LOG_XTICK_PAD) so the raised exponents
+        # clear the tick marks without overlap.
         ax_lut.set_xscale("log", base=2)
         ax_lut.set_xticks(simd)
-        ax_lut.set_xticklabels([str(int(s)) for s in simd])
+        ax_lut.set_xticklabels([power_of_two_label(s) for s in simd])
         ax_lut.xaxis.set_minor_locator(NullLocator())
+        ax_lut.tick_params(axis="x", which="major", pad=LOG_XTICK_PAD)
     else:
         # Linear x-axis: evenly-spaced integer ticks chosen by matplotlib. The
         # measured points stay visible as markers, so regular ticks read cleaner

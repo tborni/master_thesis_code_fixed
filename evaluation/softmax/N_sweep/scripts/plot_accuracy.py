@@ -25,7 +25,7 @@ Design notes
   across the sweep (well under one decade), so a *linear* y-axis shows those
   variations at their true relative size rather than compressing them the way a
   log y-axis would. The x-axis uses base 2 (``N`` is a power of two) with the
-  actual N values as tick labels.
+  sampled N values, labelled as ``2^k``, as tick labels.
 * Because the y-axis is linear and the series is not a clean power law, the raw
   measurements are drawn as bare markers (no connecting line and no fitted
   curve): the figure shows the sweep exactly as sampled. RMSRE is rescaled by a
@@ -81,6 +81,20 @@ SERIES = (
 )
 
 
+def pow2_label(n: int) -> str:
+    """Format a sampled ``N`` as a base-2 power label for the log x-axis.
+
+    Every sampled ``N`` is a power of two, so it is shown as ``2^k`` (rendered
+    via mathtext, e.g. ``2^{10}`` for 1024) rather than the raw integer, matching
+    the base-2 log axis. Falls back to the plain integer for the (unexpected)
+    case of an ``N`` that is not an exact power of two.
+    """
+    exp = n.bit_length() - 1
+    if n > 0 and (1 << exp) == n:  # exact power of two
+        return rf"$2^{{{exp}}}$"
+    return str(n)
+
+
 def load_accuracy_csv(path: Path) -> tuple[list[int], list[float]]:
     """Load the ``(N, RMSRE)`` columns from an accuracy CSV.
 
@@ -118,12 +132,12 @@ def configure_style() -> None:
             "mathtext.fontset": "stix",
             "axes.unicode_minus": True,
             # Typographic sizes tuned for a ~half-to-full text-width figure.
-            "font.size": 16,
-            "axes.titlesize": 18,
-            "axes.labelsize": 18,
-            "xtick.labelsize": 15,
-            "ytick.labelsize": 15,
-            "legend.fontsize": 16,
+            "font.size": 23,
+            "axes.titlesize": 25,
+            "axes.labelsize": 29,
+            "xtick.labelsize": 22,
+            "ytick.labelsize": 22,
+            "legend.fontsize": 27,
             # Full black frame (all four spines) with outward ticks.
             "axes.linewidth": 0.8,
             "axes.edgecolor": "black",
@@ -133,6 +147,9 @@ def configure_style() -> None:
             "ytick.major.width": 0.8,
             "xtick.major.size": 4.0,
             "ytick.major.size": 4.0,
+            # Extra padding below the x tick labels so the horizontal 2^k labels
+            # sit clear of the axis line/grid above them (default ~3.5pt).
+            "xtick.major.pad": 6.0,
             # Dashed grid, matching the pareto/coeff figures' style.
             "axes.grid": True,
             "grid.linestyle": "--",
@@ -188,10 +205,12 @@ def plot_one(
     # Factor next to the metric, as in rec/lookup's accuracy_newton_coeff figure.
     ax.set_ylabel(rf"RMSRE  $(\times\,{y_unit_label})$")
 
-    # Show every sampled N as a major tick, labelled with its integer value, and
-    # suppress the base-2 minor ticks so the axis stays uncluttered.
+    # Show every sampled N as a major tick, labelled as a power of two (2^k) to
+    # match the base-2 log axis, and suppress the base-2 minor ticks so the axis
+    # stays uncluttered. Labels sit horizontally (the 2^k form is compact enough
+    # not to need slanting).
     ax.set_xticks(n_vals)
-    ax.set_xticklabels([str(n) for n in n_vals], rotation=45, ha="right")
+    ax.set_xticklabels([pow2_label(n) for n in n_vals])
     ax.xaxis.set_minor_locator(NullLocator())
 
     # Linear y-axis: start at 0 so the RMSRE magnitude is read honestly against a

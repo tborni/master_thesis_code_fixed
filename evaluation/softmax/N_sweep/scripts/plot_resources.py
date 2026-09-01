@@ -144,12 +144,12 @@ def configure_style() -> None:
             "font.serif": ["STIXGeneral", "DejaVu Serif"],
             "mathtext.fontset": "stix",
             "axes.unicode_minus": True,
-            "font.size": 16,
-            "axes.titlesize": 18,
-            "axes.labelsize": 18,
-            "xtick.labelsize": 15,
-            "ytick.labelsize": 15,
-            "legend.fontsize": 15,
+            "font.size": 23,
+            "axes.titlesize": 25,
+            "axes.labelsize": 29,
+            "xtick.labelsize": 22,
+            "ytick.labelsize": 22,
+            "legend.fontsize": 27,
             "axes.linewidth": 0.8,
             "axes.edgecolor": "black",
             "xtick.direction": "out",
@@ -158,6 +158,9 @@ def configure_style() -> None:
             "ytick.major.width": 0.8,
             "xtick.major.size": 4.0,
             "ytick.major.size": 4.0,
+            # Extra padding below the x tick labels so the horizontal 2^k labels
+            # sit clear of the axis line/grid above them (default ~3.5pt).
+            "xtick.major.pad": 6.0,
             "axes.grid": True,
             "grid.linestyle": "--",
             "grid.linewidth": 0.6,
@@ -171,6 +174,21 @@ def configure_style() -> None:
             "savefig.dpi": 300,
         }
     )
+
+
+def pow2_label(n: float) -> str:
+    """Format a sampled ``N`` as a base-2 power label for the log x-axis.
+
+    Every sampled ``N`` is a power of two, so on the base-2 log axis it is shown
+    as ``2^k`` (rendered via mathtext, e.g. ``2^{10}`` for 1024) rather than the
+    raw integer. Falls back to the plain integer for the (unexpected) case of an
+    ``N`` that is not an exact power of two.
+    """
+    value = int(round(n))
+    exp = value.bit_length() - 1
+    if value > 0 and (1 << exp) == value:  # exact power of two
+        return rf"$2^{{{exp}}}$"
+    return str(value)
 
 
 def draw_lut_axis(
@@ -231,10 +249,12 @@ def draw_lut_axis(
 
     if log_x:
         # Base-2 log x-axis (N is a power of two): one major tick per sampled N,
-        # labelled with its integer value, base-2 minor ticks suppressed.
+        # labelled as a power of two (2^k) to match the base-2 axis, base-2 minor
+        # ticks suppressed. Labels sit horizontally (the 2^k form is compact
+        # enough not to need slanting).
         ax.set_xscale("log", base=2)
         ax.set_xticks(n_vals)
-        ax.set_xticklabels([str(int(n)) for n in n_vals], rotation=45, ha="right")
+        ax.set_xticklabels([pow2_label(n) for n in n_vals])
         ax.xaxis.set_minor_locator(NullLocator())
     else:
         # Linear x-axis: use evenly-spaced round ticks chosen by matplotlib.
