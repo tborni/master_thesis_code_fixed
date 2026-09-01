@@ -326,9 +326,9 @@ def draw_dual_axis(
     else:
         ax_lut.tick_params(axis="y", labelleft=False)
     if show_dsp_labels:
-        # labelpad nudges "DSP count" a touch further from its (right-side) tick
+        # labelpad nudges "DSP Count" a touch further from its (right-side) tick
         # labels; the default ~4 pt would sit a little close to the 3-digit ticks.
-        ax_dsp.set_ylabel(r"DSP count", labelpad=8.0)
+        ax_dsp.set_ylabel(r"DSP Count", labelpad=8.0)
     else:
         ax_dsp.tick_params(axis="y", labelright=False)
 
