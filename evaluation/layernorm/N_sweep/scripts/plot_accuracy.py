@@ -92,6 +92,20 @@ SERIES = (
 COLOR_FIT = "red"
 
 
+def pow2_label(n: int) -> str:
+    """Format a sampled ``N`` as a base-2 power label for the log x-axis.
+
+    Every sampled ``N`` is a power of two, so it is shown as ``2^k`` (rendered
+    via mathtext, e.g. ``2^{10}`` for 1024) rather than the raw integer, matching
+    the base-2 log axis. Falls back to the plain integer for the (unexpected)
+    case of an ``N`` that is not an exact power of two.
+    """
+    exp = n.bit_length() - 1
+    if n > 0 and (1 << exp) == n:  # exact power of two
+        return rf"$2^{{{exp}}}$"
+    return str(n)
+
+
 def load_accuracy_csv(path: Path) -> tuple[list[float], list[float]]:
     """Load the ``(N, RMSRE)`` columns from an accuracy CSV.
 
@@ -224,11 +238,12 @@ def plot(label: str, color: str, marker: str, fit: bool,
     ax.set_xlabel(r"$N$")
     ax.set_ylabel(r"RMSRE")
 
-    # Show every sampled N as a major tick, labelled with its integer value,
-    # and suppress the base-2 minor ticks so the axis stays uncluttered.
+    # Show every sampled N as a major tick, labelled as a power of two (2^k) to
+    # match the base-2 log axis, and suppress the base-2 minor ticks so the axis
+    # stays uncluttered.
     all_n = sorted(set(n_vals))
     ax.set_xticks(all_n)
-    ax.set_xticklabels([str(n) for n in all_n], rotation=45, ha="right")
+    ax.set_xticklabels([pow2_label(n) for n in all_n], rotation=45, ha="right")
     ax.xaxis.set_minor_locator(NullLocator())
 
     # Decade major grid on the y-axis plus faint minor dec.-subdivisions so the

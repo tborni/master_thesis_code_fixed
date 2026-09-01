@@ -173,6 +173,21 @@ def configure_style() -> None:
     )
 
 
+def pow2_label(n: float) -> str:
+    """Format a sampled ``N`` as a base-2 power label for the log x-axis.
+
+    Every sampled ``N`` is a power of two, so on the base-2 log axis it is shown
+    as ``2^k`` (rendered via mathtext, e.g. ``2^{10}`` for 1024) rather than the
+    raw integer. Falls back to the plain integer for the (unexpected) case of an
+    ``N`` that is not an exact power of two.
+    """
+    value = int(round(n))
+    exp = value.bit_length() - 1
+    if value > 0 and (1 << exp) == value:  # exact power of two
+        return rf"$2^{{{exp}}}$"
+    return str(value)
+
+
 def power_of_two_ticks(hi: float) -> np.ndarray:
     """Return the powers of two ``2, 4, 8, ...`` up to and including ``hi``.
 
@@ -287,10 +302,11 @@ def draw_lut_axis(
 
     if log_x:
         # Base-2 log x-axis (N is a power of two): one major tick per sampled N,
-        # labelled with its integer value, base-2 minor ticks suppressed.
+        # labelled as a power of two (2^k) to match the base-2 axis, base-2 minor
+        # ticks suppressed.
         ax.set_xscale("log", base=2)
         ax.set_xticks(n_vals)
-        ax.set_xticklabels([str(int(n)) for n in n_vals], rotation=45, ha="right")
+        ax.set_xticklabels([pow2_label(n) for n in n_vals], rotation=45, ha="right")
         ax.xaxis.set_minor_locator(NullLocator())
     elif linear_grid == "pow2":
         # Linear x-axis with a base-2 (log-spaced) grid: the axis scale stays
