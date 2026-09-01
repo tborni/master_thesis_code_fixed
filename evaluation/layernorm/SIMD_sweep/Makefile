@@ -9,9 +9,10 @@
 # The sweep varies the SIMD unroll factor (N fixed) and records the synthesis
 # resource usage in resources.csv. plot_resources.py fits LUT = m*SIMD + n and
 # DSP = m*SIMD + n and renders both series on a dual-axis figure (LUT on the
-# left y-axis, DSP on the right), once with a linear-x and once with a log-x
-# axis; it also writes the fitted parameters to data/fit_parameters.txt. The
-# accuracy_{0,1}_newton.txt reports are left untouched.
+# left y-axis, DSP on the right), once with a linear-x axis, once with a log-x
+# axis and once as a combined two-panel (linear | log) figure; it also writes the
+# fitted parameters to data/fit_parameters.txt. The accuracy_{0,1}_newton.txt
+# reports are left untouched.
 #
 # Targets:
 #   make            # render the figures and write the fit parameters (== plots)
@@ -30,27 +31,29 @@ PLOT_RESOURCES := $(SCRIPTS)/plot_resources.py
 
 RESOURCES_CSV := $(DATA)/resources.csv
 
-# plot_resources.py writes two PNGs and the fit-parameters text file in a single
+# plot_resources.py writes three PNGs and the fit-parameters text file in a single
 # run. Each is tracked as a file target so they only regenerate when the script
 # or resources.csv change.
 RESOURCES_LIN_PNG := $(IMAGES)/resources_linear.png
 RESOURCES_LOG_PNG := $(IMAGES)/resources_log.png
+RESOURCES_CMB_PNG := $(IMAGES)/resources_combined.png
 FIT_TXT           := $(DATA)/fit_parameters.txt
 
 .PHONY: all plots clean
 
 all: plots
 
-plots: $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG) $(FIT_TXT)
+plots: $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG) $(RESOURCES_CMB_PNG) $(FIT_TXT)
 
 # plot_resources.py resolves its own inputs (data/) and outputs (images/, data/),
-# so it can be invoked from anywhere. It renders both figures and writes
-# fit_parameters.txt in one run; the log-x PNG and the fit file share that single
-# invocation with the linear-x PNG.
+# so it can be invoked from anywhere. It renders all three figures and writes
+# fit_parameters.txt in one run; the log-x and combined (two-panel) PNGs and the
+# fit file share that single invocation with the linear-x PNG.
 $(RESOURCES_LIN_PNG): $(PLOT_RESOURCES) $(RESOURCES_CSV)
 	$(PYTHON) $(PLOT_RESOURCES)
 $(RESOURCES_LOG_PNG): $(RESOURCES_LIN_PNG)
+$(RESOURCES_CMB_PNG): $(RESOURCES_LIN_PNG)
 $(FIT_TXT): $(RESOURCES_LIN_PNG)
 
 clean:
-	rm -f $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG) $(FIT_TXT)
+	rm -f $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG) $(RESOURCES_CMB_PNG) $(FIT_TXT)

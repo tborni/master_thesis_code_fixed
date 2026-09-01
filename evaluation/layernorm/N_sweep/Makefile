@@ -47,6 +47,7 @@ RESOURCES_CSV := $(DATA)/resources.csv
 ACCURACY_PNG      := $(IMAGES)/accuracy.png
 RESOURCES_LIN_PNG := $(IMAGES)/resources_lut_linear.png
 RESOURCES_LOG_PNG := $(IMAGES)/resources_lut_log.png
+RESOURCES_CMB_PNG := $(IMAGES)/resources_lut_combined.png
 # Shared fit-parameters file: both plot scripts write their own [section] of it
 # as a byproduct, so it is complete only once both have run.
 FIT_TXT           := $(DATA)/fit_parameters.txt
@@ -57,7 +58,7 @@ all: csv plots
 
 csv: $(ACCURACY_CSVS)
 
-plots: $(ACCURACY_PNG) $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG) $(FIT_TXT)
+plots: $(ACCURACY_PNG) $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG) $(RESOURCES_CMB_PNG) $(FIT_TXT)
 
 # Static pattern rule: each accuracy CSV is extracted from its matching report.
 $(ACCURACY_CSVS): $(DATA)/accuracy_%_newton.csv: $(DATA)/accuracy_%_newton.txt $(EXTRACT)
@@ -69,12 +70,13 @@ $(ACCURACY_CSVS): $(DATA)/accuracy_%_newton.csv: $(DATA)/accuracy_%_newton.txt $
 $(ACCURACY_PNG): $(PLOT_ACCURACY) $(FIT_REPORT) $(ACCURACY_CSVS)
 	$(PYTHON) $(PLOT_ACCURACY)
 
-# plot_resources.py renders both LUT-vs-N figures from resources.csv in a single
-# run and writes its [resources] section of fit_parameters.txt; the log-x PNG
-# shares that invocation with the linear-x PNG.
+# plot_resources.py renders all three LUT-vs-N figures from resources.csv in a
+# single run and writes its [resources] section of fit_parameters.txt; the log-x
+# and combined (two-panel) PNGs share that invocation with the linear-x PNG.
 $(RESOURCES_LIN_PNG): $(PLOT_RESOURCES) $(FIT_REPORT) $(RESOURCES_CSV)
 	$(PYTHON) $(PLOT_RESOURCES)
 $(RESOURCES_LOG_PNG): $(RESOURCES_LIN_PNG)
+$(RESOURCES_CMB_PNG): $(RESOURCES_LIN_PNG)
 
 # fit_parameters.txt is written as a byproduct of both plot runs (each script
 # fills in its own [section]), so it is up to date once both PNGs are. No recipe
@@ -84,4 +86,5 @@ $(FIT_TXT): $(ACCURACY_PNG) $(RESOURCES_LIN_PNG)
 clean:
 	rm -f $(ACCURACY_CSVS) \
 	      $(ACCURACY_PNG) $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG) \
+	      $(RESOURCES_CMB_PNG) \
 	      $(FIT_TXT)

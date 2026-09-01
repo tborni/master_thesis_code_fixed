@@ -8,18 +8,25 @@ DSP, BRAM, URAM``) and renders the LUT utilisation against the vector length
 
     LUT ~= m * N + n
 
-The fit is over the *raw* N (not log N), so it is a straight line in N. Two
-figures are produced, differing only in the x-axis scaling, both with a linear
-LUT y-axis::
+The fit is over the *raw* N (not log N), so it is a straight line in N. Three
+figures are produced, all with a linear LUT y-axis::
 
-    images/resources_lut_linear.png   linear N x-axis (the fit is a straight line)
-    images/resources_lut_log.png      base-2 log N x-axis (the same fit renders
-                                       as a log-shaped curve)
+    images/resources_lut_linear.png    linear N x-axis (the fit is a straight line)
+    images/resources_lut_log.png       base-2 log N x-axis (the same fit renders
+                                        as a log-shaped curve)
+    images/resources_lut_combined.png  a linear-x panel beside a base-2 log-x
+                                        panel, sharing a y-axis: the linear panel
+                                        shows the fit is straight (LUT is linear
+                                        in N) while the log panel keeps every
+                                        sampled N legible
 
 Rendering the identical ``m*N + n`` model on both axes lets the reader judge the
 fit under both viewpoints: the linear-x view shows the affine relationship
 directly, while the log-x view spreads the densely-packed small-N points apart.
-The fit is labelled simply "Linear fit" in the legend; the fitted slope,
+The combined figure places the two panels together so a reader gets both the
+"it is linear" evidence (straight line, left) and the "every point lies on it
+across the full range" evidence (all N legible, right) in one figure.
+The fit is labelled simply "Linear Fit" in the legend; the fitted slope,
 intercept and coefficient of determination (R^2) are printed to stdout and
 recorded in the shared ``data/fit_parameters.txt`` under a ``[resources]``
 section (written via ``fit_report``).
@@ -72,6 +79,9 @@ IMAGES_DIR = PROJECT_ROOT / "images"
 INPUT_CSV = DATA_DIR / "resources.csv"
 OUTPUT_LINEAR_PNG = IMAGES_DIR / "resources_lut_linear.png"
 OUTPUT_LOG_PNG = IMAGES_DIR / "resources_lut_log.png"
+# Two-panel comparison (linear x | base-2 log x, shared y) combining the two
+# single-axis views into one figure; see plot_pair for the rationale.
+OUTPUT_PAIR_PNG = IMAGES_DIR / "resources_lut_combined.png"
 # Shared fit-parameters file; this script owns its "[resources]" section.
 # See fit_report.update_section.
 OUTPUT_FIT_TXT = DATA_DIR / "fit_parameters.txt"
@@ -86,7 +96,7 @@ COLOR_FIT = "red"        # red, to contrast with the blue data markers
 # entry in the legend. The fitted slope/intercept are printed to stdout rather
 # than shown in the legend, so the label is a plain descriptor.
 LABEL_DATA = "Synthesized LUTs"
-LABEL_FIT = "Linear fit"
+LABEL_FIT = "Linear Fit"
 
 
 def load_resources_csv(path: Path) -> tuple[np.ndarray, np.ndarray]:
@@ -163,22 +173,30 @@ def configure_style() -> None:
     )
 
 
-def plot_one(
+def draw_lut_axis(
+    ax,
     n_vals: np.ndarray,
     lut: np.ndarray,
     m: float,
     intercept: float,
-    output_path: Path,
     log_x: bool,
+    add_ylabel: bool = True,
+    add_legend: bool = True,
 ) -> None:
-    """Render a single LUT-vs-N figure (linear or log x-axis) to ``output_path``.
+    """Draw the LUT-vs-N data + affine fit onto an existing axes ``ax``.
+
+    Everything that defines a single LUT panel lives here -- the fit line, the
+    measured markers, the axis scaling/ticks/grid and the legend -- so both the
+    stand-alone figures (:func:`plot_one`) and the side-by-side comparison
+    (:func:`plot_pair`) render identical panels from one code path. This routine
+    does *not* create or save a figure; the caller owns that.
 
     The affine fit ``m*N + n`` is evaluated on a dense N grid so it renders
-    smoothly: a straight line on the linear axis, a log-shaped curve on the log
-    axis. ``log_x`` selects which x-scaling to use; the y-axis is always linear.
+    smoothly: a straight line on a linear x-axis, a log-shaped curve on a base-2
+    log x-axis. ``log_x`` selects the x-scaling; the y-axis is always linear.
+    ``add_ylabel`` / ``add_legend`` let a shared-axis caller (the two-panel
+    figure) place the y-label and legend on one panel only.
     """
-    fig, ax = plt.subplots(figsize=(8.6, 5.2))
-
     # Dense N grid for a smooth fit line across the sampled range. On the log
     # axis a geometric grid keeps the curve smooth where points bunch up at
     # small N; on the linear axis a uniform grid is used.
@@ -204,7 +222,8 @@ def plot_one(
     )
 
     ax.set_xlabel(r"$N$")
-    ax.set_ylabel(r"LUT count")
+    if add_ylabel:
+        ax.set_ylabel(r"LUT Count")
 
     # Linear LUT y-axis in both figures, starting at 0 so the affine intercept
     # and the true magnitude of the LUT growth are visible.
@@ -227,15 +246,85 @@ def plot_one(
 
     ax.grid(True, which="major", linestyle="--", linewidth=0.6, alpha=0.7)
 
-    # Data legend entry before the fit entry (markers above the line reference).
-    handles, labels = ax.get_legend_handles_labels()
-    order = sorted(range(len(labels)), key=lambda i: labels[i] != LABEL_DATA)
-    ax.legend(
-        [handles[i] for i in order], [labels[i] for i in order],
-        loc="upper left", ncol=1, handlelength=2.2,
-        borderpad=0.6, labelspacing=0.7,
-        frameon=True, fancybox=True, edgecolor="black", facecolor="white",
+    if add_legend:
+        # Data legend entry before the fit entry (markers above the line ref.).
+        handles, labels = ax.get_legend_handles_labels()
+        order = sorted(range(len(labels)), key=lambda i: labels[i] != LABEL_DATA)
+        ax.legend(
+            [handles[i] for i in order], [labels[i] for i in order],
+            loc="upper left", ncol=1, handlelength=2.2,
+            borderpad=0.6, labelspacing=0.7,
+            frameon=True, fancybox=True, edgecolor="black", facecolor="white",
+        )
+
+
+def plot_one(
+    n_vals: np.ndarray,
+    lut: np.ndarray,
+    m: float,
+    intercept: float,
+    output_path: Path,
+    log_x: bool,
+) -> None:
+    """Render a single LUT-vs-N figure (linear or log x-axis) to ``output_path``.
+
+    Thin wrapper over :func:`draw_lut_axis`: it owns the figure lifecycle (create,
+    tight-layout, save) while the shared routine draws the panel, so the two
+    stand-alone figures stay identical to the two-panel figure's panels.
+    """
+    fig, ax = plt.subplots(figsize=(8.6, 5.2))
+    draw_lut_axis(ax, n_vals, lut, m, intercept, log_x=log_x)
+    fig.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, bbox_inches="tight", pad_inches=0.05)
+    plt.close(fig)
+    print(f"Saved to {output_path}")
+
+
+def plot_pair(
+    n_vals: np.ndarray,
+    lut: np.ndarray,
+    m: float,
+    intercept: float,
+    output_path: Path,
+) -> None:
+    """Render the two-panel LUT-vs-N comparison (linear | base-2 log) side by side.
+
+    A single affine fit ``LUT = m*N + n`` is drawn on both panels, which share a
+    y-axis. The panels exist to resolve a genuine tension no single axis can:
+
+    * Left (linear x-axis): the fit is a straight line, so the *linearity* of
+      LUT-in-N is shown directly -- but the geometrically-sampled small-N points
+      crowd against the origin.
+    * Right (base-2 log x-axis): every sampled N is legible and sits on the fit,
+      confirming the sweep spans a wide range -- but here the same affine fit
+      necessarily renders as a curve (an affine function is not straight vs.
+      log N).
+
+    Seen together, the reader gets both the "it is linear" evidence and the
+    "every point is on it across the full range" evidence. Short panel titles name
+    each x-axis so the straight-vs-curved contrast is not mistaken for two
+    different fits; the y-label and legend appear once, on the left panel.
+    """
+    fig, (ax_lin, ax_log) = plt.subplots(
+        1, 2, figsize=(13.4, 5.2), sharey=True
     )
+
+    # Left: linear x-axis -> straight-line fit (the linearity claim). Carries the
+    # shared y-label and the legend.
+    draw_lut_axis(
+        ax_lin, n_vals, lut, m, intercept,
+        log_x=False, add_ylabel=True, add_legend=True,
+    )
+    ax_lin.set_title("Linear $N$ axis")
+
+    # Right: base-2 log x-axis -> all points legible (fit renders as a curve).
+    # No y-label/legend: the shared y-axis and the left panel's legend cover it.
+    draw_lut_axis(
+        ax_log, n_vals, lut, m, intercept,
+        log_x=True, add_ylabel=False, add_legend=False,
+    )
+    ax_log.set_title(r"Base-2 log $N$ axis")
 
     fig.tight_layout()
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -270,6 +359,7 @@ def main() -> int:
     configure_style()
     plot_one(n_vals, lut, m, intercept, OUTPUT_LINEAR_PNG, log_x=False)
     plot_one(n_vals, lut, m, intercept, OUTPUT_LOG_PNG, log_x=True)
+    plot_pair(n_vals, lut, m, intercept, OUTPUT_PAIR_PNG)
     return 0
 
 

@@ -10,12 +10,20 @@ unroll factor on a single figure with two independent linear y-axes::
     DSP ~= m_DSP * SIMD + n_DSP   (right y-axis, vermillion squares)
 
 Each series carries its own least-squares affine fit, both taken over the *raw*
-SIMD (not log SIMD), so each is a straight line in SIMD. Two figures are
-produced, differing only in the x-axis scaling, both with linear y-axes::
+SIMD (not log SIMD), so each is a straight line in SIMD. Three figures are
+produced, all with linear y-axes::
 
-    images/resources_linear.png   linear SIMD x-axis (the fits are straight lines)
-    images/resources_log.png      base-2 log SIMD x-axis (the same fits render
-                                   as log-shaped curves)
+    images/resources_linear.png    linear SIMD x-axis (the fits are straight lines)
+    images/resources_log.png       base-2 log SIMD x-axis (the same fits render
+                                    as log-shaped curves)
+    images/resources_combined.png  a linear-x panel beside a base-2 log-x panel,
+                                    sharing both y-scales: the LUT (left) axis is
+                                    ticked and labelled on the far-left panel only
+                                    and the DSP (right) axis on the far-right panel
+                                    only, so the two dual-axis panels read as one
+                                    figure. The linear panel shows the fits are
+                                    straight while the log panel keeps every
+                                    sampled SIMD legible
 
 The fitted parameters themselves (slope, intercept and R^2 for each series) are
 also written, freshly overwritten on every run, to a plain-text file::
@@ -25,9 +33,12 @@ also written, freshly overwritten on every run, to a plain-text file::
 Rendering the identical ``m*SIMD + n`` models on both axes lets the reader judge
 the fits under both viewpoints: the linear-x view shows the affine relationship
 directly, while the log-x view spreads the densely-packed small-SIMD points
-apart. Each fit is labelled simply "... linear fit" in the legend; the fitted
-slopes, intercepts and coefficients of determination (R^2) are printed to stdout
-and saved to ``data/fit_parameters.txt``.
+apart. The combined figure places the two panels together so a reader gets both
+the "they are linear" evidence (straight lines, left) and the "every point lies
+on them across the full range" evidence (all SIMD legible, right) in one figure.
+Each fit is labelled simply "... linear fit" in the legend; the fitted slopes,
+intercepts and coefficients of determination (R^2) are printed to stdout and
+saved to ``data/fit_parameters.txt``.
 
 Design notes
 ------------
@@ -82,6 +93,9 @@ IMAGES_DIR = PROJECT_ROOT / "images"
 INPUT_CSV = DATA_DIR / "resources.csv"
 OUTPUT_LINEAR_PNG = IMAGES_DIR / "resources_linear.png"
 OUTPUT_LOG_PNG = IMAGES_DIR / "resources_log.png"
+# Two-panel comparison (linear x | base-2 log x) combining the two single-axis
+# views into one dual-axis figure; see plot_pair for the layout rationale.
+OUTPUT_PAIR_PNG = IMAGES_DIR / "resources_combined.png"
 # The fitted affine parameters (slope + intercept, with R^2) for both series are
 # written here, freshly overwritten, on every run.
 OUTPUT_FIT_TXT = DATA_DIR / "fit_parameters.txt"
@@ -236,29 +250,42 @@ def _fit_grid(simd: np.ndarray, log_x: bool) -> np.ndarray:
     return np.linspace(simd_min, simd_max, 400)
 
 
-def plot_one(
+def draw_dual_axis(
+    ax_lut,
+    ax_dsp,
     simd: np.ndarray,
     lut: np.ndarray,
     dsp: np.ndarray,
     lut_fit: tuple[float, float, float],
     dsp_fit: tuple[float, float, float],
-    output_path: Path,
     log_x: bool,
+    show_lut_labels: bool = True,
+    show_dsp_labels: bool = True,
+    add_legend: bool = True,
 ) -> None:
-    """Render a single dual-axis LUT+DSP-vs-SIMD figure to ``output_path``.
+    """Draw the dual-axis LUT+DSP-vs-SIMD panel onto the twinned axes ``ax_lut``/``ax_dsp``.
+
+    Everything that defines a single dual-axis panel lives here -- both series'
+    fit lines and markers, the y-limits, the x scaling/ticks/grid and the combined
+    legend -- so both the stand-alone figures (:func:`plot_one`) and the
+    side-by-side comparison (:func:`plot_pair`) render identical panels from one
+    code path. The caller owns the figure and must pass an ``ax_lut`` together with
+    its ``ax_dsp = ax_lut.twinx()``; this routine does *not* create or save a
+    figure.
 
     ``lut_fit`` / ``dsp_fit`` are ``(m, n, r_squared)`` affine fits; the ``m*x+n``
-    line is evaluated on a dense SIMD grid so it renders smoothly (straight on
-    the linear axis, log-shaped on the log axis). ``log_x`` selects which
-    x-scaling to use; both y-axes are always linear. The left y-axis carries LUT
-    (blue), the right y-axis DSP (vermillion), and each axis is coloured to match
-    its series so the reader can tell which curve belongs to which scale.
+    line is evaluated on a dense SIMD grid so it renders smoothly (straight on the
+    linear axis, log-shaped on the log axis). ``log_x`` selects which x-scaling to
+    use; both y-axes are always linear. The left y-axis carries LUT (blue), the
+    right y-axis DSP (vermillion).
+
+    ``show_lut_labels`` / ``show_dsp_labels`` / ``add_legend`` let a shared-axis
+    caller (the two-panel figure) place the LUT y-axis furniture on the far-left
+    panel only, the DSP y-axis furniture on the far-right panel only, and the
+    legend on one panel only; the stand-alone figures leave all three on.
     """
     m_lut, n_lut, _ = lut_fit
     m_dsp, n_dsp, _ = dsp_fit
-
-    fig, ax_lut = plt.subplots(figsize=(8.6, 5.2))
-    ax_dsp = ax_lut.twinx()  # right y-axis sharing the SIMD x-axis.
 
     grid = _fit_grid(simd, log_x)
 
@@ -294,14 +321,27 @@ def plot_one(
     # stay black. The two series remain distinguishable by their marker/line
     # colour and shape, and each y-axis label names its series so the axis <->
     # curve mapping is still explicit without colouring the axis furniture.
+    #
+    # In the two-panel figure the LUT (left) axis furniture is shown on the
+    # far-left panel only and the DSP (right) axis furniture on the far-right
+    # panel only; the inner copies keep the same limits but hide their tick
+    # labels so the panels read as one shared pair of y-scales.
     ax_lut.set_xlabel(r"SIMD")
-    ax_lut.set_ylabel(r"LUT count")
-    ax_dsp.set_ylabel(r"DSP count")
+    if show_lut_labels:
+        ax_lut.set_ylabel(r"LUT Count")
+    else:
+        ax_lut.tick_params(axis="y", labelleft=False)
+    if show_dsp_labels:
+        ax_dsp.set_ylabel(r"DSP count")
+    else:
+        ax_dsp.tick_params(axis="y", labelright=False)
 
     # Linear y-axes, both from 0 so the affine intercepts and true magnitudes
     # are visible. The LUT (left) axis is auto-scaled to its data with headroom;
     # the DSP (right) axis is fixed to 0..DSP_YMAX so the DSP curve sits clearly
-    # below the LUT curve rather than overlapping it.
+    # below the LUT curve rather than overlapping it. Both limits are identical
+    # across the two panels, so the shared y-scales line up despite the inner
+    # tick labels being hidden.
     ax_lut.set_ylim(bottom=0, top=float(lut.max()) * 1.12)
     ax_dsp.set_ylim(bottom=0, top=DSP_YMAX)
 
@@ -330,19 +370,101 @@ def plot_one(
     # --- Combined legend ------------------------------------------------------
     # Gather handles from both axes into one legend, ordered LUT data, LUT fit,
     # DSP data, DSP fit so each series' marker sits above its fit line.
-    h_lut, l_lut = ax_lut.get_legend_handles_labels()
-    h_dsp, l_dsp = ax_dsp.get_legend_handles_labels()
-    order = [
-        LABEL_LUT_DATA, LABEL_LUT_FIT, LABEL_DSP_DATA, LABEL_DSP_FIT,
-    ]
-    handle_by_label = dict(zip(l_lut + l_dsp, h_lut + h_dsp))
-    ordered = [(handle_by_label[lbl], lbl) for lbl in order if lbl in handle_by_label]
-    ax_lut.legend(
-        [h for h, _ in ordered], [lbl for _, lbl in ordered],
-        loc="upper left", ncol=1, handlelength=2.2,
-        borderpad=0.6, labelspacing=0.7,
-        frameon=True, fancybox=True, edgecolor="black", facecolor="white",
-    ).set_zorder(6)
+    if add_legend:
+        h_lut, l_lut = ax_lut.get_legend_handles_labels()
+        h_dsp, l_dsp = ax_dsp.get_legend_handles_labels()
+        order = [
+            LABEL_LUT_DATA, LABEL_LUT_FIT, LABEL_DSP_DATA, LABEL_DSP_FIT,
+        ]
+        handle_by_label = dict(zip(l_lut + l_dsp, h_lut + h_dsp))
+        ordered = [(handle_by_label[lbl], lbl) for lbl in order if lbl in handle_by_label]
+        ax_lut.legend(
+            [h for h, _ in ordered], [lbl for _, lbl in ordered],
+            loc="upper left", ncol=1, handlelength=2.2,
+            borderpad=0.6, labelspacing=0.7,
+            frameon=True, fancybox=True, edgecolor="black", facecolor="white",
+        ).set_zorder(6)
+
+
+def plot_one(
+    simd: np.ndarray,
+    lut: np.ndarray,
+    dsp: np.ndarray,
+    lut_fit: tuple[float, float, float],
+    dsp_fit: tuple[float, float, float],
+    output_path: Path,
+    log_x: bool,
+) -> None:
+    """Render a single dual-axis LUT+DSP-vs-SIMD figure to ``output_path``.
+
+    Thin wrapper over :func:`draw_dual_axis`: it owns the figure lifecycle (create
+    the axis + its twin, tight-layout, save) while the shared routine draws the
+    panel, so the two stand-alone figures stay identical to the two-panel figure's
+    panels.
+    """
+    fig, ax_lut = plt.subplots(figsize=(8.6, 5.2))
+    ax_dsp = ax_lut.twinx()  # right y-axis sharing the SIMD x-axis.
+    draw_dual_axis(
+        ax_lut, ax_dsp, simd, lut, dsp, lut_fit, dsp_fit, log_x=log_x,
+    )
+    fig.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, bbox_inches="tight", pad_inches=0.05)
+    plt.close(fig)
+    print(f"Saved to {output_path}")
+
+
+def plot_pair(
+    simd: np.ndarray,
+    lut: np.ndarray,
+    dsp: np.ndarray,
+    lut_fit: tuple[float, float, float],
+    dsp_fit: tuple[float, float, float],
+    output_path: Path,
+) -> None:
+    """Render the two-panel dual-axis comparison (linear | base-2 log) side by side.
+
+    Both panels draw the same two affine fits (LUT left, DSP right) and share both
+    y-scales. The panels exist to resolve a genuine tension no single x-axis can:
+
+    * Left (linear x-axis): the fits are straight lines, so the *linearity* of
+      LUT- and DSP-in-SIMD is shown directly -- but the geometrically-sampled
+      small-SIMD points crowd against the origin.
+    * Right (base-2 log x-axis): every sampled SIMD is legible and sits on the
+      fits, confirming the sweep spans a wide range -- but here the same affine
+      fits necessarily render as curves (an affine function is not straight vs.
+      log SIMD).
+
+    Because the figure is dual-axis, each panel has its own LUT (left) and DSP
+    (right) y-axis. To keep it readable the outer spines carry the labels/ticks
+    and the inner ones are de-labelled: the LUT axis is ticked and labelled on the
+    far-left panel only, the DSP axis on the far-right panel only, and both panels
+    use identical y-limits so the shared scales line up. Short panel titles name
+    each x-axis so the straight-vs-curved contrast is not mistaken for different
+    fits; the combined legend appears once, on the left panel.
+    """
+    fig, (ax_lin, ax_log) = plt.subplots(1, 2, figsize=(13.4, 5.2))
+    ax_lin_dsp = ax_lin.twinx()  # right (DSP) axis of the linear panel.
+    ax_log_dsp = ax_log.twinx()  # right (DSP) axis of the log panel.
+
+    # Left: linear x-axis -> straight-line fits (the linearity claim). Shows the
+    # LUT (left) y-axis furniture and the combined legend; its DSP (right, inner)
+    # axis keeps the shared limits but hides its tick labels.
+    draw_dual_axis(
+        ax_lin, ax_lin_dsp, simd, lut, dsp, lut_fit, dsp_fit,
+        log_x=False, show_lut_labels=True, show_dsp_labels=False, add_legend=True,
+    )
+    ax_lin.set_title("Linear SIMD axis")
+
+    # Right: base-2 log x-axis -> all points legible (fits render as curves).
+    # Shows the DSP (right) y-axis furniture on the far right; its LUT (left,
+    # inner) axis keeps the shared limits but hides its tick labels, and the
+    # legend is omitted (the left panel carries it).
+    draw_dual_axis(
+        ax_log, ax_log_dsp, simd, lut, dsp, lut_fit, dsp_fit,
+        log_x=True, show_lut_labels=False, show_dsp_labels=True, add_legend=False,
+    )
+    ax_log.set_title(r"Base-2 log SIMD axis")
 
     fig.tight_layout()
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -370,6 +492,7 @@ def main() -> int:
     configure_style()
     plot_one(simd, lut, dsp, lut_fit, dsp_fit, OUTPUT_LINEAR_PNG, log_x=False)
     plot_one(simd, lut, dsp, lut_fit, dsp_fit, OUTPUT_LOG_PNG, log_x=True)
+    plot_pair(simd, lut, dsp, lut_fit, dsp_fit, OUTPUT_PAIR_PNG)
     return 0
 
 

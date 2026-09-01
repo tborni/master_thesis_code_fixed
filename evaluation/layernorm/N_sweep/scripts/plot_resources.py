@@ -8,18 +8,29 @@ DSP, BRAM, URAM``) and renders the LUT utilisation against the vector length
 
     LUT ~= m * N + n
 
-The fit is over the *raw* N (not log N), so it is a straight line in N. Two
-figures are produced, differing only in the x-axis scaling, both with a linear
-LUT y-axis::
+The fit is over the *raw* N (not log N), so it is a straight line in N. Three
+figures are produced, all with a linear LUT y-axis::
 
-    images/resources_lut_linear.png   linear N x-axis (the fit is a straight line)
-    images/resources_lut_log.png      base-2 log N x-axis (the same fit renders
-                                       as a log-shaped curve)
+    images/resources_lut_linear.png    linear N x-axis (the fit is a straight
+                                        line), but with the major grid lines on a
+                                        base-2 locus: one line per power of two
+                                        (2, 4, ..., 1024), so they bunch toward
+                                        the origin and spread out to the right
+    images/resources_lut_log.png       base-2 log N x-axis (the same fit renders
+                                        as a log-shaped curve)
+    images/resources_lut_combined.png  a linear-x panel (round ticks) beside a
+                                        base-2 log-x panel, sharing a y-axis: the
+                                        linear panel shows the fit is straight
+                                        (LUT is linear in N) while the log panel
+                                        keeps every sampled N legible
 
 Rendering the identical ``m*N + n`` model on both axes lets the reader judge the
 fit under both viewpoints: the linear-x view shows the affine relationship
 directly, while the log-x view spreads the densely-packed small-N points apart.
-The fit is labelled simply "Linear fit" in the legend; the fitted slope,
+The combined figure places the two panels together so a reader gets both the
+"it is linear" evidence (straight line, left) and the "every point lies on it
+across the full range" evidence (all N legible, right) in one figure.
+The fit is labelled simply "Linear Fit" in the legend; the fitted slope,
 intercept and coefficient of determination (R^2) are printed to stdout and
 recorded in the shared ``data/fit_parameters.txt`` under a ``[resources]``
 section (written via ``fit_report``, alongside the accuracy script's section).
@@ -50,7 +61,7 @@ matplotlib.use("Agg")  # headless-safe: render to file without a display server.
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.ticker import MaxNLocator, NullLocator
+from matplotlib.ticker import FixedLocator, MaxNLocator, NullLocator
 
 # Local sibling module (same scripts/ dir): the shared fit-parameters writer.
 import fit_report
@@ -68,6 +79,9 @@ IMAGES_DIR = PROJECT_ROOT / "images"
 INPUT_CSV = DATA_DIR / "resources.csv"
 OUTPUT_LINEAR_PNG = IMAGES_DIR / "resources_lut_linear.png"
 OUTPUT_LOG_PNG = IMAGES_DIR / "resources_lut_log.png"
+# Two-panel comparison (linear x | base-2 log x, shared y) combining the two
+# single-axis views into one figure; see plot_pair for the rationale.
+OUTPUT_PAIR_PNG = IMAGES_DIR / "resources_lut_combined.png"
 # Shared fit-parameters file; this script owns its "[resources]" section (the
 # accuracy script owns "[accuracy]"). See fit_report.update_section.
 OUTPUT_FIT_TXT = DATA_DIR / "fit_parameters.txt"
@@ -82,7 +96,7 @@ COLOR_FIT = "red"        # red, to contrast with the blue data markers
 # entry in the legend. The fitted slope/intercept are printed to stdout rather
 # than shown in the legend, so the label is a plain descriptor.
 LABEL_DATA = "Synthesized LUTs"
-LABEL_FIT = "Linear fit"
+LABEL_FIT = "Linear Fit"
 
 
 def load_resources_csv(path: Path) -> tuple[np.ndarray, np.ndarray]:
@@ -159,22 +173,86 @@ def configure_style() -> None:
     )
 
 
-def plot_one(
+def power_of_two_ticks(hi: float) -> np.ndarray:
+    """Return the powers of two ``2, 4, 8, ...`` up to and including ``hi``.
+
+    Used to place the linear-x grid lines on a base-2 (log-spaced) locus while
+    keeping the axis itself linear, so the sampled N (all powers of two) each get
+    a grid line. ``hi`` is the largest N to cover; the smallest tick is 2 (=2**1),
+    matching the sampled range (N >= 2).
+    """
+    if hi < 2:
+        return np.array([], dtype=float)
+    top = int(np.floor(np.log2(hi)))
+    return np.array([2.0 ** k for k in range(1, top + 1)], dtype=float)
+
+
+def sparse_labels(ticks: np.ndarray, axis_min: float, axis_max: float,
+                  min_frac: float = 0.045) -> list[str]:
+    """Label only ticks that are far enough apart to stay legible; blank the rest.
+
+    On a *linear* axis the low powers of two (2, 4, 8, 16, ...) collapse toward
+    the origin, so labelling every one would overprint an unreadable smear at the
+    left. This walks the ticks left-to-right and keeps a numeric label only when
+    the tick is at least ``min_frac`` of the axis span past the previous *labelled*
+    tick; intervening ticks still draw a grid line but carry an empty label. The
+    largest tick is always labelled so the axis states its full extent. Returns a
+    label string per tick (``""`` for the suppressed ones), parallel to ``ticks``.
+    """
+    span = axis_max - axis_min
+    if span <= 0 or ticks.size == 0:
+        return [str(int(t)) for t in ticks]
+    min_gap = min_frac * span
+    labels = [""] * ticks.size
+    last_labelled = -np.inf
+    for i, t in enumerate(ticks):
+        if t - last_labelled >= min_gap:
+            labels[i] = str(int(t))
+            last_labelled = t
+    # Guarantee the largest tick is labelled (it anchors the axis extent); if the
+    # greedy pass already labelled it this is a no-op.
+    labels[-1] = str(int(ticks[-1]))
+    return labels
+
+
+def draw_lut_axis(
+    ax,
     n_vals: np.ndarray,
     lut: np.ndarray,
     m: float,
     intercept: float,
-    output_path: Path,
     log_x: bool,
+    add_ylabel: bool = True,
+    add_legend: bool = True,
+    linear_grid: str = "pow2",
 ) -> None:
-    """Render a single LUT-vs-N figure (linear or log x-axis) to ``output_path``.
+    """Draw the LUT-vs-N data + affine fit onto an existing axes ``ax``.
+
+    Everything that defines a single LUT panel lives here -- the fit line, the
+    measured markers, the axis scaling/ticks/grid and the legend -- so both the
+    stand-alone figures (:func:`plot_one`) and the side-by-side comparison
+    (:func:`plot_pair`) render identical panels from one code path. This routine
+    does *not* create or save a figure; the caller owns that.
 
     The affine fit ``m*N + n`` is evaluated on a dense N grid so it renders
-    smoothly: a straight line on the linear axis, a log-shaped curve on the log
-    axis. ``log_x`` selects which x-scaling to use; the y-axis is always linear.
-    """
-    fig, ax = plt.subplots(figsize=(8.6, 5.2))
+    smoothly: a straight line on a linear x-axis, a log-shaped curve on a base-2
+    log x-axis. ``log_x`` selects the x-scaling; the y-axis is always linear.
+    ``add_ylabel`` / ``add_legend`` let a shared-axis caller (the two-panel
+    figure) place the y-label and legend on one panel only.
 
+    ``linear_grid`` selects the x ticks/grid *when* ``log_x`` is False (it is
+    ignored on the log axis):
+
+    * ``"pow2"``  -- grid line at every power of two (2, 4, ..., 1024) on the
+      linear axis, so the grid sits on the sampled N; used by the stand-alone
+      ``resources_lut_linear.png``.
+    * ``"round"`` -- evenly-spaced round ticks chosen by matplotlib (0, 256, 512,
+      ...); used by the combined figure's linear panel, where the *log* panel
+      already carries the every-N base-2 grid, so the linear panel is kept
+      uncluttered and the two panels divide labour.
+    """
+    if linear_grid not in ("pow2", "round"):
+        raise ValueError(f"linear_grid must be 'pow2' or 'round', got {linear_grid!r}")
     # Dense N grid for a smooth fit line across the sampled range. On the log
     # axis a geometric grid keeps the curve smooth where points bunch up at
     # small N; on the linear axis a uniform grid is used.
@@ -200,7 +278,8 @@ def plot_one(
     )
 
     ax.set_xlabel(r"$N$")
-    ax.set_ylabel(r"LUT count")
+    if add_ylabel:
+        ax.set_ylabel(r"LUT Count")
 
     # Linear LUT y-axis in both figures, starting at 0 so the affine intercept
     # and the true magnitude of the LUT growth are visible.
@@ -213,25 +292,115 @@ def plot_one(
         ax.set_xticks(n_vals)
         ax.set_xticklabels([str(int(n)) for n in n_vals], rotation=45, ha="right")
         ax.xaxis.set_minor_locator(NullLocator())
-    else:
-        # Linear x-axis: use evenly-spaced round ticks chosen by matplotlib.
-        # Marking every sampled N here would pile the small-N values (2, 4, 8,
-        # 16, 32) on top of each other near the origin; the measured points are
-        # still visible as markers, so regular linear ticks read far cleaner.
+    elif linear_grid == "pow2":
+        # Linear x-axis with a base-2 (log-spaced) grid: the axis scale stays
+        # linear -- so the affine fit remains a straight line and the intercept
+        # at N=0 is visible -- but the major grid lines are placed at every power
+        # of two (2, 4, ..., 1024), the locus the sampled N actually live on.
+        # On a linear axis those powers bunch toward the origin and spread out to
+        # the right; that is the intended "logarithmic grid on a linear axis"
+        # view. Ticks are drawn at every power of two (each gets a grid line),
+        # but only the well-separated ones are labelled so the crowded low end
+        # does not overprint an unreadable smear of text.
+        ax.set_xlim(left=0, right=n_max * 1.03)
+        pow2 = power_of_two_ticks(n_max)
+        ax.xaxis.set_major_locator(FixedLocator(pow2))
+        ax.set_xticklabels(
+            sparse_labels(pow2, 0.0, n_max * 1.03), rotation=45, ha="right"
+        )
+        ax.xaxis.set_minor_locator(NullLocator())
+    else:  # linear_grid == "round"
+        # Linear x-axis with evenly-spaced round ticks chosen by matplotlib
+        # (0, 256, 512, ...). Used by the combined figure's linear panel: the
+        # sibling log panel already shows every sampled N on a base-2 grid, so
+        # here the small-N points (2 .. 32) are simply left to bunch near the
+        # origin as markers and the axis stays uncluttered.
         ax.set_xlim(left=0, right=n_max * 1.03)
         ax.xaxis.set_major_locator(MaxNLocator(nbins=8, integer=True))
 
     ax.grid(True, which="major", linestyle="--", linewidth=0.6, alpha=0.7)
 
-    # Data legend entry before the fit entry (markers above the line reference).
-    handles, labels = ax.get_legend_handles_labels()
-    order = sorted(range(len(labels)), key=lambda i: labels[i] != LABEL_DATA)
-    ax.legend(
-        [handles[i] for i in order], [labels[i] for i in order],
-        loc="upper left", ncol=1, handlelength=2.2,
-        borderpad=0.6, labelspacing=0.7,
-        frameon=True, fancybox=True, edgecolor="black", facecolor="white",
+    if add_legend:
+        # Data legend entry before the fit entry (markers above the line ref.).
+        handles, labels = ax.get_legend_handles_labels()
+        order = sorted(range(len(labels)), key=lambda i: labels[i] != LABEL_DATA)
+        ax.legend(
+            [handles[i] for i in order], [labels[i] for i in order],
+            loc="upper left", ncol=1, handlelength=2.2,
+            borderpad=0.6, labelspacing=0.7,
+            frameon=True, fancybox=True, edgecolor="black", facecolor="white",
+        )
+
+
+def plot_one(
+    n_vals: np.ndarray,
+    lut: np.ndarray,
+    m: float,
+    intercept: float,
+    output_path: Path,
+    log_x: bool,
+) -> None:
+    """Render a single LUT-vs-N figure (linear or log x-axis) to ``output_path``.
+
+    Thin wrapper over :func:`draw_lut_axis`: it owns the figure lifecycle (create,
+    tight-layout, save) while the shared routine draws the panel, so the two
+    stand-alone figures stay identical to the two-panel figure's panels.
+    """
+    fig, ax = plt.subplots(figsize=(8.6, 5.2))
+    draw_lut_axis(ax, n_vals, lut, m, intercept, log_x=log_x)
+    fig.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, bbox_inches="tight", pad_inches=0.05)
+    plt.close(fig)
+    print(f"Saved to {output_path}")
+
+
+def plot_pair(
+    n_vals: np.ndarray,
+    lut: np.ndarray,
+    m: float,
+    intercept: float,
+    output_path: Path,
+) -> None:
+    """Render the two-panel LUT-vs-N comparison (linear | base-2 log) side by side.
+
+    A single affine fit ``LUT = m*N + n`` is drawn on both panels, which share a
+    y-axis. The panels exist to resolve a genuine tension no single axis can:
+
+    * Left (linear x-axis): the fit is a straight line, so the *linearity* of
+      LUT-in-N is shown directly -- but the geometrically-sampled small-N points
+      (2 .. 32) crowd against the origin.
+    * Right (base-2 log x-axis): every sampled N is legible and sits on the fit,
+      confirming the sweep spans a wide range -- but here the same affine fit
+      necessarily renders as a curve (an affine function is not straight vs.
+      log N).
+
+    Seen together, the reader gets both the "it is linear" evidence and the
+    "every point is on it across the full range" evidence. Short panel titles name
+    each x-axis so the straight-vs-curved contrast is not mistaken for two
+    different fits; the y-label and legend appear once, on the left panel.
+    """
+    fig, (ax_lin, ax_log) = plt.subplots(
+        1, 2, figsize=(13.4, 5.2), sharey=True
     )
+
+    # Left: linear x-axis -> straight-line fit (the linearity claim). Carries the
+    # shared y-label and the legend. Uses plain round ticks (not the base-2 grid)
+    # since the log panel already shows every sampled N, so this panel stays
+    # uncluttered and the two panels divide labour.
+    draw_lut_axis(
+        ax_lin, n_vals, lut, m, intercept,
+        log_x=False, add_ylabel=True, add_legend=True, linear_grid="round",
+    )
+    ax_lin.set_title("Linear $N$ axis")
+
+    # Right: base-2 log x-axis -> all points legible (fit renders as a curve).
+    # No y-label/legend: the shared y-axis and the left panel's legend cover it.
+    draw_lut_axis(
+        ax_log, n_vals, lut, m, intercept,
+        log_x=True, add_ylabel=False, add_legend=False,
+    )
+    ax_log.set_title(r"Base-2 log $N$ axis")
 
     fig.tight_layout()
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -266,6 +435,7 @@ def main() -> int:
     configure_style()
     plot_one(n_vals, lut, m, intercept, OUTPUT_LINEAR_PNG, log_x=False)
     plot_one(n_vals, lut, m, intercept, OUTPUT_LOG_PNG, log_x=True)
+    plot_pair(n_vals, lut, m, intercept, OUTPUT_PAIR_PNG)
     return 0
 
 
