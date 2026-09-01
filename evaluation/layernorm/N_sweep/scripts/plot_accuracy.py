@@ -1,32 +1,42 @@
 #!/usr/bin/env python3
-"""Plot the LayerNorm N-sweep accuracy as a publication figure.
+"""Plot the LayerNorm N-sweep accuracy as publication figures.
 
-Reads the 1-Newton-step accuracy table produced by ``extract_accuracy.py``::
+Reads the accuracy tables produced by ``extract_accuracy.py`` for the two
+invsqrt configurations::
 
+    data/accuracy_0_newton.csv   (0 Newton refinement steps)
     data/accuracy_1_newton.csv   (1 Newton refinement step)
 
-with columns ``N, SIMD, RMSRE, MAX_REL_ERROR``, and renders a single log-log
-figure of the RMS relative error (RMSRE) against the vector length ``N``.
+each with columns ``N, SIMD, RMSRE, MAX_REL_ERROR``, and renders one log-log
+figure per configuration of the RMS relative error (RMSRE) against the vector
+length ``N`` (``images/accuracy.png`` for 1 Newton step, ``accuracy_0_newton.png``
+for 0 steps).
 
 Design notes
 ------------
 * Both axes are logarithmic: ``N`` spans three decades (2 .. 16384, always a
-  power of two) and RMSRE spans two-plus decades, so a log-log view keeps every
+  power of two) and RMSRE spans a wide range, so a log-log view keeps every
   point legible and makes power-law trends read as straight lines. The x-axis
   uses base 2 (``N`` is a power of two) with the actual N values as tick labels.
+  Each figure's y-axis is autoscaled to its own series, so both read clearly
+  despite the two configurations occupying different RMSRE ranges.
 * Each measurement is drawn as a bare marker (no connecting line), so the raw
-  sweep is shown exactly as sampled. The series is close to a straight line on
-  these log-log axes, so a least-squares power-law fit
-  ``log(RMSRE) = r*log(N) + n`` is overlaid; it draws as a straight line here and
-  its slope ``r`` is the empirical RMSRE-vs-N growth exponent. The fit is
-  labelled simply "Power-law fit" in the legend; its coefficients (``r``, the
-  log-intercept and R^2) are printed to stdout and recorded in the shared
-  ``data/fit_parameters.txt`` under an ``[accuracy]`` section (written via
-  ``fit_report``, alongside the resources script's section).
+  sweep is shown exactly as sampled.
+* Only the 1-Newton series is close to a straight line on these log-log axes
+  (RMSRE grows with N as rounding error accumulates), so it alone gets a
+  least-squares power-law fit ``log(RMSRE) = r*log(N) + n`` overlaid; it draws
+  as a straight line here and its slope ``r`` is the empirical RMSRE-vs-N growth
+  exponent. The fit is labelled simply "Power-law fit" in the legend; its
+  coefficients (``r``, the log-intercept and R^2) are printed to stdout and
+  recorded in the shared ``data/fit_parameters.txt`` under an ``[accuracy]``
+  section (written via ``fit_report``, alongside the resources script's
+  section). The 0-Newton series is an accuracy floor set by the base LUT
+  approximation (RMSRE roughly flat, then declining, over N), which is not a
+  power law, so it is plotted as measured points only with no fit line.
 * The data markers are Okabe-Ito blue; the fit line is red so it contrasts
   clearly with the markers.
 * Text uses matplotlib's built-in STIX mathtext fontset, which gives
-  LaTeX-quality serif type without a system LaTeX install, so the figure builds
+  LaTeX-quality serif type without a system LaTeX install, so the figures build
   reproducibly from the Makefile.
 
 The script resolves its input (``data/``) and output (``images/``) relative to
@@ -59,18 +69,22 @@ PROJECT_ROOT = SCRIPT_DIR.parent
 DATA_DIR = PROJECT_ROOT / "data"
 IMAGES_DIR = PROJECT_ROOT / "images"
 
-OUTPUT_PNG = IMAGES_DIR / "accuracy.png"
 # Shared fit-parameters file; this script owns its "[accuracy]" section (the
 # resources script owns "[resources]"). See fit_report.update_section.
 OUTPUT_FIT_TXT = DATA_DIR / "fit_parameters.txt"
 FIT_SECTION = "accuracy"
 
-# The series to plot: (csv filename, legend label, colour, marker, fit).
+# One figure per invsqrt configuration:
+#   (csv filename, output png, legend label, colour, marker, fit).
 # Okabe-Ito blue with a circle marker. ``fit`` selects which series gets an
-# overlaid power-law fit line (log(RMSRE) = r*log(N) + n); the 1-Newton series is
-# close to linear on the log-log axes, so it is fitted.
+# overlaid power-law fit line (log(RMSRE) = r*log(N) + n): the 1-Newton series is
+# close to linear on the log-log axes (accumulating rounding error), so it is
+# fitted and keeps the original ``accuracy.png`` name; the 0-Newton series is a
+# flat/declining accuracy floor (not a power law), so it is drawn as measured
+# points only, to its own ``accuracy_0_newton.png``.
 SERIES = (
-    ("accuracy_1_newton.csv", "Measured Accuracy", "#0072B2", "o", True),
+    ("accuracy_0_newton.csv", "accuracy_0_newton.png", "Measured Accuracy", "#0072B2", "o", False),
+    ("accuracy_1_newton.csv", "accuracy.png", "Measured Accuracy", "#0072B2", "o", True),
 )
 
 # Colour and style of the overlaid power-law fit line. Red and dashed, so it
@@ -165,36 +179,35 @@ def configure_style() -> None:
     )
 
 
-def plot(series_data: list[tuple[str, str, str, bool, list[int], list[float]]],
-         fits: dict[str, tuple[float, float]],
+def plot(label: str, color: str, marker: str, fit: bool,
+         n_vals: list[int], rmsre: list[float],
+         fit_coeffs: tuple[float, float] | None,
          output_path: Path) -> None:
-    """Render the log-log RMSRE-vs-N figure to ``output_path``.
+    """Render one log-log RMSRE-vs-N figure to ``output_path``.
 
-    ``series_data`` is a list of ``(label, colour, marker, fit, n_vals, rmsre)``
-    tuples, one per Newton configuration. Data points are drawn as bare markers
-    (no connecting line); series with ``fit`` set additionally get an overlaid
-    power-law fit line ``log(RMSRE) = r*log(N) + n``, using the precomputed
-    ``(r, intercept)`` from ``fits[label]`` (so the drawn line matches the fit
-    reported to stdout / the fit-parameters file exactly).
+    Draws a single Newton configuration's ``(n_vals, rmsre)`` as bare markers (no
+    connecting line). If ``fit`` is set, an overlaid power-law fit line
+    ``log(RMSRE) = r*log(N) + n`` is added using the precomputed
+    ``fit_coeffs = (r, intercept)`` (so the drawn line matches the fit reported to
+    stdout / the fit-parameters file exactly); otherwise only the measured points
+    are shown. The y-axis autoscales to this series alone.
     """
     fig, ax = plt.subplots(figsize=(8.6, 5.2))
 
-    # Bare markers per series (no connecting line).
-    for label, color, marker, _fit, n_vals, rmsre in series_data:
-        ax.plot(
-            n_vals, rmsre,
-            color=color, marker=marker, linestyle="none",
-            markersize=7, markeredgecolor="black",
-            markeredgewidth=0.5, label=label, zorder=3,
-        )
+    # Bare markers for the series (no connecting line).
+    ax.plot(
+        n_vals, rmsre,
+        color=color, marker=marker, linestyle="none",
+        markersize=7, markeredgecolor="black",
+        markeredgewidth=0.5, label=label, zorder=3,
+    )
 
-    # Overlay the power-law fit for each flagged series. Evaluated on a dense
-    # geometric N grid so it draws as a clean straight line across the log-log
-    # axes; the fitted exponent r is the RMSRE-vs-N growth rate.
-    for label, color, _marker, fit, n_vals, _rmsre in series_data:
-        if not fit:
-            continue
-        r, intercept = fits[label]
+    # Overlay the power-law fit if this series is flagged for one. Evaluated on a
+    # dense geometric N grid so it draws as a clean straight line across the
+    # log-log axes; the fitted exponent r is the RMSRE-vs-N growth rate.
+    if fit:
+        assert fit_coeffs is not None  # main() computes it for every fitted series
+        r, intercept = fit_coeffs
         grid = np.geomspace(min(n_vals), max(n_vals), 200)
         fit_curve = np.exp(intercept) * grid ** r
         ax.plot(
@@ -213,7 +226,7 @@ def plot(series_data: list[tuple[str, str, str, bool, list[int], list[float]]],
 
     # Show every sampled N as a major tick, labelled with its integer value,
     # and suppress the base-2 minor ticks so the axis stays uncluttered.
-    all_n = sorted({n for *_, n_vals, _ in series_data for n in n_vals})
+    all_n = sorted(set(n_vals))
     ax.set_xticks(all_n)
     ax.set_xticklabels([str(n) for n in all_n], rotation=45, ha="right")
     ax.xaxis.set_minor_locator(NullLocator())
@@ -239,27 +252,28 @@ def plot(series_data: list[tuple[str, str, str, bool, list[int], list[float]]],
 
 
 def main() -> int:
-    series_data: list[tuple[str, str, str, bool, list[int], list[float]]] = []
-    for filename, label, color, marker, fit in SERIES:
+    # Load every configured series (each renders to its own figure).
+    series_data: list[tuple[str, str, str, bool, str, list[int], list[float]]] = []
+    for filename, output_png, label, color, marker, fit in SERIES:
         path = DATA_DIR / filename
         if not path.is_file():
             print(f"error: input file not found: {path}")
             return 1
         n_vals, rmsre = load_accuracy_csv(path)
-        series_data.append((label, color, marker, fit, n_vals, rmsre))
+        series_data.append((output_png, label, color, marker, fit, n_vals, rmsre))
 
     # Fit each flagged series once here, so the drawn line, the stdout report and
     # the fit-parameters file all use the exact same coefficients. ``fits`` maps
-    # a series label -> its (r, intercept) for the plotter; the R^2 is used only
-    # in the report line.
+    # a series' output filename -> its (r, intercept) for the plotter; the R^2 is
+    # used only in the report line. Only fitted series get an entry.
     fits: dict[str, tuple[float, float]] = {}
     report_lines: list[str] = []
     n_points = 0
-    for label, _color, _marker, fit, n_vals, rmsre in series_data:
+    for output_png, _label, _color, _marker, fit, n_vals, rmsre in series_data:
         if not fit:
             continue
         r, intercept, r_squared = powerlaw_fit(n_vals, rmsre)
-        fits[label] = (r, intercept)
+        fits[output_png] = (r, intercept)
         n_points = len(n_vals)
         report_lines.append(
             fit_report.format_powerlaw_line("RMSRE", "N", r, intercept, r_squared)
@@ -267,6 +281,7 @@ def main() -> int:
 
     # Report to stdout and record in the shared fit-parameters file under this
     # script's "[accuracy]" section (the resources script owns "[resources]").
+    # Only the fitted (1-Newton) series contributes; the 0-Newton floor has no fit.
     if report_lines:
         print(f"Power-law fit over {n_points} points:")
         for line in report_lines:
@@ -282,7 +297,13 @@ def main() -> int:
         )
 
     configure_style()
-    plot(series_data, fits, OUTPUT_PNG)
+    for output_png, label, color, marker, fit, n_vals, rmsre in series_data:
+        plot(
+            label, color, marker, fit,
+            n_vals, rmsre,
+            fits.get(output_png),
+            IMAGES_DIR / output_png,
+        )
     return 0
 
 
