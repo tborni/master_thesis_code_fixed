@@ -147,12 +147,12 @@ def configure_style() -> None:
             "mathtext.fontset": "stix",
             "axes.unicode_minus": True,
             # Typographic sizes tuned for a ~half-to-full text-width figure.
-            "font.size": 16,
-            "axes.titlesize": 18,
-            "axes.labelsize": 18,
-            "xtick.labelsize": 15,
-            "ytick.labelsize": 15,
-            "legend.fontsize": 16,
+            "font.size": 20,
+            "axes.titlesize": 22,
+            "axes.labelsize": 22,
+            "xtick.labelsize": 19,
+            "ytick.labelsize": 19,
+            "legend.fontsize": 20,
             # Full black frame (all four spines) with outward ticks.
             "axes.linewidth": 0.8,
             "axes.edgecolor": "black",
