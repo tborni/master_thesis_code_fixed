@@ -28,7 +28,7 @@ Design notes
   (RMSRE grows with N as rounding error accumulates), so it alone gets a
   least-squares power-law fit ``log(RMSRE) = r*log(N) + n`` overlaid; it draws
   as a straight line here and its slope ``r`` is the empirical RMSRE-vs-N growth
-  exponent. The fit is labelled simply "Power-law fit" in the legend; its
+  exponent. The fit is labelled simply "Power-Law Fit" in the legend; its
   coefficients (``r``, the log-intercept and R^2) are printed to stdout and
   recorded in the shared ``data/fit_parameters.txt`` under an ``[accuracy]``
   section (written via ``fit_report``, alongside the resources script's
@@ -247,7 +247,7 @@ def plot(label: str, color: str, marker: str, fit: bool,
         ax.plot(
             grid, fit_curve,
             color=COLOR_FIT, linestyle="--", linewidth=1.8, zorder=2,
-            label="Power-law fit",
+            label="Power-Law Fit",
         )
 
     # Log-log axes. N is a power of two, so use a base-2 log x-axis and label the
