@@ -14,12 +14,13 @@ length ``N`` (``images/accuracy_0_newton.png`` for 0 steps,
 
 Design notes
 ------------
-* Both axes are logarithmic: ``N`` spans three decades (2 .. 16384, always a
-  power of two) and RMSRE spans a wide range, so a log-log view keeps every
-  point legible and makes power-law trends read as straight lines. The x-axis
-  uses base 2 (``N`` is a power of two) with the actual N values as tick labels.
-  Each figure's y-axis is autoscaled to its own series, so both read clearly
-  despite the two configurations occupying different RMSRE ranges.
+* Both axes are logarithmic: ``N`` is restricted to 2 .. 1024 (``N_MAX``, always
+  a power of two) to match the sibling resources plots, and RMSRE spans a wide
+  range, so a log-log view keeps every point legible and makes power-law trends
+  read as straight lines. The x-axis uses base 2 (``N`` is a power of two) with
+  the sampled N values, labelled as ``2^k``, as tick labels. Each figure's y-axis
+  is autoscaled to its own series, so both read clearly despite the two
+  configurations occupying different RMSRE ranges.
 * Each measurement is drawn as a bare marker (no connecting line), so the raw
   sweep is shown exactly as sampled.
 * Only the 1-Newton series is close to a straight line on these log-log axes
@@ -31,8 +32,8 @@ Design notes
   recorded in the shared ``data/fit_parameters.txt`` under an ``[accuracy]``
   section (written via ``fit_report``, alongside the resources script's
   section). The 0-Newton series is an accuracy floor set by the base LUT
-  approximation (RMSRE roughly flat, then declining, over N), which is not a
-  power law, so it is plotted as measured points only with no fit line.
+  approximation (RMSRE roughly flat over N), which is not a power law, so it is
+  plotted as measured points only with no fit line.
 * The data markers are Okabe-Ito blue; the fit line is red so it contrasts
   clearly with the markers.
 * Text uses matplotlib's built-in STIX mathtext fontset, which gives
@@ -91,6 +92,13 @@ SERIES = (
 # contrasts with the blue data markers and reads clearly as the fit.
 COLOR_FIT = "red"
 
+# Largest N to plot. The accuracy reports sweep N up to 16384, but the figures
+# are restricted to N <= 1024 (2^1 .. 2^10) so their x-range matches the sibling
+# resources plots (whose synthesis data only covers N <= 1024). The cap is
+# applied at load time, so both the drawn points and the power-law fit use this
+# same restricted range.
+N_MAX = 1024
+
 
 def pow2_label(n: int) -> str:
     """Format a sampled ``N`` as a base-2 power label for the log x-axis.
@@ -109,9 +117,11 @@ def pow2_label(n: int) -> str:
 def load_accuracy_csv(path: Path) -> tuple[list[float], list[float]]:
     """Load the ``(N, RMSRE)`` columns from an accuracy CSV.
 
-    Returns two parallel lists sorted by ascending ``N`` (so the points are laid
-    out in x-order regardless of the file's row order). Raises ``ValueError`` if
-    the file is empty or missing the expected columns.
+    Only rows with ``N <= N_MAX`` are kept, so the figures cover the same
+    restricted N-range as the sibling resources plots. Returns two parallel lists
+    sorted by ascending ``N`` (so the points are laid out in x-order regardless of
+    the file's row order). Raises ``ValueError`` if the file is empty, is missing
+    the expected columns, or has no rows within the ``N <= N_MAX`` range.
     """
     required = {"N", "RMSRE"}
     with path.open("r", newline="", encoding="utf-8") as handle:
@@ -120,9 +130,13 @@ def load_accuracy_csv(path: Path) -> tuple[list[float], list[float]]:
             raise ValueError(
                 f"expected columns {sorted(required)} in {path}, found {reader.fieldnames}"
             )
-        rows = [(int(row["N"]), float(row["RMSRE"])) for row in reader]
+        rows = [
+            (int(row["N"]), float(row["RMSRE"]))
+            for row in reader
+            if int(row["N"]) <= N_MAX
+        ]
     if not rows:
-        raise ValueError(f"no data rows in {path}")
+        raise ValueError(f"no data rows with N <= {N_MAX} in {path}")
     rows.sort(key=lambda r: r[0])
     n_vals, rmsre = ([r[0] for r in rows], [r[1] for r in rows])
     return n_vals, rmsre

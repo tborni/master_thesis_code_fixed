@@ -4,8 +4,8 @@
 
 [accuracy]
 # power-law model  log(RMSRE) = slope * log(N) + intercept
-# least-squares fit (numpy.polyfit) over 14 sampled N points
-log(RMSRE) = 0.526206 * log(N) - 16.7508   (R^2 = 0.911928)   [i.e. RMSRE = 5.31168e-08 * N^0.526206]
+# least-squares fit (numpy.polyfit) over 10 sampled N points
+log(RMSRE) = 0.350197 * log(N) - 16.1961   (R^2 = 0.922037)   [i.e. RMSRE = 9.24946e-08 * N^0.350197]
 
 [resources]
 # affine model  LUT = slope * N + intercept
