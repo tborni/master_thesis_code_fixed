@@ -117,10 +117,10 @@ COLOR_DSP = "#D55E00"   # vermillion -> right y-axis (DSP)
 DSP_YMAX = 800.0
 
 # Legend labels for the four drawn artists (two data series + two fit lines).
-LABEL_LUT_DATA = "Synthesized LUTs"
-LABEL_LUT_FIT = "LUT linear fit"
-LABEL_DSP_DATA = "Synthesized DSPs"
-LABEL_DSP_FIT = "DSP linear fit"
+LABEL_LUT_DATA = "LUT Measured"
+LABEL_LUT_FIT = "LUT Linear Fit"
+LABEL_DSP_DATA = "DSP Measured"
+LABEL_DSP_FIT = "DSP Linear Fit"
 
 # Extra padding (points) between the base-2 log x-axis tick *labels* and the tick
 # marks. The SIMD ticks are rendered as ``2^k`` powers, whose raised exponent
