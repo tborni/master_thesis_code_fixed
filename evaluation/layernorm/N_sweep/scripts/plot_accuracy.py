@@ -271,9 +271,22 @@ def plot(label: str, color: str, marker: str, fit: bool,
     ax.grid(True, which="major", linestyle="--", linewidth=0.6, alpha=0.7)
     ax.grid(True, which="minor", axis="y", linestyle=":", linewidth=0.4, alpha=0.4)
 
+    if fit:
+        # The 1-Newton RMSRE (N <= 1024) straddles the 10^-7/10^-6 decade
+        # boundary but sits just above 10^-7, so autoscale shows only the 10^-6
+        # major tick. Pin the lower limit to 10^-7 (below the data minimum, so no
+        # point is clipped) and give a little headroom above, so both the 10^-7
+        # and 10^-6 decade ticks are labelled.
+        ax.set_ylim(1e-7, 2e-6)
+
+    # 1-Newton: pin the legend hard into the top-left corner (small
+    # border-axes pad so it sits flush against the spines); other series keep
+    # matplotlib's automatic best placement with the usual inset.
+    legend_loc = "upper left" if fit else "best"
+    legend_axespad = 0.2 if fit else 0.5
     ax.legend(
-        loc="best", ncol=1, handlelength=2.2,
-        borderpad=0.6, labelspacing=0.6,
+        loc=legend_loc, ncol=1, handlelength=2.2,
+        borderpad=0.6, labelspacing=0.6, borderaxespad=legend_axespad,
         frameon=True, fancybox=True, edgecolor="black", facecolor="white",
     )
 
