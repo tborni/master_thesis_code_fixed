@@ -14,13 +14,14 @@ length ``N`` (``images/accuracy_0_newton.png`` for 0 steps,
 
 Design notes
 ------------
-* Both axes are logarithmic: ``N`` is restricted to 2 .. 1024 (``N_MAX``, always
-  a power of two) to match the sibling resources plots, and RMSRE spans a wide
-  range, so a log-log view keeps every point legible and makes power-law trends
-  read as straight lines. The x-axis uses base 2 (``N`` is a power of two) with
-  the sampled N values, labelled as ``2^k``, as tick labels. Each figure's y-axis
-  is autoscaled to its own series, so both read clearly despite the two
-  configurations occupying different RMSRE ranges.
+* Both axes are logarithmic: ``N`` is restricted to 2 .. 8192 (``N_MAX``, always
+  a power of two), and RMSRE spans a wide range, so a log-log view keeps every
+  point legible and makes power-law trends read as straight lines. The x-axis
+  uses base 2 (``N`` is a power of two) with the sampled N values, labelled as
+  ``2^k``, as tick labels. Each figure's y-axis is autoscaled to its own series
+  (the 1-Newton figure additionally pins its limits to a clean decade bracket),
+  so both read clearly despite the two configurations occupying different RMSRE
+  ranges.
 * Each measurement is drawn as a bare marker (no connecting line), so the raw
   sweep is shown exactly as sampled.
 * Only the 1-Newton series is close to a straight line on these log-log axes
@@ -93,11 +94,13 @@ SERIES = (
 COLOR_FIT = "red"
 
 # Largest N to plot. The accuracy reports sweep N up to 16384, but the figures
-# are restricted to N <= 1024 (2^1 .. 2^10) so their x-range matches the sibling
-# resources plots (whose synthesis data only covers N <= 1024). The cap is
-# applied at load time, so both the drawn points and the power-law fit use this
-# same restricted range.
-N_MAX = 1024
+# are restricted to N <= 8192 (2^1 .. 2^13). The RMSRE-vs-N growth steepens with
+# N, so the fitted power-law exponent depends on the upper cutoff (0.35 at
+# N<=1024, rising to 0.53 over the full sweep); cutting at 8192 drops only the
+# steepest final point (16384) and gives an exponent of ~0.47, close to the
+# 1/2 expected from sqrt(N)-like error accumulation. The cap is applied at load
+# time, so both the drawn points and the power-law fit use this same range.
+N_MAX = 8192
 
 
 def pow2_label(n: int) -> str:
@@ -272,21 +275,21 @@ def plot(label: str, color: str, marker: str, fit: bool,
     ax.grid(True, which="minor", axis="y", linestyle=":", linewidth=0.4, alpha=0.4)
 
     if fit:
-        # The 1-Newton RMSRE (N <= 1024) straddles the 10^-7/10^-6 decade
-        # boundary but sits just above 10^-7, so autoscale shows only the 10^-6
-        # major tick. Pin the lower limit to 10^-7 (below the data minimum, so no
-        # point is clipped) and give a little headroom above, so both the 10^-7
-        # and 10^-6 decade ticks are labelled.
-        ax.set_ylim(1e-7, 2e-6)
+        # The 1-Newton RMSRE spans ~1.5e-7 .. 9.1e-6, i.e. just inside the
+        # 10^-7 .. 10^-5 decades, so a tight autoscale would label only the
+        # single 10^-6 major tick. Bracket the limits to [1e-7, 1e-5] (both just
+        # outside the data range, so no point is clipped) to get three labelled
+        # decade ticks (10^-7, 10^-6, 10^-5).
+        ax.set_ylim(1e-7, 1e-5)
 
-    # 1-Newton: pin the legend hard into the top-left corner (small
-    # border-axes pad so it sits flush against the spines); other series keep
-    # matplotlib's automatic best placement with the usual inset.
-    legend_loc = "upper left" if fit else "best"
-    legend_axespad = 0.2 if fit else 0.5
+    # Pin the legend into whichever corner is clear of the data, flush against
+    # the spines (small border-axes pad). The 1-Newton series rises monotonically,
+    # leaving the top-left open; the 0-Newton floor clusters high with only its
+    # large-N points dipping down on the right, leaving the bottom-left open.
+    legend_loc = "upper left" if fit else "lower left"
     ax.legend(
         loc=legend_loc, ncol=1, handlelength=2.2,
-        borderpad=0.6, labelspacing=0.6, borderaxespad=legend_axespad,
+        borderpad=0.6, labelspacing=0.6, borderaxespad=0.2,
         frameon=True, fancybox=True, edgecolor="black", facecolor="white",
     )
 
