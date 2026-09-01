@@ -163,10 +163,10 @@ def configure_style() -> None:
             # Typographic sizes tuned for a ~half-to-full text-width figure.
             "font.size": 20,
             "axes.titlesize": 22,
-            "axes.labelsize": 22,
+            "axes.labelsize": 26,
             "xtick.labelsize": 19,
             "ytick.labelsize": 19,
-            "legend.fontsize": 20,
+            "legend.fontsize": 24,
             # Full black frame (all four spines) with outward ticks.
             "axes.linewidth": 0.8,
             "axes.edgecolor": "black",
