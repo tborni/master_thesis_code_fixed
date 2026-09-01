@@ -10,8 +10,8 @@
 # The sweep varies the vector length N (SIMD fixed) for two invsqrt
 # configurations (0 and 1 Newton refinement steps), so there is one accuracy
 # report per configuration. plot_accuracy.py renders one RMSRE-vs-N log-log
-# figure per configuration (accuracy.png for 1 step with a power-law fit,
-# accuracy_0_newton.png for 0 steps, points only); plot_resources.py fits
+# figure per configuration (accuracy_1_newton.png for 1 step with a power-law
+# fit, accuracy_0_newton.png for 0 steps, points only); plot_resources.py fits
 # LUT = m*N + n and renders it on a linear- and a log-x axis. Both scripts also
 # record their fit into the shared data/fit_parameters.txt (each owns one
 # [section]).
@@ -47,8 +47,8 @@ RESOURCES_CSV := $(DATA)/resources.csv
 # plot_accuracy.py writes two PNGs (one per Newton configuration);
 # plot_resources.py writes three. Each is tracked directly as a file target so it
 # only re-renders when its inputs change.
-ACCURACY_PNG      := $(IMAGES)/accuracy.png
 ACCURACY_0_PNG    := $(IMAGES)/accuracy_0_newton.png
+ACCURACY_1_PNG    := $(IMAGES)/accuracy_1_newton.png
 RESOURCES_LIN_PNG := $(IMAGES)/resources_lut_linear.png
 RESOURCES_LOG_PNG := $(IMAGES)/resources_lut_log.png
 RESOURCES_CMB_PNG := $(IMAGES)/resources_lut_combined.png
@@ -62,7 +62,7 @@ all: csv plots
 
 csv: $(ACCURACY_CSVS)
 
-plots: $(ACCURACY_PNG) $(ACCURACY_0_PNG) $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG) $(RESOURCES_CMB_PNG) $(FIT_TXT)
+plots: $(ACCURACY_0_PNG) $(ACCURACY_1_PNG) $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG) $(RESOURCES_CMB_PNG) $(FIT_TXT)
 
 # Static pattern rule: each accuracy CSV is extracted from its matching report.
 $(ACCURACY_CSVS): $(DATA)/accuracy_%_newton.csv: $(DATA)/accuracy_%_newton.txt $(EXTRACT)
@@ -70,12 +70,13 @@ $(ACCURACY_CSVS): $(DATA)/accuracy_%_newton.csv: $(DATA)/accuracy_%_newton.txt $
 
 # plot_accuracy.py resolves its own inputs (data/) and outputs (images/, data/),
 # so it can be invoked from anywhere. In one run it reads both accuracy CSVs and
-# renders both figures: accuracy.png (1 Newton step, with the fitted power-law
-# line + its [accuracy] section of fit_parameters.txt) and accuracy_0_newton.png
-# (0 Newton steps, points only). accuracy_0_newton.png shares this invocation.
-$(ACCURACY_PNG): $(PLOT_ACCURACY) $(FIT_REPORT) $(ACCURACY_CSVS)
+# renders both figures: accuracy_1_newton.png (1 Newton step, with the fitted
+# power-law line + its [accuracy] section of fit_parameters.txt) and
+# accuracy_0_newton.png (0 Newton steps, points only). The 0-Newton PNG shares
+# this single invocation.
+$(ACCURACY_1_PNG): $(PLOT_ACCURACY) $(FIT_REPORT) $(ACCURACY_CSVS)
 	$(PYTHON) $(PLOT_ACCURACY)
-$(ACCURACY_0_PNG): $(ACCURACY_PNG)
+$(ACCURACY_0_PNG): $(ACCURACY_1_PNG)
 
 # plot_resources.py renders all three LUT-vs-N figures from resources.csv in a
 # single run and writes its [resources] section of fit_parameters.txt; the log-x
@@ -88,11 +89,11 @@ $(RESOURCES_CMB_PNG): $(RESOURCES_LIN_PNG)
 # fit_parameters.txt is written as a byproduct of both plot runs (each script
 # fills in its own [section]), so it is up to date once both PNGs are. No recipe
 # of its own; depending on both plot outputs ties it to their invocations.
-$(FIT_TXT): $(ACCURACY_PNG) $(RESOURCES_LIN_PNG)
+$(FIT_TXT): $(ACCURACY_1_PNG) $(RESOURCES_LIN_PNG)
 
 clean:
 	rm -f $(ACCURACY_CSVS) \
-	      $(ACCURACY_PNG) $(ACCURACY_0_PNG) \
+	      $(ACCURACY_0_PNG) $(ACCURACY_1_PNG) \
 	      $(RESOURCES_LIN_PNG) $(RESOURCES_LOG_PNG) \
 	      $(RESOURCES_CMB_PNG) \
 	      $(FIT_TXT)

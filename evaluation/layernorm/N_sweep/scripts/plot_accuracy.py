@@ -9,8 +9,8 @@ invsqrt configurations::
 
 each with columns ``N, SIMD, RMSRE, MAX_REL_ERROR``, and renders one log-log
 figure per configuration of the RMS relative error (RMSRE) against the vector
-length ``N`` (``images/accuracy.png`` for 1 Newton step, ``accuracy_0_newton.png``
-for 0 steps).
+length ``N`` (``images/accuracy_0_newton.png`` for 0 steps,
+``accuracy_1_newton.png`` for 1 step).
 
 Design notes
 ------------
@@ -79,12 +79,12 @@ FIT_SECTION = "accuracy"
 # Okabe-Ito blue with a circle marker. ``fit`` selects which series gets an
 # overlaid power-law fit line (log(RMSRE) = r*log(N) + n): the 1-Newton series is
 # close to linear on the log-log axes (accumulating rounding error), so it is
-# fitted and keeps the original ``accuracy.png`` name; the 0-Newton series is a
-# flat/declining accuracy floor (not a power law), so it is drawn as measured
-# points only, to its own ``accuracy_0_newton.png``.
+# fitted; the 0-Newton series is a flat/declining accuracy floor (not a power
+# law), so it is drawn as measured points only. Each figure is named after its
+# configuration, ``accuracy_<steps>_newton.png``, mirroring the input CSVs.
 SERIES = (
     ("accuracy_0_newton.csv", "accuracy_0_newton.png", "Measured Accuracy", "#0072B2", "o", False),
-    ("accuracy_1_newton.csv", "accuracy.png", "Measured Accuracy", "#0072B2", "o", True),
+    ("accuracy_1_newton.csv", "accuracy_1_newton.png", "Measured Accuracy", "#0072B2", "o", True),
 )
 
 # Colour and style of the overlaid power-law fit line. Red and dashed, so it
