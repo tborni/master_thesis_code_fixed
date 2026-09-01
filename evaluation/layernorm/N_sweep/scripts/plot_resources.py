@@ -208,25 +208,26 @@ def sparse_labels(ticks: np.ndarray, axis_min: float, axis_max: float,
 
     On a *linear* axis the low powers of two (2, 4, 8, 16, ...) collapse toward
     the origin, so labelling every one would overprint an unreadable smear at the
-    left. This walks the ticks left-to-right and keeps a numeric label only when
-    the tick is at least ``min_frac`` of the axis span past the previous *labelled*
-    tick; intervening ticks still draw a grid line but carry an empty label. The
-    largest tick is always labelled so the axis states its full extent. Returns a
+    left. This walks the ticks left-to-right and keeps a label only when the tick
+    is at least ``min_frac`` of the axis span past the previous *labelled* tick;
+    intervening ticks still draw a grid line but carry an empty label. The largest
+    tick is always labelled so the axis states its full extent. Kept ticks are
+    labelled as powers of two (``2^k``) to match the base-2 grid locus. Returns a
     label string per tick (``""`` for the suppressed ones), parallel to ``ticks``.
     """
     span = axis_max - axis_min
     if span <= 0 or ticks.size == 0:
-        return [str(int(t)) for t in ticks]
+        return [pow2_label(t) for t in ticks]
     min_gap = min_frac * span
     labels = [""] * ticks.size
     last_labelled = -np.inf
     for i, t in enumerate(ticks):
         if t - last_labelled >= min_gap:
-            labels[i] = str(int(t))
+            labels[i] = pow2_label(t)
             last_labelled = t
     # Guarantee the largest tick is labelled (it anchors the axis extent); if the
     # greedy pass already labelled it this is a no-op.
-    labels[-1] = str(int(ticks[-1]))
+    labels[-1] = pow2_label(ticks[-1])
     return labels
 
 
@@ -303,10 +304,11 @@ def draw_lut_axis(
     if log_x:
         # Base-2 log x-axis (N is a power of two): one major tick per sampled N,
         # labelled as a power of two (2^k) to match the base-2 axis, base-2 minor
-        # ticks suppressed.
+        # ticks suppressed. Labels sit horizontally (the 2^k form is compact
+        # enough not to need slanting).
         ax.set_xscale("log", base=2)
         ax.set_xticks(n_vals)
-        ax.set_xticklabels([pow2_label(n) for n in n_vals], rotation=45, ha="right")
+        ax.set_xticklabels([pow2_label(n) for n in n_vals])
         ax.xaxis.set_minor_locator(NullLocator())
     elif linear_grid == "pow2":
         # Linear x-axis with a base-2 (log-spaced) grid: the axis scale stays
@@ -321,9 +323,7 @@ def draw_lut_axis(
         ax.set_xlim(left=0, right=n_max * 1.03)
         pow2 = power_of_two_ticks(n_max)
         ax.xaxis.set_major_locator(FixedLocator(pow2))
-        ax.set_xticklabels(
-            sparse_labels(pow2, 0.0, n_max * 1.03), rotation=45, ha="right"
-        )
+        ax.set_xticklabels(sparse_labels(pow2, 0.0, n_max * 1.03))
         ax.xaxis.set_minor_locator(NullLocator())
     else:  # linear_grid == "round"
         # Linear x-axis with evenly-spaced round ticks chosen by matplotlib

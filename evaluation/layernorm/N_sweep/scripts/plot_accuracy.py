@@ -240,10 +240,11 @@ def plot(label: str, color: str, marker: str, fit: bool,
 
     # Show every sampled N as a major tick, labelled as a power of two (2^k) to
     # match the base-2 log axis, and suppress the base-2 minor ticks so the axis
-    # stays uncluttered.
+    # stays uncluttered. Labels sit horizontally (the 2^k form is compact enough
+    # not to need slanting).
     all_n = sorted(set(n_vals))
     ax.set_xticks(all_n)
-    ax.set_xticklabels([pow2_label(n) for n in all_n], rotation=45, ha="right")
+    ax.set_xticklabels([pow2_label(n) for n in all_n])
     ax.xaxis.set_minor_locator(NullLocator())
 
     # Decade major grid on the y-axis plus faint minor dec.-subdivisions so the
