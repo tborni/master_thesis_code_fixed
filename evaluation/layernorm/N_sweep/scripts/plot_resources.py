@@ -158,6 +158,9 @@ def configure_style() -> None:
             "ytick.major.width": 0.8,
             "xtick.major.size": 4.0,
             "ytick.major.size": 4.0,
+            # Extra padding below the x tick labels so the horizontal 2^k labels
+            # sit clear of the axis line/grid above them (default ~3.5pt).
+            "xtick.major.pad": 6.0,
             "axes.grid": True,
             "grid.linestyle": "--",
             "grid.linewidth": 0.6,
