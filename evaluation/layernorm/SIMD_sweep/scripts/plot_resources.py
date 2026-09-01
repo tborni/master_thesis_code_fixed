@@ -115,9 +115,9 @@ DSP_YMAX = 800.0
 
 # Legend labels for the four drawn artists (two data series + two fit lines).
 LABEL_LUT_DATA = "Synthesized LUTs"
-LABEL_LUT_FIT = "LUT linear fit"
+LABEL_LUT_FIT = "LUT Linear Fit"
 LABEL_DSP_DATA = "Synthesized DSPs"
-LABEL_DSP_FIT = "DSP linear fit"
+LABEL_DSP_FIT = "DSP Linear Fit"
 
 # Extra padding (points) between the base-2 log x-axis tick *labels* and the tick
 # marks. The SIMD ticks are rendered as ``2^k`` powers, whose raised exponent
@@ -355,7 +355,9 @@ def draw_dual_axis(
     else:
         ax_lut.tick_params(axis="y", labelleft=False)
     if show_dsp_labels:
-        ax_dsp.set_ylabel(r"DSP count")
+        # labelpad nudges "DSP Count" a touch further from its (right-side) tick
+        # labels; the default ~4 pt would sit a little close to the 3-digit ticks.
+        ax_dsp.set_ylabel(r"DSP Count", labelpad=8.0)
     else:
         ax_dsp.tick_params(axis="y", labelright=False)
 
