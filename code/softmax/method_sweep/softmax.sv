@@ -520,7 +520,7 @@ module softmax #(
 						.NUM_NEWTON_STEPS(REC_NUM_NEWTON_STEPS),
 						.SUSTAINABLE_INTERVAL(NN),
 						.FORCE_BEHAVIORAL(FORCE_BEHAVIORAL),
-						.NEWTON_COEFF(2.0)
+						.NEWTON_COEFF(2.000001)
 					) recip (
 						.clk, .rst,
 						.idat(total.dat), .ivld(total.vld), .irdy(trdy),
