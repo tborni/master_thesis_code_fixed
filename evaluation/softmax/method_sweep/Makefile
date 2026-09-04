@@ -116,6 +116,11 @@ STEP1_INPUTS := \
 EXP_CSV := $(OUTPUT)/exp.csv
 REC_CSV := $(OUTPUT)/rec.csv
 
+# Reciprocal folding characterisation.  step 2 reads it to correct the resources
+# of no-Newton reciprocal components (delta = folding[SI=1] - folding[SI=N/SIMD]),
+# so editing it must re-run the softmax combination (and hence the plots).
+FOLDING := $(DATA)/resources_sweep_over_folding.csv
+
 # All per-SIMD softmax fronts.  The aligned figures need a common axis range
 # computed from every front, so step 3 reads ALL of these regardless of which
 # SIMD value it renders - hence every plot target depends on all of them.
@@ -165,7 +170,9 @@ PLOTS_$(1) := \
 PLOTS += $$(PLOTS_$(1))
 
 # Step 2: combine into the pareto-optimal softmax front for this SIMD value.
-$$(SOFTMAX_$(1)): $(STEP2) $(CONFIG) $(EXP_CSV) $(REC_CSV) $(DATA)/resources_SIMD.csv
+# Depends on the folding CSV (no-Newton reciprocal correction) and on step 1's
+# module, which step 2 imports for the pre-filter safety check.
+$$(SOFTMAX_$(1)): $(STEP2) $(STEP1) $(CONFIG) $(EXP_CSV) $(REC_CSV) $(DATA)/resources_SIMD.csv $(FOLDING)
 	$(PYTHON) $(STEP2) $(1)
 
 # Step 3: one script run emits all twelve PNGs for this SIMD value (six per

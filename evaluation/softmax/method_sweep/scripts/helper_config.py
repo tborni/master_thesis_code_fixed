@@ -132,6 +132,13 @@ def image_paths(simd: int, mode: str, aligned: bool = False):
 # N, SIMD, ..., LUT, DSP, ...
 SIMD_SWEEP_CSV = os.path.join(DATA_DIR, "resources_SIMD.csv")
 
+# Reciprocal folding characterisation, used by step 2 to correct the resources
+# of a reciprocal component that has NO Newton step (see the "Folding
+# correction" section below).  data/resources_sweep_over_folding.csv columns:
+# NUM_NEWTON_STEPS, ADDR_WIDTH, WORD_WIDTH, SUSTAINABLE_INTERVAL, ..., REG, LUT,
+# DSP, BRAM, URAM -- one row per swept sustainable interval.
+FOLDING_CSV = os.path.join(DATA_DIR, "resources_sweep_over_folding.csv")
+
 # --------------------------------------------------------------------------- #
 # Tunable constants
 # --------------------------------------------------------------------------- #
@@ -549,6 +556,131 @@ def read_components(path: str) -> List[dict]:
             "dsp": int(row["dsp"]),
         })
     return out
+
+
+# --------------------------------------------------------------------------- #
+# Folding correction (reciprocal, no Newton step)
+# --------------------------------------------------------------------------- #
+# The reciprocal LUT/DSP recorded in the combined method files are measured at a
+# sustainable interval (initiation interval) of 1 -- one reciprocal every clock,
+# fully unrolled.  In the actual softmax the reciprocal only has to accept a new
+# input every  SUSTAINABLE_INTERVAL = N / SIMD  cycles, so a reciprocal *without*
+# a Newton step can be folded down to that slower rate, which shifts its resource
+# cost.  (A reciprocal *with* a Newton step is left exactly as measured: the
+# correction applies only to the no-Newton case, which includes the IP core,
+# whose file carries no NUM_NEWTON_STEPS column at all.)
+#
+# resources_sweep_over_folding.csv characterises that shift: for a range of
+# sustainable intervals it records the resources of the same reciprocal block.
+# The correction added to a no-Newton reciprocal's resources is
+#
+#     delta(SI) = folding[SI = 1] - folding[SI = actual]
+#
+# taken per resource metric and added to the component's own resources.  If the
+# actual sustainable interval is not a row in the file we use the highest row
+# whose SUSTAINABLE_INTERVAL is <= the actual one (the closest achievable fold at
+# or below the required rate).
+
+# Resource metrics carried through the folding correction.  Only LUT/DSP reach
+# the Pareto plot, but the delta is defined over every resource column the
+# folding file provides so the correction is complete and future-proof.
+FOLDING_METRICS = ("REG", "LUT", "DSP", "BRAM", "URAM")
+
+# Column in the folding file that indexes the sustainable-interval sweep.
+FOLDING_SI_COL = "SUSTAINABLE_INTERVAL"
+
+# The sustainable interval at which the combined-file reciprocal resources were
+# measured, and therefore the reference row of every delta.
+FOLDING_REFERENCE_SI = 1
+
+
+class FoldingError(Exception):
+    """Raised on a malformed / insufficient resources_sweep_over_folding.csv."""
+
+
+def read_folding(path: str = FOLDING_CSV) -> Dict[int, Dict[str, int]]:
+    """Read the folding sweep into ``{sustainable_interval: {metric: value}}``.
+
+    ``metric`` ranges over :data:`FOLDING_METRICS`.  Aborts loudly if the file is
+    missing, if a sustainable interval is duplicated (ambiguous), or if the
+    reference row (SI = :data:`FOLDING_REFERENCE_SI`) is absent, since every delta
+    is measured against it.
+    """
+    rows = read_csv_dicts(path, required=(FOLDING_SI_COL, *FOLDING_METRICS))
+    table: Dict[int, Dict[str, int]] = {}
+    for r in rows:
+        si = int(r[FOLDING_SI_COL])
+        if si in table:
+            raise FoldingError(
+                f"duplicate {FOLDING_SI_COL}={si} in {os.path.basename(path)} "
+                "(ambiguous folding row)."
+            )
+        table[si] = {m: int(r[m]) for m in FOLDING_METRICS}
+    if not table:
+        raise FoldingError(f"{os.path.basename(path)} has no data rows.")
+    if FOLDING_REFERENCE_SI not in table:
+        raise FoldingError(
+            f"{os.path.basename(path)} is missing the reference row "
+            f"{FOLDING_SI_COL}={FOLDING_REFERENCE_SI}; every folding delta is "
+            f"measured against it. Present intervals: {sorted(table)}."
+        )
+    return table
+
+
+def sustainable_interval(n: int, simd: int) -> int:
+    """The reciprocal's sustainable interval for a softmax of ``n`` over ``simd``
+    lanes: ``N / SIMD``.
+
+    N/SIMD is required to be exact (the fold is an integer number of cycles); a
+    non-divisible pair is a configuration error and aborts.
+    """
+    if simd <= 0:
+        raise FoldingError(f"SIMD must be positive, got {simd}.")
+    if n % simd != 0:
+        raise FoldingError(
+            f"sustainable interval N/SIMD = {n}/{simd} is not an integer; "
+            "the reciprocal fold must be a whole number of cycles."
+        )
+    return n // simd
+
+
+def folding_row_for_si(folding: Dict[int, Dict[str, int]], si: int) -> int:
+    """Return the folding key to use for actual sustainable interval ``si``:
+    the largest characterised interval that is ``<= si``.
+
+    Aborts if ``si`` is below every characterised interval (no achievable fold at
+    or under the required rate), which would otherwise silently pick nothing.
+    """
+    candidates = [k for k in folding if k <= si]
+    if not candidates:
+        raise FoldingError(
+            f"actual sustainable interval {si} is below every row in the "
+            f"folding file (min {min(folding)}); cannot pick a fold <= {si}."
+        )
+    return max(candidates)
+
+
+def folding_delta(folding: Dict[int, Dict[str, int]], si: int) -> Dict[str, int]:
+    """Per-metric resource delta added to a no-Newton reciprocal at interval ``si``.
+
+    ``delta[metric] = folding[reference_SI][metric] - folding[chosen_row][metric]``
+    where ``chosen_row`` is :func:`folding_row_for_si`.  At the reference interval
+    the delta is all-zero by construction.
+    """
+    ref = folding[FOLDING_REFERENCE_SI]
+    row = folding[folding_row_for_si(folding, si)]
+    return {m: ref[m] - row[m] for m in FOLDING_METRICS}
+
+
+def rec_has_newton(params: Dict[str, str]) -> bool:
+    """Whether a reciprocal component record has a Newton step.
+
+    Parametric reciprocals carry NUM_NEWTON_STEPS in their params (``"1"`` -> has
+    a Newton step; ``"0"`` -> none).  The IP core reciprocal has no such column,
+    which per the folding rule counts as *no* Newton step -- so absence, like
+    an explicit ``"0"``, means the folding correction applies.
+    """
+    return params.get("NUM_NEWTON_STEPS") == "1"
 
 
 # --------------------------------------------------------------------------- #
