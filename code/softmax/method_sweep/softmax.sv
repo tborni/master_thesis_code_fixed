@@ -519,7 +519,8 @@ module softmax #(
 						.WORD_WIDTH(REC_WORD_WIDTH),
 						.NUM_NEWTON_STEPS(REC_NUM_NEWTON_STEPS),
 						.SUSTAINABLE_INTERVAL(NN),
-						.FORCE_BEHAVIORAL(FORCE_BEHAVIORAL)
+						.FORCE_BEHAVIORAL(FORCE_BEHAVIORAL),
+						.NEWTON_COEFF(2.0)
 					) recip (
 						.clk, .rst,
 						.idat(total.dat), .ivld(total.vld), .irdy(trdy),
@@ -534,7 +535,8 @@ module softmax #(
 						.WORD_WIDTH(REC_WORD_WIDTH),
 						.NUM_NEWTON_STEPS(REC_NUM_NEWTON_STEPS),
 						.SUSTAINABLE_INTERVAL(NN),
-						.FORCE_BEHAVIORAL(FORCE_BEHAVIORAL)
+						.FORCE_BEHAVIORAL(FORCE_BEHAVIORAL),
+						.NEWTON_COEFF(2.0)
 					) recip (
 						.clk, .rst,
 						.idat(total.dat), .ivld(total.vld), .irdy(trdy),
