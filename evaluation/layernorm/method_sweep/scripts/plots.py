@@ -11,8 +11,9 @@ and writes three publication-quality PNGs into ``images/``:
 All three figures share the same colour-by-method / marker-by-DSP encoding and
 the same twin (Method + DSP) legend, so the visual language is consistent.  The
 LUT and DSP here are the *full-LayerNorm* counts (the InvSqrt-block cost lifted
-to the whole LayerNorm by ``generate_combined.py``), which at the SIMD=2
-reference operating point take the values {8, 11, 14, 17} DSP.
+to the whole LayerNorm by ``generate_combined.py``, including its
+sustainable-interval folding correction), which at the SIMD=2 reference operating
+point take the values {10, 11, 12, 19} DSP.
 
 The method of a point is taken from its combined-file name (the part before
 ``_combined.csv``, split on ``+`` so variant suffixes collapse onto their base
@@ -48,15 +49,20 @@ METHOD_TO_COLOR: dict[str, str] = {
     "Lookup": "#83C19D",
 }
 
-# Marker per *full-LayerNorm* DSP count.  The InvSqrt block contributes
-# {0, 3, 6, 9} DSP for {0, 1, 2, 3} Newton steps; lifted onto the reference
-# LayerNorm (DSP base = 8 at SIMD=2) these become {8, 11, 14, 17}.  Anything
-# unexpected falls back to "X" (and is flagged on stderr).
+# Marker per *full-LayerNorm* DSP count.  Lifted onto the reference LayerNorm
+# (DSP base = 8 at SIMD=2) and then adjusted by the sustainable-interval folding
+# correction of generate_combined.py, the design points cluster by Newton-step
+# count NR into these DSP values:
+#   NR=0 -> 10  (base 8 + candidate 0 DSP + (1-0)*ii_delta_DSP=+2)
+#   NR=1 -> 11  (base 8 + candidate 3 DSP + (1-1)*ii_delta_DSP= 0)
+#   NR=2 -> 12  (base 8 + candidate 6 DSP + (1-2)*ii_delta_DSP=-2)
+#   IP core (NR=0, 9-DSP block) -> 19  (867-block LUT / 17 DSP base + 2)
+# Anything unexpected falls back to "X" (and is flagged on stderr).
 DSP_TO_MARKER: dict[int, str] = {
-    8: "o",
+    10: "o",
     11: "^",
-    14: "s",
-    17: "P",
+    12: "s",
+    19: "P",
 }
 FALLBACK_MARKER = "X"
 
