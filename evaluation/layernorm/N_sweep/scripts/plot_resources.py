@@ -307,7 +307,9 @@ def draw_lut_axis(
 
     ax.set_xlabel(r"$N$")
     if add_ylabel:
-        ax.set_ylabel(r"LUT Count")
+        # labelpad lifted a little above the default (4.0) so the y-axis label
+        # sits slightly clear of the (enlarged) y tick numbers.
+        ax.set_ylabel(r"LUT Count", labelpad=8.0)
 
     # Linear LUT y-axis in both figures, starting at 0 so the affine intercept
     # and the true magnitude of the LUT growth are visible.

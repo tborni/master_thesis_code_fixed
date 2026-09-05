@@ -224,7 +224,9 @@ def plot_one(
 
     ax.set_xlabel(r"$N$")
     # Factor next to the metric, as in rec/lookup's accuracy_newton_coeff figure.
-    ax.set_ylabel(rf"RMSRE  $(\times\,{y_unit_label})$")
+    # labelpad lifted a little above the default (4.0) so the y-axis label sits
+    # slightly clear of the (enlarged) y tick numbers.
+    ax.set_ylabel(rf"RMSRE  $(\times\,{y_unit_label})$", labelpad=8.0)
 
     # Tick only the odd-exponent powers of two (2^1, 2^3, ..., 2^13), labelled as
     # a power of two (2^k) to match the base-2 log axis, and suppress the base-2
