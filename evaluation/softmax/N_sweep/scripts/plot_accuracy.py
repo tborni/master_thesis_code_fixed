@@ -20,12 +20,15 @@ with its own linear y-axis, keeps both readable at their native scale.
 Design notes
 ------------
 * The x-axis is logarithmic and the y-axis is linear (a semilog-x view). ``N``
-  spans over three decades (2 .. 16384, always a power of two), so a log x-axis
-  keeps the densely-packed small-N points legible; RMSRE varies only mildly
-  across the sweep (well under one decade), so a *linear* y-axis shows those
-  variations at their true relative size rather than compressing them the way a
-  log y-axis would. The x-axis uses base 2 (``N`` is a power of two) with the
-  sampled N values, labelled as ``2^k``, as tick labels.
+  spans over three decades (2 .. 8192, always a power of two; the sweep's final
+  2^14 point is dropped so the range matches the sibling layernorm N-sweep
+  figures), so a log x-axis keeps the densely-packed small-N points legible;
+  RMSRE varies only mildly across the sweep (well under one decade), so a
+  *linear* y-axis shows those variations at their true relative size rather than
+  compressing them the way a log y-axis would. The x-axis uses base 2 (``N`` is a
+  power of two); ticks are labelled as ``2^k`` at the odd exponents only
+  (2^1, 2^3, ..., 2^13), every second one dropped so the enlarged labels do not
+  crowd once the figure is shrunk into its side-by-side LaTeX pair.
 * Because the y-axis is linear and the series is not a clean power law, the raw
   measurements are drawn as bare markers (no connecting line and no fitted
   curve): the figure shows the sweep exactly as sampled. RMSRE is rescaled by a
@@ -80,6 +83,13 @@ SERIES = (
     ("accuracy_small_error.csv", "accuracy_small_error.png", 1e-6, r"10^{-6}"),
 )
 
+# Largest N to plot. The accuracy reports sweep N up to 16384 (2^14), but the
+# figures are capped at N <= 8192 (2^1 .. 2^13): the single 2^14 point is dropped
+# so this pair spans the same 2^1..2^13 range as the sibling layernorm N-sweep
+# figures they sit beside in the thesis. The cap is applied at load time, so both
+# the drawn points and the y-axis autoscale use this same range.
+N_MAX = 8192
+
 
 def pow2_label(n: int) -> str:
     """Format a sampled ``N`` as a base-2 power label for the log x-axis.
@@ -98,9 +108,12 @@ def pow2_label(n: int) -> str:
 def load_accuracy_csv(path: Path) -> tuple[list[int], list[float]]:
     """Load the ``(N, RMSRE)`` columns from an accuracy CSV.
 
-    Returns two parallel lists sorted by ascending ``N`` (so the points are laid
-    out in x-order regardless of the file's row order). Raises ``ValueError`` if
-    the file is empty or missing the expected columns.
+    Only rows with ``N <= N_MAX`` are kept, so the figures stop at 2^13 (the 2^14
+    point is dropped to match the sibling layernorm N-sweep range). Returns two
+    parallel lists sorted by ascending ``N`` (so the points are laid out in
+    x-order regardless of the file's row order). Raises ``ValueError`` if the file
+    is empty, is missing the expected columns, or has no rows within the
+    ``N <= N_MAX`` range.
     """
     required = {"N", "RMSRE"}
     with path.open("r", newline="", encoding="utf-8") as handle:
@@ -109,9 +122,13 @@ def load_accuracy_csv(path: Path) -> tuple[list[int], list[float]]:
             raise ValueError(
                 f"expected columns {sorted(required)} in {path}, found {reader.fieldnames}"
             )
-        rows = [(int(row["N"]), float(row["RMSRE"])) for row in reader]
+        rows = [
+            (int(row["N"]), float(row["RMSRE"]))
+            for row in reader
+            if int(row["N"]) <= N_MAX
+        ]
     if not rows:
-        raise ValueError(f"no data rows in {path}")
+        raise ValueError(f"no data rows with N <= {N_MAX} in {path}")
     rows.sort(key=lambda r: r[0])
     n_vals = [r[0] for r in rows]
     rmsre = [r[1] for r in rows]
@@ -131,13 +148,17 @@ def configure_style() -> None:
             "font.serif": ["STIXGeneral", "DejaVu Serif"],
             "mathtext.fontset": "stix",
             "axes.unicode_minus": True,
-            # Typographic sizes tuned for a ~half-to-full text-width figure.
+            # Typographic sizes tuned for a ~half-text-width figure: the two
+            # accuracy figures are placed side by side in the thesis, so the
+            # axis/tick/legend type is enlarged to stay legible after LaTeX
+            # shrinks the pair to fit the text width (matching the sibling
+            # layernorm N-sweep figures).
             "font.size": 23,
-            "axes.titlesize": 25,
-            "axes.labelsize": 29,
-            "xtick.labelsize": 22,
-            "ytick.labelsize": 22,
-            "legend.fontsize": 27,
+            "axes.titlesize": 28,
+            "axes.labelsize": 34,
+            "xtick.labelsize": 27,
+            "ytick.labelsize": 27,
+            "legend.fontsize": 30,
             # Full black frame (all four spines) with outward ticks.
             "axes.linewidth": 0.8,
             "axes.edgecolor": "black",
@@ -205,12 +226,16 @@ def plot_one(
     # Factor next to the metric, as in rec/lookup's accuracy_newton_coeff figure.
     ax.set_ylabel(rf"RMSRE  $(\times\,{y_unit_label})$")
 
-    # Show every sampled N as a major tick, labelled as a power of two (2^k) to
-    # match the base-2 log axis, and suppress the base-2 minor ticks so the axis
-    # stays uncluttered. Labels sit horizontally (the 2^k form is compact enough
-    # not to need slanting).
-    ax.set_xticks(n_vals)
-    ax.set_xticklabels([pow2_label(n) for n in n_vals])
+    # Tick only the odd-exponent powers of two (2^1, 2^3, ..., 2^13), labelled as
+    # a power of two (2^k) to match the base-2 log axis, and suppress the base-2
+    # minor ticks. With the enlarged tick type (and the figure later shrunk into a
+    # side-by-side LaTeX pair) a label at every sampled N would crowd, so every
+    # second exponent is dropped; the even-exponent measurements are still plotted
+    # as points, they simply sit between labelled ticks. Labels sit horizontally
+    # (the 2^k form is compact enough not to need slanting).
+    tick_n = [n for n in n_vals if (n.bit_length() - 1) % 2 == 1]
+    ax.set_xticks(tick_n)
+    ax.set_xticklabels([pow2_label(n) for n in tick_n])
     ax.xaxis.set_minor_locator(NullLocator())
 
     # Linear y-axis: start at 0 so the RMSRE magnitude is read honestly against a
