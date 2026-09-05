@@ -17,11 +17,14 @@ Design notes
 * Both axes are logarithmic: ``N`` is restricted to 2 .. 8192 (``N_MAX``, always
   a power of two), and RMSRE spans a wide range, so a log-log view keeps every
   point legible and makes power-law trends read as straight lines. The x-axis
-  uses base 2 (``N`` is a power of two) with the sampled N values, labelled as
-  ``2^k``, as tick labels. Each figure's y-axis is autoscaled to its own series
-  (the 1-Newton figure additionally pins its limits to a clean decade bracket),
-  so both read clearly despite the two configurations occupying different RMSRE
-  ranges.
+  uses base 2 (``N`` is a power of two); ticks are labelled as ``2^k`` at the
+  odd exponents only (2^1, 2^3, ..., 2^13), every second one dropped so the
+  enlarged labels do not crowd once the figure is shrunk into its side-by-side
+  LaTeX pair. Each figure's y-axis is autoscaled to its own series (the 1-Newton
+  figure additionally brackets its limits to [1e-7, 3e-5] -- the three decade
+  ticks 10^-7..10^-5 plus a third-decade of headroom above 10^-5 to clear the
+  upper-left legend), so both read clearly despite the two configurations
+  occupying different RMSRE ranges.
 * Each measurement is drawn as a bare marker (no connecting line), so the raw
   sweep is shown exactly as sampled.
 * Only the 1-Newton series is close to a straight line on these log-log axes
@@ -177,13 +180,16 @@ def configure_style() -> None:
             "font.serif": ["STIXGeneral", "DejaVu Serif"],
             "mathtext.fontset": "stix",
             "axes.unicode_minus": True,
-            # Typographic sizes tuned for a ~half-to-full text-width figure.
+            # Typographic sizes tuned for a ~half-text-width figure: this plot is
+            # paired side by side with resources_lut_log.png in the thesis, so the
+            # axis/tick/legend type is enlarged to stay legible after LaTeX shrinks
+            # the pair to fit the text width.
             "font.size": 23,
             "axes.titlesize": 25,
-            "axes.labelsize": 29,
-            "xtick.labelsize": 22,
-            "ytick.labelsize": 22,
-            "legend.fontsize": 27,
+            "axes.labelsize": 34,
+            "xtick.labelsize": 27,
+            "ytick.labelsize": 27,
+            "legend.fontsize": 30,
             # Full black frame (all four spines) with outward ticks.
             "axes.linewidth": 0.8,
             "axes.edgecolor": "black",
@@ -258,13 +264,17 @@ def plot(label: str, color: str, marker: str, fit: bool,
     ax.set_xlabel(r"$N$")
     ax.set_ylabel(r"RMSRE")
 
-    # Show every sampled N as a major tick, labelled as a power of two (2^k) to
-    # match the base-2 log axis, and suppress the base-2 minor ticks so the axis
-    # stays uncluttered. Labels sit horizontally (the 2^k form is compact enough
-    # not to need slanting).
+    # Tick only the odd-exponent powers of two (2^1, 2^3, ..., 2^13), labelled as
+    # a power of two (2^k) to match the base-2 log axis, and suppress the base-2
+    # minor ticks. With the enlarged tick type (and the figure later shrunk into a
+    # side-by-side LaTeX pair) a label at every sampled N would crowd, so every
+    # second exponent is dropped; the even-exponent measurements are still plotted
+    # as points, they simply sit between labelled ticks. Labels sit horizontally
+    # (the 2^k form is compact enough not to need slanting).
     all_n = sorted(set(n_vals))
-    ax.set_xticks(all_n)
-    ax.set_xticklabels([pow2_label(n) for n in all_n])
+    tick_n = [n for n in all_n if (n.bit_length() - 1) % 2 == 1]
+    ax.set_xticks(tick_n)
+    ax.set_xticklabels([pow2_label(n) for n in tick_n])
     ax.xaxis.set_minor_locator(NullLocator())
 
     # Decade major grid on the y-axis plus faint minor dec.-subdivisions so the
@@ -276,16 +286,30 @@ def plot(label: str, color: str, marker: str, fit: bool,
 
     if fit:
         # The 1-Newton RMSRE spans ~1.5e-7 .. 9.1e-6, i.e. just inside the
-        # 10^-7 .. 10^-5 decades, so a tight autoscale would label only the
-        # single 10^-6 major tick. Bracket the limits to [1e-7, 1e-5] (both just
-        # outside the data range, so no point is clipped) to get three labelled
-        # decade ticks (10^-7, 10^-6, 10^-5).
-        ax.set_ylim(1e-7, 1e-5)
+        # 10^-7 .. 10^-5 decades. Bracket the limits to [1e-7, 3e-5]: the 1e-7
+        # floor and the 10^-7/10^-6/10^-5 decade ticks are unchanged, but the top
+        # is lifted a third of a decade above 10^-5 (from a tight 1e-5) to open
+        # headroom under the upper-left legend. With the enlarged legend type the
+        # box grows; at a 1e-5 top it would overlap the fit line and the N=1024
+        # point, so the extra headroom pushes the data down clear of the box while
+        # keeping every point inside the axes (max RMSRE 9.1e-6 < 3e-5).
+        ax.set_ylim(1e-7, 3e-5)
+    else:
+        # The 0-Newton floor sits at ~1.6e-4 with its large-N points dipping to
+        # ~6.8e-5, so a tight autoscale pins the bottom of the data almost onto
+        # the axis floor -- and the enlarged lower-left legend box would then
+        # graze the lowest large-N points. Bracket to [1e-5, 3e-4] (a decade of
+        # clear space below the lowest point, ~6.8e-5, and headroom above the peak
+        # ~2e-4) so the floor lifts into the upper band and the lower-left legend
+        # sits in genuinely empty space beneath it. No point is clipped
+        # (6.8e-5 .. 2e-4 all inside), and the 10^-5/10^-4 decade ticks are kept.
+        ax.set_ylim(1e-5, 3e-4)
 
     # Pin the legend into whichever corner is clear of the data, flush against
     # the spines (small border-axes pad). The 1-Newton series rises monotonically,
-    # leaving the top-left open; the 0-Newton floor clusters high with only its
-    # large-N points dipping down on the right, leaving the bottom-left open.
+    # leaving the top-left open; the 0-Newton floor clusters in the upper band
+    # (lifted there by the [1e-5, 3e-4] limits above), leaving the bottom-left
+    # open beneath the lowest large-N points.
     legend_loc = "upper left" if fit else "lower left"
     ax.legend(
         loc=legend_loc, ncol=1, handlelength=2.2,
