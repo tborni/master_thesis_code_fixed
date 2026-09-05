@@ -75,8 +75,13 @@ def plot_heatmap(filepath, output_path=None, title=None, xlabel="x", ylabel="y",
 	ax.set_xticks(np.arange(len(x_vals)))
 	ax.set_yticks(np.arange(len(y_vals)))
 
-	ax.set_xticklabels([v for v in x_vals], fontsize=fontsize_ticks)
-	ax.set_yticklabels([v for v in y_vals], fontsize=fontsize_ticks)
+	# addr_width / word_width are whole numbers; render them as integers so the
+	# ticks read "6, 7, ..." rather than matplotlib's default float "6.0, 7.0".
+	def _tick(v):
+		return str(int(v)) if float(v).is_integer() else str(v)
+
+	ax.set_xticklabels([_tick(v) for v in x_vals], fontsize=fontsize_ticks)
+	ax.set_yticklabels([_tick(v) for v in y_vals], fontsize=fontsize_ticks)
 	ax.set_xlabel(xlabel, fontsize=fontsize_labels)
 	ax.set_ylabel(ylabel, fontsize=fontsize_labels)
 
@@ -123,8 +128,8 @@ IMAGES_DIR = PROJECT_ROOT / "images"
 #   resources.csv : SIMD, addr_width, word_width, EXCLUDE_POS, clock_period, WNS,
 #                   Critical path timing, Max frequency, REG, LUT, DSP, BRAM, URAM
 #   accuracy.csv  : addr_width, word_width, RMSRE, max_rel_error
-XLABEL = "addr_width"
-YLABEL = "word_width"
+XLABEL = "Address Width $a$"
+YLABEL = "Word Width $w$"
 X_COL_IDX = 0
 Y_COL_IDX = 1
 VALUE_IDX = 2
@@ -140,8 +145,8 @@ if __name__ == '__main__':
 
 	# Plot resources: LUT usage over the (addr_width, word_width) grid.
 	# resources.csv columns: SIMD, addr_width(1), word_width(2), ..., LUT(9), ...
-	XLABEL = "addr_width"
-	YLABEL = "word_width"
+	XLABEL = "Address Width $a$"
+	YLABEL = "Word Width $w$"
 	X_COL_IDX = 1			# addr_width
 	Y_COL_IDX = 2			# word_width
 	VALUE_IDX = 9			# LUT column
@@ -157,16 +162,16 @@ if __name__ == '__main__':
 				cell_width=2.6
 			)
 
-	# Plot accuracy: RMSRE over the (addr_width, word_width) grid. Labels show
-	# RMSRE as a percentage with 4 decimals.
+	# Plot accuracy: RMSRE over the (addr_width, word_width) grid. Labels show the
+	# raw RMSRE in scientific notation with 3 significant figures.
 	# accuracy.csv columns: addr_width(0), word_width(1), RMSRE(2), max_rel_error(3)
-	XLABEL = "addr_width"
-	YLABEL = "word_width"
+	XLABEL = "Address Width $a$"
+	YLABEL = "Word Width $w$"
 	X_COL_IDX = 0			# addr_width
 	Y_COL_IDX = 1			# word_width
 	VALUE_IDX = 2			# RMSRE column
-	VALUE_FACTOR = 100
-	DATATYPE = "percent"
+	VALUE_FACTOR = 1
+	DATATYPE = "sci"
 	FILTER_COL = None
 	plot_heatmap(
 				filepath=DATA_DIR / "accuracy.csv",

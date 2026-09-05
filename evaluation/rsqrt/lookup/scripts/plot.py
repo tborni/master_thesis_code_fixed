@@ -75,8 +75,13 @@ def plot_heatmap(filepath, output_path=None, title=None, xlabel="x", ylabel="y",
 	ax.set_xticks(np.arange(len(x_vals)))
 	ax.set_yticks(np.arange(len(y_vals)))
 
-	ax.set_xticklabels([v for v in x_vals], fontsize=fontsize_ticks)
-	ax.set_yticklabels([v for v in y_vals], fontsize=fontsize_ticks)
+	# addr_width / word_width are whole numbers; render them as integers so the
+	# ticks read "6, 7, ..." rather than matplotlib's default float "6.0, 7.0".
+	def _tick(v):
+		return str(int(v)) if float(v).is_integer() else str(v)
+
+	ax.set_xticklabels([_tick(v) for v in x_vals], fontsize=fontsize_ticks)
+	ax.set_yticklabels([_tick(v) for v in y_vals], fontsize=fontsize_ticks)
 	ax.set_xlabel(xlabel, fontsize=fontsize_labels)
 	ax.set_ylabel(ylabel, fontsize=fontsize_labels)
 
@@ -120,8 +125,8 @@ IMAGES_DIR = PROJECT_ROOT / "images"
 # Column layout of the CSVs consumed below (0-based indices):
 #   resources.csv : num_newton_steps, addr_width, word_width, REG, LUT, DSP, BRAM, URAM
 #   accuracy.csv  : num_newton_steps, addr_width, word_width, RMSRE, max_rel_error
-XLABEL = "addr_width"
-YLABEL = "word_width"
+XLABEL = "Address Width $a$"
+YLABEL = "Word Width $w$"
 X_COL_IDX = 1
 Y_COL_IDX = 2
 VALUE_IDX = 3
@@ -140,8 +145,8 @@ if __name__ == '__main__':
 	# Plot resources: LUT usage over the (addr_width, word_width) grid, one figure
 	# per num_newton_steps so the three sweeps present in resources.csv do not
 	# overwrite each other in the same cells.
-	XLABEL = "addr_width"
-	YLABEL = "word_width"
+	XLABEL = "Address Width $a$"
+	YLABEL = "Word Width $w$"
 	X_COL_IDX = 1			# addr_width
 	Y_COL_IDX = 2			# word_width
 	VALUE_IDX = 4			# LUT column
@@ -160,15 +165,15 @@ if __name__ == '__main__':
 
 	# Plot accuracy: RMSRE over the (addr_width, word_width) grid, one figure per
 	# num_newton_steps so the three sweeps present in accuracy.csv do not
-	# overwrite each other in the same cells. Labels show RMSRE as a percentage
-	# with 4 decimals.
-	XLABEL = "addr_width"
-	YLABEL = "word_width"
+	# overwrite each other in the same cells. Labels show the raw RMSRE in
+	# scientific notation with 3 significant figures.
+	XLABEL = "Address Width $a$"
+	YLABEL = "Word Width $w$"
 	X_COL_IDX = 1			# addr_width
 	Y_COL_IDX = 2			# word_width
 	VALUE_IDX = 3			# RMSRE column
-	VALUE_FACTOR = 100
-	DATATYPE = "percent"
+	VALUE_FACTOR = 1
+	DATATYPE = "sci"
 	FILTER_COL = 0			# num_newton_steps column
 	for FILTER_VAL in NEWTON_STEPS:
 		plot_heatmap(

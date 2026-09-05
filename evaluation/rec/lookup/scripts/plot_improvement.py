@@ -45,8 +45,8 @@ OUTPUT_PNG = IMAGES_DIR / "accuracy_newton_improvement.png"
 #   NUM_NEWTON_STEPS, ADDR_WIDTH, WORD_WIDTH, RMSRE_C2, RMSRE_OPT, C_OPT,
 #   RMSRE_IMPROVEMENT_PCT
 #   -> addr_width is column 1, word_width column 2, improvement column 6.
-XLABEL = "addr_width"
-YLABEL = "word_width"
+XLABEL = "Address Width $a$"
+YLABEL = "Word Width $w$"
 X_COL_IDX = 1           # addr_width
 Y_COL_IDX = 2           # word_width
 VALUE_IDX = 6           # RMSRE_IMPROVEMENT_PCT (already a percentage)
