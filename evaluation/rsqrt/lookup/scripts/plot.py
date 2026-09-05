@@ -82,7 +82,7 @@ def plot_heatmap(filepath, output_path=None, title=None, xlabel="x", ylabel="y",
 
 	ax.set_xticklabels([_tick(v) for v in x_vals], fontsize=fontsize_ticks)
 	ax.set_yticklabels([_tick(v) for v in y_vals], fontsize=fontsize_ticks)
-	ax.set_xlabel(xlabel, fontsize=fontsize_labels)
+	ax.set_xlabel(xlabel, fontsize=fontsize_labels, labelpad=12)
 	ax.set_ylabel(ylabel, fontsize=fontsize_labels)
 
 	if title:
