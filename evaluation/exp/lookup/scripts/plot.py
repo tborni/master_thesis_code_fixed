@@ -45,7 +45,7 @@ def load_triplets(filepath):
 
 
 def plot_heatmap(filepath, output_path=None, title=None, xlabel="x", ylabel="y", cmap_name='viridis_r', gamma=0.7,
-				 fontsize_data=28, fontsize_labels=30, fontsize_ticks=25, cell_width=1.8, cell_height=1.2):
+				 fontsize_data=30, fontsize_labels=34, fontsize_ticks=28, cell_width=1.8, cell_height=1.2):
 	triplets = load_triplets(filepath)
 
 	# Determine axis tick labels from the data
