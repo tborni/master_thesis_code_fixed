@@ -137,7 +137,16 @@ def affine_fit(n_vals: np.ndarray, lut: np.ndarray) -> tuple[float, float, float
 
 
 def configure_style() -> None:
-    """Apply the shared publication rcParams style (see plot_accuracy.py)."""
+    """Apply the shared publication rcParams style (see plot_accuracy.py).
+
+    The axis/tick/legend sizes match the enlarged sizes in plot_accuracy.py so
+    that resources_lut_log.png stays typographically consistent with
+    accuracy_1_newton.png -- the two are placed side by side in the thesis and
+    must read at the same scale once LaTeX shrinks them to the text width.
+    ``axes.titlesize`` only shows on the two-panel combined figure (the
+    stand-alone log/linear figures carry no title); it is bumped in step so those
+    panel titles stay proportionate to the larger axis labels.
+    """
     plt.rcParams.update(
         {
             "font.family": "serif",
@@ -145,11 +154,11 @@ def configure_style() -> None:
             "mathtext.fontset": "stix",
             "axes.unicode_minus": True,
             "font.size": 23,
-            "axes.titlesize": 25,
-            "axes.labelsize": 29,
-            "xtick.labelsize": 22,
-            "ytick.labelsize": 22,
-            "legend.fontsize": 27,
+            "axes.titlesize": 28,
+            "axes.labelsize": 34,
+            "xtick.labelsize": 27,
+            "ytick.labelsize": 27,
+            "legend.fontsize": 30,
             "axes.linewidth": 0.8,
             "axes.edgecolor": "black",
             "xtick.direction": "out",
