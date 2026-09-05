@@ -21,10 +21,10 @@ Design notes
   odd exponents only (2^1, 2^3, ..., 2^13), every second one dropped so the
   enlarged labels do not crowd once the figure is shrunk into its side-by-side
   LaTeX pair. Each figure's y-axis is autoscaled to its own series (the 1-Newton
-  figure additionally brackets its limits to [1e-7, 3e-5] -- the three decade
-  ticks 10^-7..10^-5 plus a third-decade of headroom above 10^-5 to clear the
-  upper-left legend), so both read clearly despite the two configurations
-  occupying different RMSRE ranges.
+  figure additionally brackets its limits to [1e-7, 5e-5] -- the three decade
+  ticks 10^-7..10^-5 plus roughly two-thirds of a decade of headroom above 10^-5
+  to open a comfortable gap under the upper-left legend), so both read clearly
+  despite the two configurations occupying different RMSRE ranges.
 * Each measurement is drawn as a bare marker (no connecting line), so the raw
   sweep is shown exactly as sampled.
 * Only the 1-Newton series is close to a straight line on these log-log axes
@@ -288,14 +288,15 @@ def plot(label: str, color: str, marker: str, fit: bool,
 
     if fit:
         # The 1-Newton RMSRE spans ~1.5e-7 .. 9.1e-6, i.e. just inside the
-        # 10^-7 .. 10^-5 decades. Bracket the limits to [1e-7, 3e-5]: the 1e-7
+        # 10^-7 .. 10^-5 decades. Bracket the limits to [1e-7, 5e-5]: the 1e-7
         # floor and the 10^-7/10^-6/10^-5 decade ticks are unchanged, but the top
-        # is lifted a third of a decade above 10^-5 (from a tight 1e-5) to open
-        # headroom under the upper-left legend. With the enlarged legend type the
-        # box grows; at a 1e-5 top it would overlap the fit line and the N=1024
-        # point, so the extra headroom pushes the data down clear of the box while
-        # keeping every point inside the axes (max RMSRE 9.1e-6 < 3e-5).
-        ax.set_ylim(1e-7, 3e-5)
+        # is lifted about two-thirds of a decade above 10^-5 to open a comfortable
+        # gap under the upper-left legend. With the enlarged legend type the box
+        # grows; a tighter top (1e-5, or even 3e-5) leaves the fit line almost
+        # touching the legend, so the extra headroom pushes the data down clear of
+        # the box (fit line ~2.2e-6 vs. legend bottom ~3.0e-6, a ~35% gap) while
+        # keeping every point inside the axes (max RMSRE 9.1e-6 < 5e-5).
+        ax.set_ylim(1e-7, 5e-5)
     else:
         # The 0-Newton floor sits at ~1.6e-4 with its large-N points dipping to
         # ~6.8e-5, so a tight autoscale pins the bottom of the data almost onto
