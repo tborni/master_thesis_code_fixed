@@ -1,0 +1,87 @@
+WARNING: Default location for XILINX_HLS not found
+
+****** Vivado v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source ../run_0_2026-09-06_17-15-19/0_general/run_0/synth.tcl
+# set script_dir [file dirname [info script]]
+# set util_report_path [file join $script_dir "util_report.rpt"]
+# set timing_report_path [file join $script_dir "timing_report.rpt"]
+# set top layernorm_top
+# create_project -force $top $top.vivado -part xcvc1902-vsva2197-2MP-e-S
+create_project: Time (s): cpu = 00:00:03 ; elapsed = 00:00:05 . Memory (MB): peak = 2233.012 ; gain = 118.047 ; free physical = 48915 ; free virtual = 78269
+# set_property top $top [current_fileset]
+# foreach f [glob -nocomplain ../src/*.v]  { read_verilog $f }
+# foreach f [glob -nocomplain ../src/*.sv] { read_verilog -sv $f }
+# set_property generic {
+# 	
+# } [current_fileset]
+# set synth [current_run -synthesis]
+# set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects $synth
+# launch_runs $synth -jobs 32
+WARNING: [Vivado 12-7122] Auto Incremental Compile:: No reference checkpoint was found in run synth_1. Auto-incremental flow will not be run, the standard flow will be run instead.
+[Sun Sep  6 17:15:41 2026] Launched synth_1...
+Run output will be captured here: /scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/synth_1/runme.log
+# wait_on_runs $synth
+[Sun Sep  6 17:15:41 2026] Waiting for synth_1 to finish...
+
+*** Running vivado
+    with args -log layernorm_top.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source layernorm_top.tcl
+
+WARNING: Default location for XILINX_HLS not found
+
+****** Vivado v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source layernorm_top.tcl -notrace
+Command: synth_design -top layernorm_top -part xcvc1902-vsva2197-2MP-e-S -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xcvc1902'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xcvc1902'
+INFO: [Common 17-1540] The version limit for your license is '2026.01' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for new releases.
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 581066
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2653.109 ; gain = 391.707 ; free physical = 46831 ; free virtual = 76185
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_layernorm_64ul_float_float_2ul_s' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_layernorm_64ul_float_float_2ul_s.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_mean_stage_64ul_float_float_2ul_s' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_mean_stage_64ul_float_float_2ul_s.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1.v:9]
+	Parameter ID bound to: 1 - type: integer 
+	Parameter NUM_STAGE bound to: 1 - type: integer 
+	Parameter din0_WIDTH bound to: 32 - type: integer 
+	Parameter din1_WIDTH bound to: 32 - type: integer 
+	Parameter dout_WIDTH bound to: 32 - type: integer 
+ERROR: [Synth 8-439] module 'layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip' not found [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1.v:29]
+ERROR: [Synth 8-6156] failed synthesizing module 'layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1.v:9]
+ERROR: [Synth 8-6156] failed synthesizing module 'layernorm_top_mean_stage_64ul_float_float_2ul_s' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_mean_stage_64ul_float_float_2ul_s.v:9]
+ERROR: [Synth 8-6156] failed synthesizing module 'layernorm_top_layernorm_64ul_float_float_2ul_s' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_layernorm_64ul_float_float_2ul_s.v:9]
+ERROR: [Synth 8-6156] failed synthesizing module 'layernorm_top' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top.v:9]
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 2721.047 ; gain = 459.645 ; free physical = 46745 ; free virtual = 76099
+---------------------------------------------------------------------------------
+synthesize failed
+INFO: [Common 17-83] Releasing license: Synthesis
+10 Infos, 0 Warnings, 0 Critical Warnings and 6 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Vivado Synthesis failed
+INFO: [Common 17-206] Exiting Vivado at Sun Sep  6 17:16:13 2026...
+[Sun Sep  6 17:16:16 2026] synth_1 finished
+ERROR: [Vivado 12-13638] Failed runs(s) : 'synth_1'
+wait_on_runs: Time (s): cpu = 00:00:11 ; elapsed = 00:00:35 . Memory (MB): peak = 2254.012 ; gain = 0.000 ; free physical = 48742 ; free virtual = 78096
+ERROR: [Common 17-39] 'wait_on_runs' failed due to earlier errors.
+
+    while executing
+"wait_on_runs $synth"
+    (file "../run_0_2026-09-06_17-15-19/0_general/run_0/synth.tcl" line 20)
+INFO: [Common 17-206] Exiting Vivado at Sun Sep  6 17:16:16 2026...

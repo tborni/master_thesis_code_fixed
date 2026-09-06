@@ -1,0 +1,1930 @@
+WARNING: Default location for XILINX_HLS not found
+
+****** Vivado v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source ../run_1_2026-09-06_17-32-35/0_general/run_0/synth.tcl
+# set script_dir [file dirname [info script]]
+# set util_report_path [file join $script_dir "util_report.rpt"]
+# set timing_report_path [file join $script_dir "timing_report.rpt"]
+# set top layernorm_top
+# create_project -force $top $top.vivado -part xcvc1902-vsva2197-2MP-e-S
+# set_property top $top [current_fileset]
+# foreach f [glob -nocomplain ../src/*.v]  { read_verilog $f }
+# foreach f [glob -nocomplain ../src/*.sv] { read_verilog -sv $f }
+# foreach f [glob -nocomplain ../src/*_ip.tcl] { source $f }
+## set vivado_ver [version -short]
+## set fpo_ver 7.1
+## if {[regexp -nocase {2015\.1.*} $vivado_ver match]} {
+##     set fpo_ver 7.0
+## }
+## create_ip -name floating_point -version $fpo_ver -vendor xilinx.com -library ip -module_name layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/local/eda/xilinx/vivado/2023.1/data/ip'.
+create_ip: Time (s): cpu = 00:00:00.69 ; elapsed = 00:00:06 . Memory (MB): peak = 2334.758 ; gain = 102.129 ; free physical = 48880 ; free virtual = 78263
+## set_property -dict [list CONFIG.a_precision_type Single \
+##                           CONFIG.a_tuser_width 1 \
+##                           CONFIG.add_sub_value Add \
+##                           CONFIG.b_tuser_width 1 \
+##                           CONFIG.c_a_exponent_width 8 \
+##                           CONFIG.c_a_fraction_width 24 \
+##                           CONFIG.c_compare_operation Programmable \
+##                           CONFIG.c_has_divide_by_zero false \
+##                           CONFIG.c_has_invalid_op false \
+##                           CONFIG.c_has_overflow false \
+##                           CONFIG.c_has_underflow false \
+##                           CONFIG.c_latency 0 \
+##                           CONFIG.c_mult_usage Primitive_Usage \
+##                           CONFIG.c_optimization Speed_Optimized \
+##                           CONFIG.c_rate 1 \
+##                           CONFIG.c_result_exponent_width 8 \
+##                           CONFIG.c_result_fraction_width 24 \
+##                           CONFIG.component_name layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip \
+##                           CONFIG.flow_control NonBlocking \
+##                           CONFIG.has_a_tlast false \
+##                           CONFIG.has_a_tuser false \
+##                           CONFIG.has_aclken false \
+##                           CONFIG.has_aresetn false \
+##                           CONFIG.has_b_tlast false \
+##                           CONFIG.has_b_tuser false \
+##                           CONFIG.has_operation_tlast false \
+##                           CONFIG.has_operation_tuser false \
+##                           CONFIG.has_result_tready false \
+##                           CONFIG.maximum_latency false \
+##                           CONFIG.operation_tuser_width 1 \
+##                           CONFIG.operation_type Add_Subtract \
+##                           CONFIG.result_precision_type Single \
+##                           CONFIG.result_tlast_behv Null] -objects [get_ips layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip] -quiet
+## set_property generate_synth_checkpoint false [get_files layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip.xci]
+## generate_target {synthesis simulation} [get_files layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip.xci]
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip'...
+## set vivado_ver [version -short]
+## set fpo_ver 7.1
+## if {[regexp -nocase {2015\.1.*} $vivado_ver match]} {
+##     set fpo_ver 7.0
+## }
+## create_ip -name floating_point -version $fpo_ver -vendor xilinx.com -library ip -module_name layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip
+## set_property -dict [list CONFIG.a_precision_type Single \
+##                           CONFIG.a_tuser_width 1 \
+##                           CONFIG.add_sub_value Both \
+##                           CONFIG.b_tuser_width 1 \
+##                           CONFIG.c_a_exponent_width 8 \
+##                           CONFIG.c_a_fraction_width 24 \
+##                           CONFIG.c_compare_operation Programmable \
+##                           CONFIG.c_has_divide_by_zero false \
+##                           CONFIG.c_has_invalid_op false \
+##                           CONFIG.c_has_overflow false \
+##                           CONFIG.c_has_underflow false \
+##                           CONFIG.c_latency 14 \
+##                           CONFIG.c_mult_usage No_Usage \
+##                           CONFIG.c_optimization Speed_Optimized \
+##                           CONFIG.c_rate 1 \
+##                           CONFIG.c_result_exponent_width 8 \
+##                           CONFIG.c_result_fraction_width 24 \
+##                           CONFIG.component_name layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip \
+##                           CONFIG.flow_control NonBlocking \
+##                           CONFIG.has_a_tlast false \
+##                           CONFIG.has_a_tuser false \
+##                           CONFIG.has_aclken true \
+##                           CONFIG.has_aresetn false \
+##                           CONFIG.has_b_tlast false \
+##                           CONFIG.has_b_tuser false \
+##                           CONFIG.has_operation_tlast false \
+##                           CONFIG.has_operation_tuser false \
+##                           CONFIG.has_result_tready false \
+##                           CONFIG.maximum_latency false \
+##                           CONFIG.operation_tuser_width 1 \
+##                           CONFIG.operation_type Divide \
+##                           CONFIG.result_precision_type Single \
+##                           CONFIG.result_tlast_behv Null] -objects [get_ips layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip] -quiet
+## set_property generate_synth_checkpoint false [get_files layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip.xci]
+## generate_target {synthesis simulation} [get_files layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip.xci]
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip'...
+## set vivado_ver [version -short]
+## set fpo_ver 7.1
+## if {[regexp -nocase {2015\.1.*} $vivado_ver match]} {
+##     set fpo_ver 7.0
+## }
+## create_ip -name floating_point -version $fpo_ver -vendor xilinx.com -library ip -module_name layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip
+## set_property -dict [list CONFIG.a_precision_type Single \
+##                           CONFIG.a_tuser_width 1 \
+##                           CONFIG.add_sub_value Both \
+##                           CONFIG.b_tuser_width 1 \
+##                           CONFIG.c_a_exponent_width 8 \
+##                           CONFIG.c_a_fraction_width 24 \
+##                           CONFIG.c_compare_operation Programmable \
+##                           CONFIG.c_has_divide_by_zero false \
+##                           CONFIG.c_has_invalid_op false \
+##                           CONFIG.c_has_overflow false \
+##                           CONFIG.c_has_underflow false \
+##                           CONFIG.c_latency 14 \
+##                           CONFIG.c_mult_usage No_Usage \
+##                           CONFIG.c_optimization Speed_Optimized \
+##                           CONFIG.c_rate 1 \
+##                           CONFIG.c_result_exponent_width 8 \
+##                           CONFIG.c_result_fraction_width 24 \
+##                           CONFIG.component_name layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip \
+##                           CONFIG.flow_control NonBlocking \
+##                           CONFIG.has_a_tlast false \
+##                           CONFIG.has_a_tuser false \
+##                           CONFIG.has_aclken true \
+##                           CONFIG.has_aresetn false \
+##                           CONFIG.has_b_tlast false \
+##                           CONFIG.has_b_tuser false \
+##                           CONFIG.has_operation_tlast false \
+##                           CONFIG.has_operation_tuser false \
+##                           CONFIG.has_result_tready false \
+##                           CONFIG.maximum_latency false \
+##                           CONFIG.operation_tuser_width 1 \
+##                           CONFIG.operation_type Square_Root \
+##                           CONFIG.result_precision_type Single \
+##                           CONFIG.result_tlast_behv Null] -objects [get_ips layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip] -quiet
+## set_property generate_synth_checkpoint false [get_files layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip.xci]
+## generate_target {synthesis simulation} [get_files layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip.xci]
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip'...
+## set vivado_ver [version -short]
+## set fpo_ver 7.1
+## if {[regexp -nocase {2015\.1.*} $vivado_ver match]} {
+##     set fpo_ver 7.0
+## }
+## create_ip -name floating_point -version $fpo_ver -vendor xilinx.com -library ip -module_name layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip
+## set_property -dict [list CONFIG.Operation_Type {Unfused_Multiply_Add} \
+##                          CONFIG.Add_Sub_Value {Add} \
+##                          CONFIG.Flow_Control {NonBlocking} \
+##                          CONFIG.Maximum_Latency {false} \
+##                          CONFIG.Has_ACLKEN {true} \
+##                          CONFIG.A_Precision_Type {Single} \
+##                          CONFIG.C_A_Exponent_Width {8} \
+##                          CONFIG.C_A_Fraction_Width {24} \
+##                          CONFIG.Result_Precision_Type {Single} \
+##                          CONFIG.C_Result_Exponent_Width {8} \
+##                          CONFIG.C_Result_Fraction_Width {24} \
+##                          CONFIG.c_mult_usage Primitive_Usage \
+##                          CONFIG.c_latency 2 \
+##                          CONFIG.Has_RESULT_TREADY {false} \
+##                          CONFIG.C_Rate {1}] [get_ips layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip]
+## set_property generate_synth_checkpoint false [get_files layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip.xci]
+## generate_target {synthesis simulation} [get_files layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip.xci]
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip'...
+## set vivado_ver [version -short]
+## set fpo_ver 7.1
+## if {[regexp -nocase {2015\.1.*} $vivado_ver match]} {
+##     set fpo_ver 7.0
+## }
+## create_ip -name floating_point -version $fpo_ver -vendor xilinx.com -library ip -module_name layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip
+## set_property -dict [list CONFIG.a_precision_type Single \
+##                           CONFIG.a_tuser_width 1 \
+##                           CONFIG.add_sub_value Subtract \
+##                           CONFIG.b_tuser_width 1 \
+##                           CONFIG.c_a_exponent_width 8 \
+##                           CONFIG.c_a_fraction_width 24 \
+##                           CONFIG.c_compare_operation Programmable \
+##                           CONFIG.c_has_divide_by_zero false \
+##                           CONFIG.c_has_invalid_op false \
+##                           CONFIG.c_has_overflow false \
+##                           CONFIG.c_has_underflow false \
+##                           CONFIG.c_latency 0 \
+##                           CONFIG.c_mult_usage Primitive_Usage \
+##                           CONFIG.c_optimization Speed_Optimized \
+##                           CONFIG.c_rate 1 \
+##                           CONFIG.c_result_exponent_width 8 \
+##                           CONFIG.c_result_fraction_width 24 \
+##                           CONFIG.component_name layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip \
+##                           CONFIG.flow_control NonBlocking \
+##                           CONFIG.has_a_tlast false \
+##                           CONFIG.has_a_tuser false \
+##                           CONFIG.has_aclken false \
+##                           CONFIG.has_aresetn false \
+##                           CONFIG.has_b_tlast false \
+##                           CONFIG.has_b_tuser false \
+##                           CONFIG.has_operation_tlast false \
+##                           CONFIG.has_operation_tuser false \
+##                           CONFIG.has_result_tready false \
+##                           CONFIG.maximum_latency false \
+##                           CONFIG.operation_tuser_width 1 \
+##                           CONFIG.operation_type Add_Subtract \
+##                           CONFIG.result_precision_type Single \
+##                           CONFIG.result_tlast_behv Null] -objects [get_ips layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip] -quiet
+## set_property generate_synth_checkpoint false [get_files layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip.xci]
+## generate_target {synthesis simulation} [get_files layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip.xci]
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip'...
+## set vivado_ver [version -short]
+## set fpo_ver 7.1
+## if {[regexp -nocase {2015\.1.*} $vivado_ver match]} {
+##     set fpo_ver 7.0
+## }
+## create_ip -name floating_point -version $fpo_ver -vendor xilinx.com -library ip -module_name layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip
+## set_property -dict [list CONFIG.a_precision_type Single \
+##                           CONFIG.a_tuser_width 1 \
+##                           CONFIG.add_sub_value Both \
+##                           CONFIG.b_tuser_width 1 \
+##                           CONFIG.c_a_exponent_width 8 \
+##                           CONFIG.c_a_fraction_width 24 \
+##                           CONFIG.c_compare_operation Programmable \
+##                           CONFIG.c_has_divide_by_zero false \
+##                           CONFIG.c_has_invalid_op false \
+##                           CONFIG.c_has_overflow false \
+##                           CONFIG.c_has_underflow false \
+##                           CONFIG.c_latency 1 \
+##                           CONFIG.c_mult_usage Primitive_Usage \
+##                           CONFIG.c_optimization Speed_Optimized \
+##                           CONFIG.c_rate 1 \
+##                           CONFIG.c_result_exponent_width 8 \
+##                           CONFIG.c_result_fraction_width 24 \
+##                           CONFIG.component_name layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip \
+##                           CONFIG.flow_control NonBlocking \
+##                           CONFIG.has_a_tlast false \
+##                           CONFIG.has_a_tuser false \
+##                           CONFIG.has_aclken true \
+##                           CONFIG.has_aresetn false \
+##                           CONFIG.has_b_tlast false \
+##                           CONFIG.has_b_tuser false \
+##                           CONFIG.has_operation_tlast false \
+##                           CONFIG.has_operation_tuser false \
+##                           CONFIG.has_result_tready false \
+##                           CONFIG.maximum_latency false \
+##                           CONFIG.operation_tuser_width 1 \
+##                           CONFIG.operation_type Multiply \
+##                           CONFIG.result_precision_type Single \
+##                           CONFIG.result_tlast_behv Null] -objects [get_ips layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip] -quiet
+## set_property generate_synth_checkpoint false [get_files layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip.xci]
+## generate_target {synthesis simulation} [get_files layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip.xci]
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip'...
+# set_property generic {
+# 	
+# } [current_fileset]
+# set synth [current_run -synthesis]
+# set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects $synth
+# launch_runs $synth -jobs 32
+WARNING: [Vivado 12-7122] Auto Incremental Compile:: No reference checkpoint was found in run synth_1. Auto-incremental flow will not be run, the standard flow will be run instead.
+[Sun Sep  6 17:33:03 2026] Launched synth_1...
+Run output will be captured here: /scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/synth_1/runme.log
+# wait_on_runs $synth
+[Sun Sep  6 17:33:03 2026] Waiting for synth_1 to finish...
+
+*** Running vivado
+    with args -log layernorm_top.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source layernorm_top.tcl
+
+WARNING: Default location for XILINX_HLS not found
+
+****** Vivado v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source layernorm_top.tcl -notrace
+Command: synth_design -top layernorm_top -part xcvc1902-vsva2197-2MP-e-S -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xcvc1902'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xcvc1902'
+INFO: [Common 17-1540] The version limit for your license is '2026.01' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for new releases.
+INFO: [Device 21-403] Loading part xcvc1902-vsva2197-2MP-e-S
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 583518
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 3468.691 ; gain = 377.832 ; free physical = 45943 ; free virtual = 75384
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_layernorm_64ul_float_float_2ul_s' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_layernorm_64ul_float_float_2ul_s.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_mean_stage_64ul_float_float_2ul_s' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_mean_stage_64ul_float_float_2ul_s.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1.v:9]
+	Parameter ID bound to: 1 - type: integer 
+	Parameter NUM_STAGE bound to: 1 - type: integer 
+	Parameter din0_WIDTH bound to: 32 - type: integer 
+	Parameter din1_WIDTH bound to: 32 - type: integer 
+	Parameter dout_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip' [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.gen/sources_1/ip/layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip/synth/layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip.v:53]
+INFO: [Synth 8-6157] synthesizing module 'LUT1' [/local/eda/xilinx/vivado/2023.1/scripts/rt/data/unisim_comp.v:79430]
+INFO: [Synth 8-6155] done synthesizing module 'LUT1' (0#1) [/local/eda/xilinx/vivado/2023.1/scripts/rt/data/unisim_comp.v:79430]
+INFO: [Synth 8-6157] synthesizing module 'DSPFP32' [/local/eda/xilinx/vivado/2023.1/scripts/rt/data/unisim_comp.v:38751]
+INFO: [Synth 8-6155] done synthesizing module 'DSPFP32' (0#1) [/local/eda/xilinx/vivado/2023.1/scripts/rt/data/unisim_comp.v:38751]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip' (0#1) [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.gen/sources_1/ip/layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip/synth/layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1.v:9]
+	Parameter ID bound to: 1 - type: integer 
+	Parameter NUM_STAGE bound to: 2 - type: integer 
+	Parameter din0_WIDTH bound to: 32 - type: integer 
+	Parameter din1_WIDTH bound to: 32 - type: integer 
+	Parameter dout_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip' [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.gen/sources_1/ip/layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip/synth/layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip.v:53]
+INFO: [Synth 8-6157] synthesizing module 'DSPFP32__parameterized1' [/local/eda/xilinx/vivado/2023.1/scripts/rt/data/unisim_comp.v:38751]
+INFO: [Synth 8-6155] done synthesizing module 'DSPFP32__parameterized1' (0#1) [/local/eda/xilinx/vivado/2023.1/scripts/rt/data/unisim_comp.v:38751]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip' (0#1) [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.gen/sources_1/ip/layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip/synth/layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_regslice_both' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_regslice_both.v:11]
+	Parameter DataWidth bound to: 64 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_regslice_both' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_regslice_both.v:11]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_mean_stage_64ul_float_float_2ul_s' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_mean_stage_64ul_float_float_2ul_s.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_var_stage_64ul_float_float_float_2ul_s' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_var_stage_64ul_float_float_float_2ul_s.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1.v:9]
+	Parameter ID bound to: 1 - type: integer 
+	Parameter NUM_STAGE bound to: 1 - type: integer 
+	Parameter din0_WIDTH bound to: 32 - type: integer 
+	Parameter din1_WIDTH bound to: 32 - type: integer 
+	Parameter dout_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip' [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.gen/sources_1/ip/layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip/synth/layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip' (0#1) [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.gen/sources_1/ip/layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip/synth/layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1.v:9]
+	Parameter ID bound to: 1 - type: integer 
+	Parameter NUM_STAGE bound to: 3 - type: integer 
+	Parameter din0_WIDTH bound to: 32 - type: integer 
+	Parameter din1_WIDTH bound to: 32 - type: integer 
+	Parameter din2_WIDTH bound to: 32 - type: integer 
+	Parameter din3_WIDTH bound to: 32 - type: integer 
+	Parameter dout_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip' [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.gen/sources_1/ip/layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip/synth/layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip.v:53]
+INFO: [Synth 8-6157] synthesizing module 'DSPFP32__parameterized3' [/local/eda/xilinx/vivado/2023.1/scripts/rt/data/unisim_comp.v:38751]
+INFO: [Synth 8-6155] done synthesizing module 'DSPFP32__parameterized3' (0#1) [/local/eda/xilinx/vivado/2023.1/scripts/rt/data/unisim_comp.v:38751]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip' (0#1) [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.gen/sources_1/ip/layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip/synth/layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1.v:9]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_var_stage_64ul_float_float_float_2ul_s' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_var_stage_64ul_float_float_float_2ul_s.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_inv_sqrt_stage_64ul_float_2ul_s.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1.v:9]
+	Parameter ID bound to: 1 - type: integer 
+	Parameter NUM_STAGE bound to: 15 - type: integer 
+	Parameter din0_WIDTH bound to: 32 - type: integer 
+	Parameter din1_WIDTH bound to: 32 - type: integer 
+	Parameter dout_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip' [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.gen/sources_1/ip/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip/synth/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip' (0#1) [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.gen/sources_1/ip/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip/synth/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1.v:9]
+	Parameter ID bound to: 1 - type: integer 
+	Parameter NUM_STAGE bound to: 15 - type: integer 
+	Parameter din0_WIDTH bound to: 32 - type: integer 
+	Parameter din1_WIDTH bound to: 32 - type: integer 
+	Parameter dout_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip' [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.gen/sources_1/ip/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip/synth/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip' (0#1) [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.gen/sources_1/ip/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip/synth/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1.v:9]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_inv_sqrt_stage_64ul_float_2ul_s.v:9]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fifo_w64_d32_A' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fifo_w64_d32_A.v:11]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fifo_w64_d32_A_ram' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fifo_w64_d32_A.v:169]
+	Parameter MEM_STYLE bound to: auto - type: string 
+	Parameter DATA_WIDTH bound to: 64 - type: integer 
+	Parameter ADDR_WIDTH bound to: 5 - type: integer 
+	Parameter DEPTH bound to: 31 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fifo_w64_d32_A_ram' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fifo_w64_d32_A.v:169]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fifo_w64_d32_A' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fifo_w64_d32_A.v:11]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fifo_w32_d2_S' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fifo_w32_d2_S.v:11]
+INFO: [Synth 8-6157] synthesizing module 'layernorm_top_fifo_w32_d2_S_ShiftReg' [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fifo_w32_d2_S.v:120]
+	Parameter DATA_WIDTH bound to: 32 - type: integer 
+	Parameter ADDR_WIDTH bound to: 1 - type: integer 
+	Parameter DEPTH bound to: 2 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fifo_w32_d2_S_ShiftReg' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fifo_w32_d2_S.v:120]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_fifo_w32_d2_S' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_fifo_w32_d2_S.v:11]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top_layernorm_64ul_float_float_2ul_s' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_layernorm_64ul_float_float_2ul_s.v:9]
+INFO: [Synth 8-6155] done synthesizing module 'layernorm_top' (0#1) [/scratch-local/borntraeger/network/sweeps/src/layernorm_top.v:9]
+WARNING: [Synth 8-6014] Unused sequential element grp_fu_159_ce_reg was removed.  [/scratch-local/borntraeger/network/sweeps/src/layernorm_top_inv_sqrt_stage_64ul_float_2ul_s.v:645]
+WARNING: [Synth 8-7129] Port reset in module layernorm_top_fifo_w32_d2_S_ShiftReg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized22 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized22 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized22 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port DEC_OP_STATE[11] in module flt_dec_op is either unconnected or has no load
+WARNING: [Synth 8-7129] Port DEC_OP_STATE[10] in module flt_dec_op is either unconnected or has no load
+WARNING: [Synth 8-7129] Port DEC_OP_STATE[9] in module flt_dec_op is either unconnected or has no load
+WARNING: [Synth 8-7129] Port DEC_OP_STATE[8] in module flt_dec_op is either unconnected or has no load
+WARNING: [Synth 8-7129] Port DIVIDE_BY_ZERO_IN in module flt_dec_op is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized54 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized54 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized54 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized54 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized54 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port B[11] in module carry_chain__parameterized30 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized48 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized48 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized48 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized48 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized48 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port NORMALIZE[1] in module flt_round_bit__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port FIXED_POINT in module flt_round_bit__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port FIX_MANT_SIGN in module flt_round_bit__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SIGN in module flt_round_bit__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized52 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized52 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized52 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized52 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized52 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized50 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized50 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized50 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized50 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized50 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized46 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized46 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized46 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized46 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized46 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized10 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized10 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized10 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized10 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized10 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized44 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized44 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized44 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized44 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized44 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port EXP_OUT[7] in module renorm_and_round_logic__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port EXP_OUT[6] in module renorm_and_round_logic__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port EXP_OUT[5] in module renorm_and_round_logic__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port EXP_OUT[4] in module renorm_and_round_logic__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port EXP_OUT[3] in module renorm_and_round_logic__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port EXP_OUT[2] in module renorm_and_round_logic__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port EXP_OUT[1] in module renorm_and_round_logic__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port EXP_OUT[0] in module renorm_and_round_logic__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port EXP_INC_IN in module renorm_and_round_logic__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized118 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized118 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized118 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized118 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized118 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized28 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized28 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized28 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized176 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized176 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized176 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized26 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized26 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized26 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized26 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized26 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port A[31] in module special_detect is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized174 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized174 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized174 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized20 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized20 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized20 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized12 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized12 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized12 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized12 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized12 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized172 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized172 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized172 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized172 is either unconnected or has no load
+INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:14 . Memory (MB): peak = 3633.770 ; gain = 542.910 ; free physical = 45745 ; free virtual = 75188
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:06 ; elapsed = 00:00:14 . Memory (MB): peak = 3642.676 ; gain = 551.816 ; free physical = 45744 ; free virtual = 75187
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:06 ; elapsed = 00:00:14 . Memory (MB): peak = 3642.676 ; gain = 551.816 ; free physical = 45744 ; free virtual = 75187
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00.06 ; elapsed = 00:00:00.07 . Memory (MB): peak = 3653.645 ; gain = 0.000 ; free physical = 45745 ; free virtual = 75188
+INFO: [Netlist 29-17] Analyzing 2225 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Chipscope 16-579] Latest version is versal_cips_v3_3 for versal_cips_v3_2
+INFO: [Constraints 18-6359] No Clock Expansion Window constraints config file entry for device xcvc1902.  GCLK Deskew mode will be Off and cannot be enabled via GCLK_DESKEW override.
+INFO: [Constraints 18-5720] The default GCLK Deskew mode is Off.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/synth_1/dont_touch.xdc]
+Finished Parsing XDC File [/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/synth_1/dont_touch.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3815.332 ; gain = 0.000 ; free physical = 45716 ; free virtual = 75159
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 12 instances were transformed.
+  DSPFP32 => DSPFP32 (DSP_FPA_CREG, DSP_FPA_OPM_REG, DSP_FPM_PIPEREG, DSP_FPM_STAGE0, DSP_FPM_STAGE1, DSP_FP_ADDER, DSP_FP_INMUX, DSP_FP_INREG, DSP_FP_OUTPUT, DSP_FP_SRCMX_OPTINV): 12 instances
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:00.05 . Memory (MB): peak = 3815.332 ; gain = 0.000 ; free physical = 45716 ; free virtual = 75159
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:10 ; elapsed = 00:00:19 . Memory (MB): peak = 3815.332 ; gain = 724.473 ; free physical = 45704 ; free virtual = 75147
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xcvc1902-vsva2197-2MP-e-S
+INFO: [Synth 8-6742] Reading net delay rules and data
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:10 ; elapsed = 00:00:19 . Memory (MB): peak = 3815.332 ; gain = 724.473 ; free physical = 45704 ; free virtual = 75147
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U25/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/mean_stage_64ul_float_float_2ul_U0/fmul_32ns_32ns_32_2_primitive_dsp_1_U3/layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/var_stage_64ul_float_float_float_2ul_U0/fmul_32ns_32ns_32_2_primitive_dsp_1_U13/layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/var_stage_64ul_float_float_float_2ul_U0/fmul_32ns_32ns_32_2_primitive_dsp_1_U14/layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fmul_32ns_32ns_32_2_primitive_dsp_1_U23/layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fmul_32ns_32ns_32_2_primitive_dsp_1_U24/layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/mean_stage_64ul_float_float_2ul_U0/fadd_32ns_32ns_32_1_primitive_dsp_1_U1/layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/mean_stage_64ul_float_float_2ul_U0/fadd_32ns_32ns_32_1_primitive_dsp_1_U2/layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/var_stage_64ul_float_float_float_2ul_U0/fadd_32ns_32ns_32_1_primitive_dsp_1_U12/layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fadd_32ns_32ns_32_1_primitive_dsp_1_U22/layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/var_stage_64ul_float_float_float_2ul_U0/fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_U15/layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/var_stage_64ul_float_float_float_2ul_U0/fsub_32ns_32ns_32_1_primitive_dsp_1_U10/layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for layernorm_64ul_float_float_2ul_U0/var_stage_64ul_float_float_float_2ul_U0/fsub_32ns_32ns_32_1_primitive_dsp_1_U11/layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip_u. (constraint file  auto generated constraint).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:10 ; elapsed = 00:00:19 . Memory (MB): peak = 3815.332 ; gain = 724.473 ; free physical = 45704 ; free virtual = 75147
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter1_fsm_reg' in module 'layernorm_top_mean_stage_64ul_float_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter2_fsm_reg' in module 'layernorm_top_mean_stage_64ul_float_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter3_fsm_reg' in module 'layernorm_top_mean_stage_64ul_float_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter0_fsm_reg' in module 'layernorm_top_var_stage_64ul_float_float_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter1_fsm_reg' in module 'layernorm_top_var_stage_64ul_float_float_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter10_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter11_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter12_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter13_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter14_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter15_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter16_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter17_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter18_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter19_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter1_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter20_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter21_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter22_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter23_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter24_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter25_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter26_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter27_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter28_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter29_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter2_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter30_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter31_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter32_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter33_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter34_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter3_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter4_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter5_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter6_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter7_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter8_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter9_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter1_fsm_state0 |                               01 |                               01
+  ap_ST_iter1_fsm_state2 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter1_fsm_reg' in module 'layernorm_top_mean_stage_64ul_float_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter2_fsm_state0 |                               01 |                               01
+  ap_ST_iter2_fsm_state3 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter2_fsm_reg' in module 'layernorm_top_mean_stage_64ul_float_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter3_fsm_state0 |                               01 |                               01
+  ap_ST_iter3_fsm_state4 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter3_fsm_reg' in module 'layernorm_top_mean_stage_64ul_float_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter0_fsm_state1 |                             0001 |                             0001
+  ap_ST_iter0_fsm_state3 |                             0010 |                             0010
+  ap_ST_iter0_fsm_state2 |                             0100 |                             0100
+  ap_ST_iter0_fsm_state4 |                             1000 |                             1000
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter0_fsm_reg' in module 'layernorm_top_var_stage_64ul_float_float_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter1_fsm_state0 |                             0001 |                             0001
+  ap_ST_iter1_fsm_state5 |                             0010 |                             0010
+  ap_ST_iter1_fsm_state6 |                             0100 |                             0100
+  ap_ST_iter1_fsm_state7 |                             1000 |                             1000
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter1_fsm_reg' in module 'layernorm_top_var_stage_64ul_float_float_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter34_fsm_state0 |                               01 |                               01
+ap_ST_iter34_fsm_state35 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter34_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter1_fsm_state0 |                               01 |                               01
+  ap_ST_iter1_fsm_state2 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter1_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter2_fsm_state0 |                               01 |                               01
+  ap_ST_iter2_fsm_state3 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter2_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter3_fsm_state0 |                               01 |                               01
+  ap_ST_iter3_fsm_state4 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter3_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter4_fsm_state0 |                               01 |                               01
+  ap_ST_iter4_fsm_state5 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter4_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter5_fsm_state0 |                               01 |                               01
+  ap_ST_iter5_fsm_state6 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter5_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter6_fsm_state0 |                               01 |                               01
+  ap_ST_iter6_fsm_state7 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter6_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter7_fsm_state0 |                               01 |                               01
+  ap_ST_iter7_fsm_state8 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter7_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter8_fsm_state0 |                               01 |                               01
+  ap_ST_iter8_fsm_state9 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter8_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter9_fsm_state0 |                               01 |                               01
+ ap_ST_iter9_fsm_state10 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter9_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter10_fsm_state0 |                               01 |                               01
+ap_ST_iter10_fsm_state11 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter10_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter11_fsm_state0 |                               01 |                               01
+ap_ST_iter11_fsm_state12 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter11_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter12_fsm_state0 |                               01 |                               01
+ap_ST_iter12_fsm_state13 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter12_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter13_fsm_state0 |                               01 |                               01
+ap_ST_iter13_fsm_state14 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter13_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter14_fsm_state0 |                               01 |                               01
+ap_ST_iter14_fsm_state15 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter14_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter15_fsm_state0 |                               01 |                               01
+ap_ST_iter15_fsm_state16 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter15_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter16_fsm_state0 |                               01 |                               01
+ap_ST_iter16_fsm_state17 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter16_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter17_fsm_state0 |                               01 |                               01
+ap_ST_iter17_fsm_state18 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter17_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter18_fsm_state0 |                               01 |                               01
+ap_ST_iter18_fsm_state19 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter18_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter19_fsm_state0 |                               01 |                               01
+ap_ST_iter19_fsm_state20 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter19_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter20_fsm_state0 |                               01 |                               01
+ap_ST_iter20_fsm_state21 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter20_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter21_fsm_state0 |                               01 |                               01
+ap_ST_iter21_fsm_state22 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter21_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter22_fsm_state0 |                               01 |                               01
+ap_ST_iter22_fsm_state23 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter22_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter23_fsm_state0 |                               01 |                               01
+ap_ST_iter23_fsm_state24 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter23_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter24_fsm_state0 |                               01 |                               01
+ap_ST_iter24_fsm_state25 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter24_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter25_fsm_state0 |                               01 |                               01
+ap_ST_iter25_fsm_state26 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter25_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter26_fsm_state0 |                               01 |                               01
+ap_ST_iter26_fsm_state27 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter26_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter27_fsm_state0 |                               01 |                               01
+ap_ST_iter27_fsm_state28 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter27_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter28_fsm_state0 |                               01 |                               01
+ap_ST_iter28_fsm_state29 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter28_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter29_fsm_state0 |                               01 |                               01
+ap_ST_iter29_fsm_state30 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter29_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter30_fsm_state0 |                               01 |                               01
+ap_ST_iter30_fsm_state31 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter30_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter31_fsm_state0 |                               01 |                               01
+ap_ST_iter31_fsm_state32 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter31_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter32_fsm_state0 |                               01 |                               01
+ap_ST_iter32_fsm_state33 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter32_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter33_fsm_state0 |                               01 |                               01
+ap_ST_iter33_fsm_state34 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter33_fsm_reg' in module 'layernorm_top_inv_sqrt_stage_64ul_float_2ul_s'
+INFO: [Synth 8-6904] The RAM "layernorm_top_fifo_w64_d32_A_ram:/mem_reg" of size (depth=31 x width=64) is automatically implemented using LUTRAM. BRAM implementation would be inefficient 
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:12 ; elapsed = 00:00:20 . Memory (MB): peak = 3815.332 ; gain = 724.473 ; free physical = 45705 ; free virtual = 75150
+---------------------------------------------------------------------------------
+INFO: [Synth 8-223] decloning instance 'layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip:/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip:/inst/i_synth/DELAY_ACCUM_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip:/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'layernorm_top_fadd_32ns_32ns_32_1_primitive_dsp_1_ip:/inst/i_synth/DELAY_ACCUM_INPUT_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip:/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip:/inst/i_synth/DELAY_ACCUM_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip:/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'layernorm_top_fmul_32ns_32ns_32_2_primitive_dsp_1_ip:/inst/i_synth/DELAY_ACCUM_INPUT_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip:/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip:/inst/i_synth/DELAY_ACCUM_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip:/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'layernorm_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip:/inst/i_synth/DELAY_ACCUM_INPUT_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/var_stage_64ul_float_float_float_2ul_U0/fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_U15/layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'layernorm_64ul_float_float_2ul_U0/var_stage_64ul_float_float_float_2ul_U0/fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_U15/layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/var_stage_64ul_float_float_float_2ul_U0/fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_U15/layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'layernorm_64ul_float_float_2ul_U0/var_stage_64ul_float_float_float_2ul_U0/fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_U15/layernorm_top_fmadd_32ns_32ns_32ns_32ns_32_3_primitive_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_INPUT_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U25/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXTRA_LSB_BIT_DEL' (delay__parameterized0) to 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U25/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXTRA_LSB_RND1_DEL'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U25/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXP_INC_DELAY' (delay__parameterized0) to 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U25/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXP_INC_RND1_DELAY'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U25/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXP_IN_DELAY.EXP_IN_DEL' (delay__parameterized27) to 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U25/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXP_RND2_DELAY.EXP_RND_DEL'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U25/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXP_IN_DELAY.EXP_OFF_OP_DEL' (delay__parameterized27) to 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U25/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXP_RND2_DELAY.EXP_OFF_RND_DEL'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U25/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_OVERFLOW' (delay__parameterized0) to 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U25/layernorm_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_INPUT_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/SQRT_OP.SPD.OP/i_mant_calc.ROUND/EXTRA_LSB_BIT_DEL' (delay__parameterized0) to 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/SQRT_OP.SPD.OP/i_mant_calc.ROUND/EXTRA_LSB_RND1_DEL'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/SQRT_OP.SPD.OP/i_mant_calc.ROUND/EXP_INC_DELAY' (delay__parameterized0) to 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/SQRT_OP.SPD.OP/i_mant_calc.ROUND/EXP_INC_RND1_DELAY'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/SQRT_OP.SPD.OP/i_mant_calc.ROUND/EXP_IN_DELAY.EXP_IN_DEL' (delay__parameterized27) to 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/SQRT_OP.SPD.OP/i_mant_calc.ROUND/EXP_RND2_DELAY.EXP_RND_DEL'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/SQRT_OP.SPD.OP/i_mant_calc.ROUND/EXP_IN_DELAY.EXP_OFF_OP_DEL' (delay__parameterized27) to 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/SQRT_OP.SPD.OP/i_mant_calc.ROUND/EXP_RND2_DELAY.EXP_OFF_RND_DEL'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DELAY_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DELAY_UNDERFLOW'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'layernorm_64ul_float_float_2ul_U0/inv_sqrt_stage_64ul_float_2ul_U0/fsqrt_32ns_32ns_32_15_no_dsp_1_U26/layernorm_top_fsqrt_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_INPUT_OVERFLOW'
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 1968 (col length:164)
+BRAMs: 1934 (col length: RAMB18 168 RAMB36 84)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+INFO: [Synth 8-6904] The RAM "layernorm_top/layernorm_64ul_float_float_2ul_U0/stage2_s_U/U_layernorm_top_fifo_w64_d32_A_ram/mem_reg" of size (depth=31 x width=64) is automatically implemented using LUTRAM. BRAM implementation would be inefficient 
+INFO: [Synth 8-6904] The RAM "layernorm_top/layernorm_64ul_float_float_2ul_U0/stage1_s_U/U_layernorm_top_fifo_w64_d32_A_ram/mem_reg" of size (depth=31 x width=64) is automatically implemented using LUTRAM. BRAM implementation would be inefficient 
+INFO: [Synth 8-6904] The RAM "layernorm_top/layernorm_64ul_float_float_2ul_U0/stage2_s_U/U_layernorm_top_fifo_w64_d32_A_ram/mem_reg" of size (depth=31 x width=64) is automatically implemented using LUTRAM. BRAM implementation would be inefficient 
+INFO: [Synth 8-6904] The RAM "layernorm_top/layernorm_64ul_float_float_2ul_U0/stage1_s_U/U_layernorm_top_fifo_w64_d32_A_ram/mem_reg" of size (depth=31 x width=64) is automatically implemented using LUTRAM. BRAM implementation would be inefficient 
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:14 ; elapsed = 00:00:23 . Memory (MB): peak = 3849.363 ; gain = 758.504 ; free physical = 45597 ; free virtual = 75043
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:26 ; elapsed = 00:00:36 . Memory (MB): peak = 4414.996 ; gain = 1324.137 ; free physical = 45038 ; free virtual = 74483
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:26 ; elapsed = 00:00:36 . Memory (MB): peak = 4419.996 ; gain = 1329.137 ; free physical = 45030 ; free virtual = 74476
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+INFO: [Synth 8-11322] No global retiming is needed without any clock constraint
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:26 ; elapsed = 00:00:37 . Memory (MB): peak = 4449.043 ; gain = 1358.184 ; free physical = 44999 ; free virtual = 74444
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:28 ; elapsed = 00:00:38 . Memory (MB): peak = 4449.043 ; gain = 1358.184 ; free physical = 44999 ; free virtual = 74445
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:28 ; elapsed = 00:00:38 . Memory (MB): peak = 4449.043 ; gain = 1358.184 ; free physical = 44999 ; free virtual = 74445
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:28 ; elapsed = 00:00:38 . Memory (MB): peak = 4449.043 ; gain = 1358.184 ; free physical = 44999 ; free virtual = 74445
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:28 ; elapsed = 00:00:38 . Memory (MB): peak = 4449.043 ; gain = 1358.184 ; free physical = 44999 ; free virtual = 74445
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:28 ; elapsed = 00:00:39 . Memory (MB): peak = 4449.043 ; gain = 1358.184 ; free physical = 44999 ; free virtual = 74445
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:28 ; elapsed = 00:00:39 . Memory (MB): peak = 4449.043 ; gain = 1358.184 ; free physical = 44999 ; free virtual = 74445
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+---------+------+
+|      |Cell     |Count |
++------+---------+------+
+|1     |DSPFP32  |    12|
+|2     |LUT1     |    86|
+|3     |LUT2     |   175|
+|4     |LUT3     |  1238|
+|5     |LUT4     |   139|
+|6     |LUT5     |    71|
+|7     |LUT6     |    78|
+|8     |MUXCY    |  1081|
+|9     |RAM32M16 |    10|
+|10    |SRL16E   |    58|
+|11    |XORCY    |  1089|
+|12    |FDRE     |  4781|
+|13    |FDSE     |    22|
++------+---------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:28 ; elapsed = 00:00:39 . Memory (MB): peak = 4449.043 ; gain = 1358.184 ; free physical = 44999 ; free virtual = 74445
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 325 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:26 ; elapsed = 00:00:36 . Memory (MB): peak = 4449.043 ; gain = 1185.527 ; free physical = 44999 ; free virtual = 74445
+Synthesis Optimization Complete : Time (s): cpu = 00:00:28 ; elapsed = 00:00:39 . Memory (MB): peak = 4449.051 ; gain = 1358.184 ; free physical = 44999 ; free virtual = 74445
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.05 . Memory (MB): peak = 4449.051 ; gain = 0.000 ; free physical = 45281 ; free virtual = 74727
+INFO: [Netlist 29-17] Analyzing 2192 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Chipscope 16-579] Latest version is versal_cips_v3_3 for versal_cips_v3_2
+INFO: [Constraints 18-6359] No Clock Expansion Window constraints config file entry for device xcvc1902.  GCLK Deskew mode will be Off and cannot be enabled via GCLK_DESKEW override.
+INFO: [Constraints 18-5720] The default GCLK Deskew mode is Off.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 4541.652 ; gain = 0.000 ; free physical = 45249 ; free virtual = 74695
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1329 instances were transformed.
+  (CARRY8) => LOOKAHEAD8: 176 instances
+  (CARRY8) => LUT6CY (LUTCY1, LUTCY2): 1131 instances
+  DSPFP32 => DSPFP32 (DSP_FPA_CREG, DSP_FPA_OPM_REG, DSP_FPM_PIPEREG, DSP_FPM_STAGE0, DSP_FPM_STAGE1, DSP_FP_ADDER, DSP_FP_INMUX, DSP_FP_INREG, DSP_FP_OUTPUT, DSP_FP_SRCMX_OPTINV): 12 instances
+  RAM32M16 => RAM32M16 (RAMD32(x14), RAMS32(x2)): 10 instances
+
+Synth Design complete | Checksum: be059b1
+INFO: [Common 17-83] Releasing license: Synthesis
+182 Infos, 102 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:36 ; elapsed = 00:01:20 . Memory (MB): peak = 4541.652 ; gain = 2245.367 ; free physical = 45249 ; free virtual = 74695
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 3775.450; main = 3775.450; forked = 382.569
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 4871.770; main = 4541.656; forked = 979.199
+INFO: [Common 17-1381] The checkpoint '/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/synth_1/layernorm_top.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file layernorm_top_utilization_synth.rpt -pb layernorm_top_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Sun Sep  6 17:34:32 2026...
+[Sun Sep  6 17:34:35 2026] synth_1 finished
+wait_on_runs: Time (s): cpu = 00:00:44 ; elapsed = 00:01:32 . Memory (MB): peak = 2394.656 ; gain = 0.000 ; free physical = 48724 ; free virtual = 78168
+# open_run $synth
+Design is defaulting to impl run constrset: constrs_1
+Design is defaulting to synth run part: xcvc1902-vsva2197-2MP-e-S
+INFO: [Device 21-403] Loading part xcvc1902-vsva2197-2MP-e-S
+Netlist sorting complete. Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 3193.312 ; gain = 0.000 ; free physical = 47964 ; free virtual = 77408
+INFO: [Netlist 29-17] Analyzing 1153 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Chipscope 16-579] Latest version is versal_cips_v3_3 for versal_cips_v3_2
+INFO: [Project 1-479] Netlist was created with Vivado 2023.1
+INFO: [Constraints 18-6359] No Clock Expansion Window constraints config file entry for device xcvc1902.  GCLK Deskew mode will be Off and cannot be enabled via GCLK_DESKEW override.
+INFO: [Constraints 18-5720] The default GCLK Deskew mode is Off.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3738.082 ; gain = 0.000 ; free physical = 47446 ; free virtual = 76890
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1153 instances were transformed.
+  (CARRY8) => LUT6CY (LUTCY1, LUTCY2): 1131 instances
+  DSPFP32 => DSPFP32 (DSP_FPA_CREG, DSP_FPA_OPM_REG, DSP_FPM_PIPEREG, DSP_FPM_STAGE0, DSP_FPM_STAGE1, DSP_FP_ADDER, DSP_FP_INMUX, DSP_FP_INREG, DSP_FP_OUTPUT, DSP_FP_SRCMX_OPTINV): 12 instances
+  RAM32M16 => RAM32M16 (RAMD32(x14), RAMS32(x2)): 10 instances
+
+open_run: Time (s): cpu = 00:00:07 ; elapsed = 00:00:27 . Memory (MB): peak = 3738.082 ; gain = 1343.426 ; free physical = 47446 ; free virtual = 76890
+# create_clock -period 4.0 -name ap_clk [get_ports ap_clk]
+# set impl [get_runs impl_1]
+# launch_runs $impl -jobs 32
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-480] Writing timing data to binary archive.
+[Sun Sep  6 17:35:08 2026] Launched impl_1...
+Run output will be captured here: /scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/impl_1/runme.log
+# wait_on_runs $impl
+[Sun Sep  6 17:35:08 2026] Waiting for impl_1 to finish...
+
+*** Running vivado
+    with args -log layernorm_top.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source layernorm_top.tcl -notrace
+
+WARNING: Default location for XILINX_HLS not found
+
+****** Vivado v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source layernorm_top.tcl -notrace
+Command: open_checkpoint /scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/impl_1/layernorm_top.dcp
+INFO: [Device 21-403] Loading part xcvc1902-vsva2197-2MP-e-S
+Netlist sorting complete. Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 3074.797 ; gain = 0.000 ; free physical = 45127 ; free virtual = 74574
+INFO: [Netlist 29-17] Analyzing 1153 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/local/eda/xilinx/vivado/2023.1/data/ip'.
+INFO: [Chipscope 16-579] Latest version is versal_cips_v3_3 for versal_cips_v3_2
+INFO: [Project 1-479] Netlist was created with Vivado 2023.1
+INFO: [Constraints 18-6359] No Clock Expansion Window constraints config file entry for device xcvc1902.  GCLK Deskew mode will be Off and cannot be enabled via GCLK_DESKEW override.
+INFO: [Constraints 18-5720] The default GCLK Deskew mode is Off.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Reading NOC Solution File '/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/impl_1/layernorm_top/layernorm_top.ncr'
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4155.422 ; gain = 0.000 ; free physical = 44137 ; free virtual = 73584
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1153 instances were transformed.
+  (CARRY8) => LUT6CY (LUTCY1, LUTCY2): 1131 instances
+  DSPFP32 => DSPFP32 (DSP_FPA_CREG, DSP_FPA_OPM_REG, DSP_FPM_PIPEREG, DSP_FPM_STAGE0, DSP_FPM_STAGE1, DSP_FP_ADDER, DSP_FP_INMUX, DSP_FP_INREG, DSP_FP_OUTPUT, DSP_FP_SRCMX_OPTINV): 12 instances
+  RAM32M16 => RAM32M16 (RAMD32(x14), RAMS32(x2)): 10 instances
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2023.1 (64-bit) build 3865809
+open_checkpoint: Time (s): cpu = 00:00:15 ; elapsed = 00:00:38 . Memory (MB): peak = 4155.422 ; gain = 2040.359 ; free physical = 44137 ; free virtual = 73584
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-1540] The version limit for your license is '2026.01' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for new releases.
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:00.6 ; elapsed = 00:00:00.39 . Memory (MB): peak = 4227.457 ; gain = 64.031 ; free physical = 44136 ; free virtual = 73582
+
+Starting Cache Timing Information Task
+Ending Cache Timing Information Task | Checksum: a36d0c12
+
+Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.02 . Memory (MB): peak = 4227.457 ; gain = 0.000 ; free physical = 44136 ; free virtual = 73582
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+INFO: [Opt 31-1566] Pulled 4 inverters resulting in an inversion of 39 pins
+INFO: [Opt 31-138] Pushed 66 inverter(s) to 66 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: 10c819702
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.69 . Memory (MB): peak = 4227.457 ; gain = 0.000 ; free physical = 44135 ; free virtual = 73582
+INFO: [Opt 31-389] Phase Retarget created 7 cells and removed 1034 cells
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 2 Constant propagation | Checksum: 1642beb8d
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.7 . Memory (MB): peak = 4227.457 ; gain = 0.000 ; free physical = 44135 ; free virtual = 73582
+INFO: [Opt 31-389] Phase Constant propagation created 31 cells and removed 35 cells
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: 16ec71623
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.78 . Memory (MB): peak = 4227.457 ; gain = 0.000 ; free physical = 44135 ; free virtual = 73582
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 116 cells
+
+Phase 4 BUFG optimization
+INFO: [Opt 31-194] Inserted BUFG  to drive 4823 load(s) on clock net ap_clk
+INFO: [Opt 31-193] Inserted 1 BUFG(s) on clock nets
+INFO: [Opt 31-1077] Phase BUFG optimization inserted 0 global clock buffer(s) for CLOCK_LOW_FANOUT.
+Phase 4 BUFG optimization | Checksum: 18f6af5dc
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.85 . Memory (MB): peak = 4254.438 ; gain = 26.980 ; free physical = 44135 ; free virtual = 73582
+INFO: [Opt 31-662] Phase BUFG optimization created 1 cells of which 1 are BUFGs and removed 0 cells.
+
+Phase 5 Shift Register Optimization
+INFO: [Opt 31-1064] SRL Remap converted 0 SRLs to 0 registers and converted 0 registers of register chains to 0 SRLs
+Phase 5 Shift Register Optimization | Checksum: e01c419a
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 4254.438 ; gain = 26.980 ; free physical = 44136 ; free virtual = 73583
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Phase 6 Post Processing Netlist
+Phase 6 Post Processing Netlist | Checksum: e01c419a
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 4254.438 ; gain = 26.980 ; free physical = 44136 ; free virtual = 73583
+INFO: [Opt 31-389] Phase Post Processing Netlist created 0 cells and removed 0 cells
+Opt_design Change Summary
+=========================
+
+
+-------------------------------------------------------------------------------------------------------------------------
+|  Phase                        |  #Cells created  |  #Cells Removed  |  #Constrained objects preventing optimizations  |
+-------------------------------------------------------------------------------------------------------------------------
+|  Retarget                     |               7  |            1034  |                                              0  |
+|  Constant propagation         |              31  |              35  |                                              0  |
+|  Sweep                        |               0  |             116  |                                              0  |
+|  BUFG optimization            |               1  |               0  |                                              0  |
+|  Shift Register Optimization  |               0  |               0  |                                              0  |
+|  Post Processing Netlist      |               0  |               0  |                                              0  |
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 4254.438 ; gain = 0.000 ; free physical = 44136 ; free virtual = 73583
+Ending Logic Optimization Task | Checksum: e01c419a
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 4254.438 ; gain = 26.980 ; free physical = 44136 ; free virtual = 73583
+
+Starting Final Cleanup Task
+Ending Final Cleanup Task | Checksum: e01c419a
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4254.438 ; gain = 0.000 ; free physical = 44136 ; free virtual = 73583
+
+Starting Netlist Obfuscation Task
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4254.438 ; gain = 0.000 ; free physical = 44136 ; free virtual = 73583
+Ending Netlist Obfuscation Task | Checksum: e01c419a
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4254.438 ; gain = 0.000 ; free physical = 44136 ; free virtual = 73583
+INFO: [Common 17-83] Releasing license: Implementation
+37 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:03 ; elapsed = 00:00:23 . Memory (MB): peak = 4254.438 ; gain = 99.016 ; free physical = 44136 ; free virtual = 73583
+INFO: [runtcl-4] Executing : report_drc -file layernorm_top_drc_opted.rpt -pb layernorm_top_drc_opted.pb -rpx layernorm_top_drc_opted.rpx
+Command: report_drc -file layernorm_top_drc_opted.rpt -pb layernorm_top_drc_opted.pb -rpx layernorm_top_drc_opted.rpx
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file /scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/impl_1/layernorm_top_drc_opted.rpt.
+report_drc completed successfully
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.49 ; elapsed = 00:00:00.13 . Memory (MB): peak = 4757.484 ; gain = 40.020 ; free physical = 43662 ; free virtual = 73123
+INFO: [Common 17-1381] The checkpoint '/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/impl_1/layernorm_top_opt.dcp' has been generated.
+write_checkpoint: Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 4757.484 ; gain = 463.027 ; free physical = 43646 ; free virtual = 73097
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-1540] The version limit for your license is '2026.01' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for new releases.
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Project 1-1073] Cannot write hardware definition file as there are no IPI block design hardware handoff files present
+CRITICAL WARNING: [DRC CIPS-1] Versal CIPS exists check - place design: Versal designs must contain a CIPS IP in the netlist hierarchy to function properly. Please create an instance of the CIPS IP and configure it. Without a CIPS IP in the design, Vivado will not generate a CDO for the PMC, an elf for the PLM.
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors, 1 Critical Warnings
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+Starting Placer Task
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 8 CPUs
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4810.148 ; gain = 0.000 ; free physical = 43659 ; free virtual = 73109
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 4c2a5fc9
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 4810.148 ; gain = 0.000 ; free physical = 43659 ; free virtual = 73109
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4810.148 ; gain = 0.000 ; free physical = 43659 ; free virtual = 73109
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 9b083ac6
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:17 . Memory (MB): peak = 5310.211 ; gain = 500.062 ; free physical = 43027 ; free virtual = 72478
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: e446bfa3
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:18 . Memory (MB): peak = 5523.754 ; gain = 713.605 ; free physical = 42854 ; free virtual = 72305
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: e446bfa3
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:18 . Memory (MB): peak = 5523.754 ; gain = 713.605 ; free physical = 42854 ; free virtual = 72305
+Phase 1 Placer Initialization | Checksum: e446bfa3
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:18 . Memory (MB): peak = 5523.754 ; gain = 713.605 ; free physical = 42854 ; free virtual = 72305
+
+Phase 2 Global Placement
+
+Phase 2.1 Floorplanning
+
+Phase 2.1.1 Partition Driven Placement
+
+Phase 2.1.1.1 PBP: Partition Driven Placement
+Phase 2.1.1.1 PBP: Partition Driven Placement | Checksum: 10ef26cf3
+
+Time (s): cpu = 00:00:21 ; elapsed = 00:00:18 . Memory (MB): peak = 5539.762 ; gain = 729.613 ; free physical = 42873 ; free virtual = 72323
+
+Phase 2.1.1.2 PBP: Clock Region Placement
+INFO: [Place 30-3165] Check ILP status: ILP-based clock placer completed successfully 
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 5539.762 ; gain = 0.000 ; free physical = 42881 ; free virtual = 72331
+Phase 2.1.1.2 PBP: Clock Region Placement | Checksum: 14cb029b8
+
+Time (s): cpu = 00:00:22 ; elapsed = 00:00:19 . Memory (MB): peak = 5539.762 ; gain = 729.613 ; free physical = 42881 ; free virtual = 72331
+
+Phase 2.1.1.3 PBP: Compute Congestion
+Phase 2.1.1.3 PBP: Compute Congestion | Checksum: 14cb029b8
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:21 . Memory (MB): peak = 6065.738 ; gain = 1255.590 ; free physical = 42349 ; free virtual = 71800
+
+Phase 2.1.1.4 PBP: UpdateTiming
+Phase 2.1.1.4 PBP: UpdateTiming | Checksum: 17fe770ea
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:21 . Memory (MB): peak = 6097.754 ; gain = 1287.605 ; free physical = 42349 ; free virtual = 71800
+
+Phase 2.1.1.5 PBP: Add part constraints
+Phase 2.1.1.5 PBP: Add part constraints | Checksum: 17fe770ea
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:21 . Memory (MB): peak = 6097.754 ; gain = 1287.605 ; free physical = 42349 ; free virtual = 71800
+Phase 2.1.1 Partition Driven Placement | Checksum: 17fe770ea
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:21 . Memory (MB): peak = 6097.754 ; gain = 1287.605 ; free physical = 42349 ; free virtual = 71800
+Phase 2.1 Floorplanning | Checksum: 115ed94e8
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:21 . Memory (MB): peak = 6097.754 ; gain = 1287.605 ; free physical = 42349 ; free virtual = 71800
+
+Phase 2.2 Update Timing before SLR Path Opt
+Phase 2.2 Update Timing before SLR Path Opt | Checksum: 115ed94e8
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:21 . Memory (MB): peak = 6097.754 ; gain = 1287.605 ; free physical = 42349 ; free virtual = 71800
+
+Phase 2.3 Post-Processing in Floorplanning
+Phase 2.3 Post-Processing in Floorplanning | Checksum: 115ed94e8
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:21 . Memory (MB): peak = 6097.754 ; gain = 1287.605 ; free physical = 42349 ; free virtual = 71800
+
+Phase 2.4 Global Placement Core
+
+Phase 2.4.1 UpdateTiming Before Physical Synthesis
+Phase 2.4.1 UpdateTiming Before Physical Synthesis | Checksum: 1c1ac21c7
+
+Time (s): cpu = 00:00:50 ; elapsed = 00:00:26 . Memory (MB): peak = 6201.758 ; gain = 1391.609 ; free physical = 42305 ; free virtual = 71756
+
+Phase 2.4.2 Physical Synthesis In Placer
+INFO: [Physopt 32-1035] Found 0 LUTNM shape to break, 18 LUT instances to create LUTNM shape
+INFO: [Physopt 32-1044] Break lutnm for timing: one critical 0, two critical 0, total 0, new lutff created 0
+INFO: [Physopt 32-1138] End 1 Pass. Optimized 9 nets or LUTs. Breaked 0 LUT, combined 9 existing LUTs and moved 0 existing LUT
+INFO: [Physopt 32-69] No nets found for rewiring optimization.
+INFO: [Physopt 32-661] Optimized 0 net.  Re-placed 0 instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-65] No nets found for high-fanout optimization.
+INFO: [Physopt 32-232] Optimized 0 net. Created 0 new instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-670] No setup violation found.  DSP Register Optimization was not performed.
+INFO: [Physopt 32-670] No setup violation found.  Shift Register to Pipeline Optimization was not performed.
+INFO: [Physopt 32-670] No setup violation found.  Shift Register Optimization was not performed.
+INFO: [Physopt 32-670] No setup violation found.  BRAM Register Optimization was not performed.
+INFO: [Physopt 32-670] No setup violation found.  URAM Register Optimization was not performed.
+INFO: [Physopt 32-949] No candidate nets found for dynamic/static region interface net replication
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6201.758 ; gain = 0.000 ; free physical = 42304 ; free virtual = 71755
+INFO: [Physopt 32-670] No setup violation found.  Fanout Optimization was not performed.
+INFO: [Physopt 32-670] No setup violation found.  Critical Cell Optimization was not performed.
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 6201.758 ; gain = 0.000 ; free physical = 42304 ; free virtual = 71755
+
+Summary of Physical Synthesis Optimizations
+============================================
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+|  Optimization                                     |  Added Cells  |  Removed Cells  |  Optimized Cells/Nets  |  Dont Touch  |  Iterations  |  Elapsed   |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+|  LUT Combining                                    |            0  |              9  |                     9  |           0  |           1  |  00:00:00  |
+|  Retime                                           |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Equivalent Driver Rewiring                       |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Very High Fanout                                 |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  DSP Register                                     |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
+|  Shift Register to Pipeline                       |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
+|  Shift Register                                   |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
+|  BRAM Register                                    |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
+|  URAM Register                                    |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
+|  Dynamic/Static Region Interface Net Replication  |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Fanout                                           |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
+|  Critical Cell                                    |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
+|  Total                                            |            0  |              9  |                     9  |           0  |           5  |  00:00:00  |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Phase 2.4.2 Physical Synthesis In Placer | Checksum: 164faae7e
+
+Time (s): cpu = 00:00:51 ; elapsed = 00:00:27 . Memory (MB): peak = 6201.758 ; gain = 1391.609 ; free physical = 42304 ; free virtual = 71755
+Phase 2.4 Global Placement Core | Checksum: 15ca8e60e
+
+Time (s): cpu = 00:01:00 ; elapsed = 00:00:29 . Memory (MB): peak = 6201.758 ; gain = 1391.609 ; free physical = 42303 ; free virtual = 71754
+Phase 2 Global Placement | Checksum: 14342569e
+
+Time (s): cpu = 00:01:00 ; elapsed = 00:00:29 . Memory (MB): peak = 6201.758 ; gain = 1391.609 ; free physical = 42303 ; free virtual = 71754
+
+Phase 3 Detail Placement
+
+Phase 3.1 Commit Multi Column Macros
+Phase 3.1 Commit Multi Column Macros | Checksum: 152473e57
+
+Time (s): cpu = 00:01:09 ; elapsed = 00:00:32 . Memory (MB): peak = 6201.758 ; gain = 1391.609 ; free physical = 42292 ; free virtual = 71743
+
+Phase 3.2 Commit Most Macros & LUTRAMs
+Phase 3.2 Commit Most Macros & LUTRAMs | Checksum: 14f494d9d
+
+Time (s): cpu = 00:01:10 ; elapsed = 00:00:32 . Memory (MB): peak = 6201.758 ; gain = 1391.609 ; free physical = 42291 ; free virtual = 71742
+
+Phase 3.3 Small Shape DP
+
+Phase 3.3.1 Small Shape Clustering
+Phase 3.3.1 Small Shape Clustering | Checksum: 1fd4b4cc0
+
+Time (s): cpu = 00:01:19 ; elapsed = 00:00:35 . Memory (MB): peak = 6236.758 ; gain = 1426.609 ; free physical = 42254 ; free virtual = 71704
+
+Phase 3.3.2 Flow Legalize Slice Clusters
+Phase 3.3.2 Flow Legalize Slice Clusters | Checksum: 1acbd2c04
+
+Time (s): cpu = 00:01:19 ; elapsed = 00:00:35 . Memory (MB): peak = 6236.758 ; gain = 1426.609 ; free physical = 42254 ; free virtual = 71704
+
+Phase 3.3.3 Slice Area Swap
+
+Phase 3.3.3.1 Slice Area Swap Initial
+Phase 3.3.3.1 Slice Area Swap Initial | Checksum: 203b01145
+
+Time (s): cpu = 00:01:19 ; elapsed = 00:00:35 . Memory (MB): peak = 6236.758 ; gain = 1426.609 ; free physical = 42253 ; free virtual = 71704
+Phase 3.3.3 Slice Area Swap | Checksum: 203b01145
+
+Time (s): cpu = 00:01:19 ; elapsed = 00:00:35 . Memory (MB): peak = 6236.758 ; gain = 1426.609 ; free physical = 42253 ; free virtual = 71704
+Phase 3.3 Small Shape DP | Checksum: 1315e3c8d
+
+Time (s): cpu = 00:01:20 ; elapsed = 00:00:35 . Memory (MB): peak = 6236.758 ; gain = 1426.609 ; free physical = 42253 ; free virtual = 71704
+
+Phase 3.4 Optimize BEL assignments
+Phase 3.4 Optimize BEL assignments | Checksum: 124435660
+
+Time (s): cpu = 00:01:23 ; elapsed = 00:00:37 . Memory (MB): peak = 6236.758 ; gain = 1426.609 ; free physical = 42251 ; free virtual = 71702
+
+Phase 3.5 Pipeline Register Optimization
+Phase 3.5 Pipeline Register Optimization | Checksum: 1032e5811
+
+Time (s): cpu = 00:01:23 ; elapsed = 00:00:38 . Memory (MB): peak = 6236.758 ; gain = 1426.609 ; free physical = 42251 ; free virtual = 71702
+Phase 3 Detail Placement | Checksum: 1032e5811
+
+Time (s): cpu = 00:01:23 ; elapsed = 00:00:38 . Memory (MB): peak = 6236.758 ; gain = 1426.609 ; free physical = 42251 ; free virtual = 71702
+
+Phase 4 Post Placement Optimization and Clean-Up
+
+Phase 4.1 Post Commit Optimization
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6236.758 ; gain = 0.000 ; free physical = 42215 ; free virtual = 71666
+
+Phase 4.1.1 Post Placement Optimization
+Post Placement Optimization Initialization | Checksum: 1a5fded37
+
+Phase 4.1.1.1 BUFG Insertion
+
+Starting Physical Synthesis Task
+
+Phase 1 Physical Synthesis Initialization
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 8 CPUs
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=0.395 | TNS=0.000 |
+Phase 1 Physical Synthesis Initialization | Checksum: 146deaf2c
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 6236.758 ; gain = 0.000 ; free physical = 42215 ; free virtual = 71666
+INFO: [Place 46-56] BUFG insertion identified 0 candidate nets. Inserted BUFG: 0, Replicated BUFG Driver: 0, Skipped due to Placement/Routing Conflicts: 0, Skipped due to Timing Degradation: 0, Skipped due to netlist editing failed: 0.
+Ending Physical Synthesis Task | Checksum: 22912e855
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 6236.758 ; gain = 0.000 ; free physical = 42215 ; free virtual = 71666
+Phase 4.1.1.1 BUFG Insertion | Checksum: 1a5fded37
+
+Time (s): cpu = 00:01:36 ; elapsed = 00:00:43 . Memory (MB): peak = 6236.758 ; gain = 1426.609 ; free physical = 42215 ; free virtual = 71666
+
+Phase 4.1.1.2 BUFG Replication
+INFO: [Place 46-63] BUFG replication identified 0 candidate nets: Replicated nets: 0, Replicated BUFGs: 0, Replicated BUFG Driver: 0, Skipped due to Placement / Routing Conflict: 0, Skipped due to Timing: 0, Skipped due to constraints: 0
+Phase 4.1.1.2 BUFG Replication | Checksum: 1a5fded37
+
+Time (s): cpu = 00:01:36 ; elapsed = 00:00:43 . Memory (MB): peak = 6236.758 ; gain = 1426.609 ; free physical = 42215 ; free virtual = 71666
+
+Phase 4.1.1.3 Post Placement Timing Optimization
+INFO: [Place 30-746] Post Placement Timing Summary WNS=0.527. For the most accurate timing information please run report_timing.
+Phase 4.1.1.3 Post Placement Timing Optimization | Checksum: 189b7979c
+
+Time (s): cpu = 00:01:37 ; elapsed = 00:00:44 . Memory (MB): peak = 6236.758 ; gain = 1426.609 ; free physical = 42215 ; free virtual = 71666
+
+Time (s): cpu = 00:01:37 ; elapsed = 00:00:44 . Memory (MB): peak = 6236.758 ; gain = 1426.609 ; free physical = 42215 ; free virtual = 71666
+Phase 4.1 Post Commit Optimization | Checksum: 189b7979c
+
+Time (s): cpu = 00:01:37 ; elapsed = 00:00:44 . Memory (MB): peak = 6236.758 ; gain = 1426.609 ; free physical = 42215 ; free virtual = 71666
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6302.738 ; gain = 0.000 ; free physical = 42143 ; free virtual = 71593
+
+Phase 4.2 Post Placement Cleanup
+Phase 4.2 Post Placement Cleanup | Checksum: 27e731ae8
+
+Time (s): cpu = 00:01:47 ; elapsed = 00:00:48 . Memory (MB): peak = 6302.738 ; gain = 1492.590 ; free physical = 42143 ; free virtual = 71593
+
+Phase 4.3 Placer Reporting
+
+Phase 4.3.1 Print Estimated Congestion
+INFO: [Place 30-612] Post-Placement Estimated Congestion 
+ ________________________________________________________________________
+|           | Global Congestion | Long Congestion   | Short Congestion  |
+| Direction | Region Size       | Region Size       | Region Size       |
+|___________|___________________|___________________|___________________|
+|      North|                1x1|                1x1|                1x1|
+|___________|___________________|___________________|___________________|
+|      South|                1x1|                1x1|                1x1|
+|___________|___________________|___________________|___________________|
+|       East|                1x1|                1x1|                1x1|
+|___________|___________________|___________________|___________________|
+|       West|                1x1|                1x1|                1x1|
+|___________|___________________|___________________|___________________|
+
+Phase 4.3.1 Print Estimated Congestion | Checksum: 27e731ae8
+
+Time (s): cpu = 00:01:47 ; elapsed = 00:00:48 . Memory (MB): peak = 6302.738 ; gain = 1492.590 ; free physical = 42143 ; free virtual = 71593
+Phase 4.3 Placer Reporting | Checksum: 27e731ae8
+
+Time (s): cpu = 00:01:47 ; elapsed = 00:00:48 . Memory (MB): peak = 6302.738 ; gain = 1492.590 ; free physical = 42143 ; free virtual = 71593
+
+Phase 4.4 Final Placement Cleanup
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6302.738 ; gain = 0.000 ; free physical = 42143 ; free virtual = 71593
+
+Time (s): cpu = 00:01:47 ; elapsed = 00:00:48 . Memory (MB): peak = 6302.738 ; gain = 1492.590 ; free physical = 42143 ; free virtual = 71593
+Phase 4 Post Placement Optimization and Clean-Up | Checksum: 2520270d9
+
+Time (s): cpu = 00:01:47 ; elapsed = 00:00:48 . Memory (MB): peak = 6302.738 ; gain = 1492.590 ; free physical = 42143 ; free virtual = 71593
+Ending Placer Task | Checksum: 1f16c997a
+
+Time (s): cpu = 00:01:47 ; elapsed = 00:00:48 . Memory (MB): peak = 6302.738 ; gain = 1492.590 ; free physical = 42143 ; free virtual = 71593
+INFO: [Common 17-83] Releasing license: Implementation
+81 Infos, 0 Warnings, 1 Critical Warnings and 0 Errors encountered.
+place_design completed successfully
+place_design: Time (s): cpu = 00:01:50 ; elapsed = 00:01:10 . Memory (MB): peak = 6302.738 ; gain = 1545.254 ; free physical = 42143 ; free virtual = 71593
+INFO: [runtcl-4] Executing : report_io -file layernorm_top_io_placed.rpt
+report_io: Time (s): cpu = 00:00:00.26 ; elapsed = 00:00:00.39 . Memory (MB): peak = 6302.738 ; gain = 0.000 ; free physical = 42114 ; free virtual = 71565
+INFO: [runtcl-4] Executing : report_utilization -file layernorm_top_utilization_placed.rpt -pb layernorm_top_utilization_placed.pb
+INFO: [runtcl-4] Executing : report_control_sets -verbose -file layernorm_top_control_sets_placed.rpt
+report_control_sets: Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.08 . Memory (MB): peak = 6302.738 ; gain = 0.000 ; free physical = 42076 ; free virtual = 71527
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.9 ; elapsed = 00:00:00.45 . Memory (MB): peak = 6318.746 ; gain = 8.004 ; free physical = 42062 ; free virtual = 71535
+INFO: [Common 17-1381] The checkpoint '/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/impl_1/layernorm_top_placed.dcp' has been generated.
+Command: phys_opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-1540] The version limit for your license is '2026.01' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for new releases.
+
+Starting Initial Update Timing Task
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.37 . Memory (MB): peak = 6326.750 ; gain = 0.000 ; free physical = 42124 ; free virtual = 71581
+INFO: [Vivado_Tcl 4-383] Design worst setup slack (WNS) is greater than or equal to 0.000 ns. Skipping all physical synthesis optimizations.
+INFO: [Vivado_Tcl 4-232] No setup violation found. The netlist was not modified.
+INFO: [Common 17-83] Releasing license: Implementation
+91 Infos, 0 Warnings, 1 Critical Warnings and 0 Errors encountered.
+phys_opt_design completed successfully
+phys_opt_design: Time (s): cpu = 00:00:01 ; elapsed = 00:00:21 . Memory (MB): peak = 6326.750 ; gain = 0.000 ; free physical = 42124 ; free virtual = 71581
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.85 ; elapsed = 00:00:00.39 . Memory (MB): peak = 6326.750 ; gain = 0.000 ; free physical = 42103 ; free virtual = 71580
+INFO: [Common 17-1381] The checkpoint '/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/impl_1/layernorm_top_physopt.dcp' has been generated.
+Command: route_design
+Attempting to get a license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-1540] The version limit for your license is '2026.01' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for new releases.
+Running DRC as a precondition to command route_design
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+
+Starting Routing Task
+INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 8 CPUs
+
+Phase 1 Build RT Design
+Checksum: PlaceDB: d3de7bb7 ConstDB: 0 ShapeSum: 28d29a77 RouteDB: f4bb834c
+INFO: [DRC 23-27] Running DRC with 8 threads
+Nodegraph reading from file.  Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 6334.754 ; gain = 0.000 ; free physical = 42111 ; free virtual = 71572
+WARNING: [Route 35-197] Clock port "ap_clk" does not have an associated HD.CLK_SRC. Without this constraint, timing analysis may not be accurate and upstream checks cannot be done to ensure correct clock placement.
+WARNING: [Route 35-198] Port "src_TVALID" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TVALID". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[12]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[12]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[13]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[13]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[4]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[4]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[5]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[5]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[10]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[10]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[11]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[11]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[16]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[16]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[17]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[17]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[26]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[26]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[27]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[27]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[0]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[0]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[1]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[1]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[2]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[2]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[3]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[3]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[24]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[24]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[25]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[25]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[30]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[30]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[31]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[31]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[20]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[20]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[21]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[21]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[36]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[36]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[37]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[37]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[50]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[50]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[51]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[51]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[58]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[58]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[59]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[59]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[32]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[32]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[33]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[33]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[38]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[38]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[39]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[39]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[22]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[22]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[23]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[23]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[54]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[54]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[55]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[55]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[18]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[18]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[19]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[19]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[6]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[6]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[7]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[7]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[28]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[28]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[29]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[29]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[34]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[34]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[35]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[35]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[14]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[14]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[15]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[15]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[46]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[46]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[47]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[47]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "dst_TREADY" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "dst_TREADY". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[60]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[60]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[61]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[61]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[62]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[62]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[63]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[63]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[44]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[44]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[45]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[45]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[56]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[56]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[57]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[57]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "ap_rst_n" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "ap_rst_n". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[40]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[40]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[41]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[41]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[8]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[8]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[9]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[9]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[48]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[48]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[49]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[49]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[52]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[52]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[53]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[53]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[42]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[42]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[43]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[43]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+Post Restoration Checksum: NetGraph: 4f4e31b9 | NumContArr: 80d8c9b0 | Constraints: d574c134 | Timing: 0
+Phase 1 Build RT Design | Checksum: 1a59bbc9d
+
+Time (s): cpu = 00:00:12 ; elapsed = 00:00:10 . Memory (MB): peak = 6334.754 ; gain = 0.000 ; free physical = 42109 ; free virtual = 71570
+
+Phase 2 Router Initialization
+
+Phase 2.1 Fix Topology Constraints
+Phase 2.1 Fix Topology Constraints | Checksum: 1a59bbc9d
+
+Time (s): cpu = 00:00:12 ; elapsed = 00:00:10 . Memory (MB): peak = 6334.754 ; gain = 0.000 ; free physical = 42109 ; free virtual = 71570
+
+Phase 2.2 Pre Route Cleanup
+Phase 2.2 Pre Route Cleanup | Checksum: 1a59bbc9d
+
+Time (s): cpu = 00:00:12 ; elapsed = 00:00:10 . Memory (MB): peak = 6334.754 ; gain = 0.000 ; free physical = 42109 ; free virtual = 71570
+
+Phase 2.3 Global Clock Net Routing
+ Number of Nodes with overlaps = 0
+Phase 2.3 Global Clock Net Routing | Checksum: 25cff66f7
+
+Time (s): cpu = 00:00:14 ; elapsed = 00:00:11 . Memory (MB): peak = 6464.777 ; gain = 130.023 ; free physical = 41941 ; free virtual = 71402
+
+Phase 2.4 Update Timing
+Phase 2.4 Update Timing | Checksum: 2a9125540
+
+Time (s): cpu = 00:00:15 ; elapsed = 00:00:11 . Memory (MB): peak = 6464.777 ; gain = 130.023 ; free physical = 41941 ; free virtual = 71402
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=0.601  | TNS=0.000  | WHS=0.031  | THS=0.000  |
+
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 0 %
+  Global Horizontal Routing Utilization  = 0 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 6156
+    (Failed Nets is the sum of unrouted and partially routed nets)
+  Number of Unrouted Nets             = 5849
+  Number of Partially Routed Nets     = 307
+  Number of Node Overlaps             = 0
+
+Phase 2 Router Initialization | Checksum: 2b0d9290c
+
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:12 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41938 ; free virtual = 71399
+
+Phase 3 Initial Routing
+
+Phase 3.1 Global Routing
+
+Phase 3.1.1 SLL Assignment
+Phase 3.1.1 SLL Assignment | Checksum: 2b0d9290c
+
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:12 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41938 ; free virtual = 71399
+Phase 3.1 Global Routing | Checksum: 2b0d9290c
+
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:12 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41938 ; free virtual = 71399
+Phase 3 Initial Routing | Checksum: 1b0f5c87b
+
+Time (s): cpu = 00:00:21 ; elapsed = 00:00:13 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41930 ; free virtual = 71391
+
+Phase 4 Rip-up And Reroute
+
+Phase 4.1 Global Iteration 0
+ Number of Nodes with overlaps = 379
+ Number of Nodes with overlaps = 14
+ Number of Nodes with overlaps = 4
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=0.362  | TNS=0.000  | WHS=0.035  | THS=0.000  |
+
+Phase 4.1 Global Iteration 0 | Checksum: 15a165750
+
+Time (s): cpu = 00:00:25 ; elapsed = 00:00:15 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41930 ; free virtual = 71391
+
+Phase 4.2 Additional Iteration for Hold
+Phase 4.2 Additional Iteration for Hold | Checksum: 1045b9772
+
+Time (s): cpu = 00:00:25 ; elapsed = 00:00:15 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41930 ; free virtual = 71391
+Phase 4 Rip-up And Reroute | Checksum: 1045b9772
+
+Time (s): cpu = 00:00:25 ; elapsed = 00:00:15 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41930 ; free virtual = 71391
+
+Phase 5 Delay and Skew Optimization
+
+Phase 5.1 Delay CleanUp
+Phase 5.1 Delay CleanUp | Checksum: 1045b9772
+
+Time (s): cpu = 00:00:25 ; elapsed = 00:00:15 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41930 ; free virtual = 71391
+
+Phase 5.2 Clock Skew Optimization
+Phase 5.2 Clock Skew Optimization | Checksum: 1045b9772
+
+Time (s): cpu = 00:00:25 ; elapsed = 00:00:15 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41930 ; free virtual = 71391
+Phase 5 Delay and Skew Optimization | Checksum: 1045b9772
+
+Time (s): cpu = 00:00:25 ; elapsed = 00:00:15 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41930 ; free virtual = 71391
+
+Phase 6 Post Hold Fix
+
+Phase 6.1 Hold Fix Iter
+
+Phase 6.1.1 Update Timing
+Phase 6.1.1 Update Timing | Checksum: 1f710fc5c
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:15 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41930 ; free virtual = 71391
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=0.362  | TNS=0.000  | WHS=0.035  | THS=0.000  |
+
+Phase 6.1 Hold Fix Iter | Checksum: 1f710fc5c
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:15 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41930 ; free virtual = 71391
+Phase 6 Post Hold Fix | Checksum: 1f710fc5c
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:15 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41930 ; free virtual = 71391
+
+Phase 7 Leaf Clock Prog Delay Opt
+Phase 7 Leaf Clock Prog Delay Opt | Checksum: 1f710fc5c
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:15 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41930 ; free virtual = 71391
+
+Phase 8 Route finalize
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 0.0535164 %
+  Global Horizontal Routing Utilization  = 0.0755472 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 0
+    (Failed Nets is the sum of unrouted and partially routed nets)
+  Number of Unrouted Nets             = 0
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+Phase 8 Route finalize | Checksum: 151df26e2
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:15 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41930 ; free virtual = 71391
+
+Phase 9 Verifying routed nets
+
+ Verification completed successfully
+Phase 9 Verifying routed nets | Checksum: 151df26e2
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:15 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41929 ; free virtual = 71391
+
+Phase 10 Depositing Routes
+Phase 10 Depositing Routes | Checksum: 1c8d8e1cd
+
+Time (s): cpu = 00:00:28 ; elapsed = 00:00:16 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41929 ; free virtual = 71391
+
+Phase 11 Post Router Timing
+INFO: [Route 35-57] Estimated Timing Summary | WNS=0.362  | TNS=0.000  | WHS=0.035  | THS=0.000  |
+
+INFO: [Route 35-327] The final timing numbers are based on the router estimated timing analysis. For a complete and accurate timing signoff, please run report_timing_summary.
+Phase 11 Post Router Timing | Checksum: 1c8d8e1cd
+
+Time (s): cpu = 00:00:28 ; elapsed = 00:00:16 . Memory (MB): peak = 6483.777 ; gain = 149.023 ; free physical = 41929 ; free virtual = 71391
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Route 35-16] Router Completed Successfully
+
+Phase 12 Post-Route Event Processing
+Phase 12 Post-Route Event Processing | Checksum: 11d6e8312
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:16 . Memory (MB): peak = 6515.793 ; gain = 181.039 ; free physical = 41929 ; free virtual = 71391
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:16 . Memory (MB): peak = 6515.793 ; gain = 181.039 ; free physical = 41929 ; free virtual = 71391
+
+Routing Is Done.
+INFO: [Common 17-83] Releasing license: Implementation
+108 Infos, 68 Warnings, 1 Critical Warnings and 0 Errors encountered.
+route_design completed successfully
+route_design: Time (s): cpu = 00:00:33 ; elapsed = 00:00:38 . Memory (MB): peak = 6515.793 ; gain = 189.043 ; free physical = 41929 ; free virtual = 71391
+INFO: [runtcl-4] Executing : report_drc -file layernorm_top_drc_routed.rpt -pb layernorm_top_drc_routed.pb -rpx layernorm_top_drc_routed.rpx
+Command: report_drc -file layernorm_top_drc_routed.rpt -pb layernorm_top_drc_routed.pb -rpx layernorm_top_drc_routed.rpx
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file /scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/impl_1/layernorm_top_drc_routed.rpt.
+report_drc completed successfully
+INFO: [runtcl-4] Executing : report_methodology -file layernorm_top_methodology_drc_routed.rpt -pb layernorm_top_methodology_drc_routed.pb -rpx layernorm_top_methodology_drc_routed.rpx
+Command: report_methodology -file layernorm_top_methodology_drc_routed.rpt -pb layernorm_top_methodology_drc_routed.pb -rpx layernorm_top_methodology_drc_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [DRC 23-133] Running Methodology with 8 threads
+INFO: [Vivado_Tcl 2-1520] The results of Report Methodology are in file /scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/impl_1/layernorm_top_methodology_drc_routed.rpt.
+report_methodology completed successfully
+INFO: [runtcl-4] Executing : report_power -file layernorm_top_power_routed.rpt -pb layernorm_top_power_summary_routed.pb -rpx layernorm_top_power_routed.rpx
+Command: report_power -file layernorm_top_power_routed.rpt -pb layernorm_top_power_summary_routed.pb -rpx layernorm_top_power_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+118 Infos, 68 Warnings, 1 Critical Warnings and 0 Errors encountered.
+report_power completed successfully
+INFO: [runtcl-4] Executing : report_route_status -file layernorm_top_route_status.rpt -pb layernorm_top_route_status.pb
+INFO: [runtcl-4] Executing : report_timing_summary -max_paths 10 -report_unconstrained -file layernorm_top_timing_summary_routed.rpt -pb layernorm_top_timing_summary_routed.pb -rpx layernorm_top_timing_summary_routed.rpx -warn_on_violation 
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2MP, Temperature grade: E, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 8 CPUs
+INFO: [runtcl-4] Executing : report_incremental_reuse -file layernorm_top_incremental_reuse_routed.rpt
+INFO: [Vivado_Tcl 4-1062] Incremental flow is disabled. No incremental reuse Info to report.
+INFO: [runtcl-4] Executing : report_clock_utilization -file layernorm_top_clock_utilization_routed.rpt
+INFO: [runtcl-4] Executing : report_bus_skew -warn_on_violation -file layernorm_top_bus_skew_routed.rpt -pb layernorm_top_bus_skew_routed.pb -rpx layernorm_top_bus_skew_routed.rpx
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2MP, Temperature grade: E, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 8 CPUs
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.95 ; elapsed = 00:00:00.49 . Memory (MB): peak = 6531.801 ; gain = 0.000 ; free physical = 41842 ; free virtual = 71332
+INFO: [Common 17-1381] The checkpoint '/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/impl_1/layernorm_top_routed.dcp' has been generated.
+INFO: [Common 17-206] Exiting Vivado at Sun Sep  6 17:38:53 2026...
+[Sun Sep  6 17:38:59 2026] impl_1 finished
+wait_on_runs: Time (s): cpu = 00:00:00.58 ; elapsed = 00:03:51 . Memory (MB): peak = 4117.637 ; gain = 0.000 ; free physical = 47264 ; free virtual = 76736
+# open_run $impl
+Netlist sorting complete. Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.05 . Memory (MB): peak = 4117.637 ; gain = 0.000 ; free physical = 47264 ; free virtual = 76736
+INFO: [Netlist 29-17] Analyzing 1153 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Chipscope 16-579] Latest version is versal_cips_v3_3 for versal_cips_v3_2
+INFO: [Project 1-479] Netlist was created with Vivado 2023.1
+INFO: [Constraints 18-6359] No Clock Expansion Window constraints config file entry for device xcvc1902.  GCLK Deskew mode will be Off and cannot be enabled via GCLK_DESKEW override.
+INFO: [Constraints 18-5720] The default GCLK Deskew mode is Off.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Reading NOC Solution File '/scratch-local/borntraeger/network/sweeps/scripts/layernorm_top.vivado/layernorm_top.runs/impl_1/layernorm_top_routed/layernorm_top.ncr'
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+Reading XDEF placement.
+Reading placer database...
+Reading XDEF routing.
+Read XDEF Files: Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 5019.137 ; gain = 580.180 ; free physical = 46426 ; free virtual = 75899
+Restored from archive | CPU: 8.080000 secs | Memory: 456.796135 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 5019.137 ; gain = 580.180 ; free physical = 46426 ; free virtual = 75899
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 5019.137 ; gain = 0.000 ; free physical = 46426 ; free virtual = 75899
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1153 instances were transformed.
+  (CARRY8) => LUT6CY (LUTCY1, LUTCY2): 1131 instances
+  DSPFP32 => DSPFP32 (DSP_FPA_CREG, DSP_FPA_OPM_REG, DSP_FPM_PIPEREG, DSP_FPM_STAGE0, DSP_FPM_STAGE1, DSP_FP_ADDER, DSP_FP_INMUX, DSP_FP_INREG, DSP_FP_OUTPUT, DSP_FP_SRCMX_OPTINV): 12 instances
+  RAM32M16 => RAM32M16 (RAMD32(x14), RAMS32(x2)): 10 instances
+
+open_run: Time (s): cpu = 00:00:11 ; elapsed = 00:00:13 . Memory (MB): peak = 5019.137 ; gain = 901.500 ; free physical = 46426 ; free virtual = 75899
+# report_utilization -file $util_report_path -quiet
+# report_timing_summary -file $timing_report_path -quiet
+# quit
+INFO: [Common 17-206] Exiting Vivado at Sun Sep  6 17:39:14 2026...

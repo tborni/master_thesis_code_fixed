@@ -1,0 +1,15 @@
+tcl_parameters:
+	# top = layernorm_top
+	# part = xcvc1902-vsva2197-2MP-e-S
+	# clk_name = ap_clk
+
+defaults:
+	# clock_period = 4.0
+
+sweeps:
+	***
+		~ name: general
+		~ active: 1
+		~ mode: cartesian
+			# clock_period = {4.0}
+	***

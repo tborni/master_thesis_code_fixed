@@ -1,0 +1,1841 @@
+WARNING: Default location for XILINX_HLS not found
+
+****** Vivado v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source ../run_0_2026-09-06_22-10-20/0_general/run_0/synth.tcl
+# set script_dir [file dirname [info script]]
+# set util_report_path [file join $script_dir "util_report.rpt"]
+# set timing_report_path [file join $script_dir "timing_report.rpt"]
+# set top softmax_top
+# create_project -force $top $top.vivado -part xcvc1902-vsva2197-2MP-e-S
+# set_property top $top [current_fileset]
+# foreach f [glob -nocomplain ../src/*.v]  { read_verilog $f }
+# foreach f [glob -nocomplain ../src/*.sv] { read_verilog -sv $f }
+# foreach f [glob -nocomplain ../src/*_ip.tcl] { source $f }
+## set vivado_ver [version -short]
+## set fpo_ver 7.1
+## if {[regexp -nocase {2015\.1.*} $vivado_ver match]} {
+##     set fpo_ver 7.0
+## }
+## create_ip -name floating_point -version $fpo_ver -vendor xilinx.com -library ip -module_name softmax_top_fpext_32ns_64_1_no_dsp_1_ip
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/local/eda/xilinx/vivado/2023.1/data/ip'.
+## set_property -dict [list CONFIG.a_precision_type Single \
+##                           CONFIG.a_tuser_width 1 \
+##                           CONFIG.add_sub_value Both \
+##                           CONFIG.b_tuser_width 1 \
+##                           CONFIG.c_a_exponent_width 8 \
+##                           CONFIG.c_a_fraction_width 24 \
+##                           CONFIG.c_compare_operation Programmable \
+##                           CONFIG.c_has_divide_by_zero false \
+##                           CONFIG.c_has_invalid_op false \
+##                           CONFIG.c_has_overflow false \
+##                           CONFIG.c_has_underflow false \
+##                           CONFIG.c_latency 0 \
+##                           CONFIG.c_mult_usage No_Usage \
+##                           CONFIG.c_optimization Speed_Optimized \
+##                           CONFIG.c_rate 1 \
+##                           CONFIG.c_result_exponent_width 11 \
+##                           CONFIG.c_result_fraction_width 53 \
+##                           CONFIG.component_name softmax_top_fpext_32ns_64_1_no_dsp_1_ip \
+##                           CONFIG.flow_control NonBlocking \
+##                           CONFIG.has_a_tlast false \
+##                           CONFIG.has_a_tuser false \
+##                           CONFIG.has_aclken false \
+##                           CONFIG.has_aresetn false \
+##                           CONFIG.has_b_tlast false \
+##                           CONFIG.has_b_tuser false \
+##                           CONFIG.has_operation_tlast false \
+##                           CONFIG.has_operation_tuser false \
+##                           CONFIG.has_result_tready false \
+##                           CONFIG.maximum_latency false \
+##                           CONFIG.operation_tuser_width 1 \
+##                           CONFIG.operation_type Float_to_Float \
+##                           CONFIG.result_precision_type Double \
+##                           CONFIG.result_tlast_behv Null] -objects [get_ips softmax_top_fpext_32ns_64_1_no_dsp_1_ip] -quiet
+## set_property generate_synth_checkpoint false [get_files softmax_top_fpext_32ns_64_1_no_dsp_1_ip.xci]
+## generate_target {synthesis simulation} [get_files softmax_top_fpext_32ns_64_1_no_dsp_1_ip.xci]
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'softmax_top_fpext_32ns_64_1_no_dsp_1_ip'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'softmax_top_fpext_32ns_64_1_no_dsp_1_ip'...
+## set vivado_ver [version -short]
+## set fpo_ver 7.1
+## if {[regexp -nocase {2015\.1.*} $vivado_ver match]} {
+##     set fpo_ver 7.0
+## }
+## create_ip -name floating_point -version $fpo_ver -vendor xilinx.com -library ip -module_name softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip
+## set_property -dict [list CONFIG.a_precision_type Single \
+##                           CONFIG.a_tuser_width 1 \
+##                           CONFIG.add_sub_value Subtract \
+##                           CONFIG.b_tuser_width 1 \
+##                           CONFIG.c_a_exponent_width 8 \
+##                           CONFIG.c_a_fraction_width 24 \
+##                           CONFIG.c_compare_operation Programmable \
+##                           CONFIG.c_has_divide_by_zero false \
+##                           CONFIG.c_has_invalid_op false \
+##                           CONFIG.c_has_overflow false \
+##                           CONFIG.c_has_underflow false \
+##                           CONFIG.c_latency 0 \
+##                           CONFIG.c_mult_usage Primitive_Usage \
+##                           CONFIG.c_optimization Speed_Optimized \
+##                           CONFIG.c_rate 1 \
+##                           CONFIG.c_result_exponent_width 8 \
+##                           CONFIG.c_result_fraction_width 24 \
+##                           CONFIG.component_name softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip \
+##                           CONFIG.flow_control NonBlocking \
+##                           CONFIG.has_a_tlast false \
+##                           CONFIG.has_a_tuser false \
+##                           CONFIG.has_aclken false \
+##                           CONFIG.has_aresetn false \
+##                           CONFIG.has_b_tlast false \
+##                           CONFIG.has_b_tuser false \
+##                           CONFIG.has_operation_tlast false \
+##                           CONFIG.has_operation_tuser false \
+##                           CONFIG.has_result_tready false \
+##                           CONFIG.maximum_latency false \
+##                           CONFIG.operation_tuser_width 1 \
+##                           CONFIG.operation_type Add_Subtract \
+##                           CONFIG.result_precision_type Single \
+##                           CONFIG.result_tlast_behv Null] -objects [get_ips softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip] -quiet
+## set_property generate_synth_checkpoint false [get_files softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip.xci]
+## generate_target {synthesis simulation} [get_files softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip.xci]
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip'...
+## set vivado_ver [version -short]
+## set fpo_ver 7.1
+## if {[regexp -nocase {2015\.1.*} $vivado_ver match]} {
+##     set fpo_ver 7.0
+## }
+## create_ip -name floating_point -version $fpo_ver -vendor xilinx.com -library ip -module_name softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip
+## set_property -dict [list CONFIG.a_precision_type Single \
+##                           CONFIG.a_tuser_width 1 \
+##                           CONFIG.add_sub_value Both \
+##                           CONFIG.b_tuser_width 1 \
+##                           CONFIG.c_a_exponent_width 8 \
+##                           CONFIG.c_a_fraction_width 24 \
+##                           CONFIG.c_compare_operation Programmable \
+##                           CONFIG.c_has_divide_by_zero false \
+##                           CONFIG.c_has_invalid_op false \
+##                           CONFIG.c_has_overflow false \
+##                           CONFIG.c_has_underflow false \
+##                           CONFIG.c_latency 14 \
+##                           CONFIG.c_mult_usage No_Usage \
+##                           CONFIG.c_optimization Speed_Optimized \
+##                           CONFIG.c_rate 1 \
+##                           CONFIG.c_result_exponent_width 8 \
+##                           CONFIG.c_result_fraction_width 24 \
+##                           CONFIG.component_name softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip \
+##                           CONFIG.flow_control NonBlocking \
+##                           CONFIG.has_a_tlast false \
+##                           CONFIG.has_a_tuser false \
+##                           CONFIG.has_aclken true \
+##                           CONFIG.has_aresetn false \
+##                           CONFIG.has_b_tlast false \
+##                           CONFIG.has_b_tuser false \
+##                           CONFIG.has_operation_tlast false \
+##                           CONFIG.has_operation_tuser false \
+##                           CONFIG.has_result_tready false \
+##                           CONFIG.maximum_latency false \
+##                           CONFIG.operation_tuser_width 1 \
+##                           CONFIG.operation_type Divide \
+##                           CONFIG.result_precision_type Single \
+##                           CONFIG.result_tlast_behv Null] -objects [get_ips softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip] -quiet
+## set_property generate_synth_checkpoint false [get_files softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip.xci]
+## generate_target {synthesis simulation} [get_files softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip.xci]
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip'...
+## set vivado_ver [version -short]
+## set fpo_ver 7.1
+## if {[regexp -nocase {2015\.1.*} $vivado_ver match]} {
+##     set fpo_ver 7.0
+## }
+## create_ip -name floating_point -version $fpo_ver -vendor xilinx.com -library ip -module_name softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip
+## set_property -dict [list CONFIG.a_precision_type Single \
+##                           CONFIG.a_tuser_width 1 \
+##                           CONFIG.add_sub_value Both \
+##                           CONFIG.b_tuser_width 1 \
+##                           CONFIG.c_a_exponent_width 8 \
+##                           CONFIG.c_a_fraction_width 24 \
+##                           CONFIG.c_compare_operation Programmable \
+##                           CONFIG.c_has_divide_by_zero false \
+##                           CONFIG.c_has_invalid_op false \
+##                           CONFIG.c_has_overflow false \
+##                           CONFIG.c_has_underflow false \
+##                           CONFIG.c_latency 0 \
+##                           CONFIG.c_mult_usage No_Usage \
+##                           CONFIG.c_optimization Speed_Optimized \
+##                           CONFIG.c_rate 1 \
+##                           CONFIG.c_result_exponent_width 1 \
+##                           CONFIG.c_result_fraction_width 0 \
+##                           CONFIG.component_name softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip \
+##                           CONFIG.flow_control NonBlocking \
+##                           CONFIG.has_a_tlast false \
+##                           CONFIG.has_a_tuser false \
+##                           CONFIG.has_aclken false \
+##                           CONFIG.has_aresetn false \
+##                           CONFIG.has_b_tlast false \
+##                           CONFIG.has_b_tuser false \
+##                           CONFIG.has_operation_tlast false \
+##                           CONFIG.has_operation_tuser false \
+##                           CONFIG.has_result_tready false \
+##                           CONFIG.maximum_latency false \
+##                           CONFIG.operation_tuser_width 1 \
+##                           CONFIG.operation_type Compare \
+##                           CONFIG.result_precision_type Single \
+##                           CONFIG.result_tlast_behv Null] -objects [get_ips softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip] -quiet
+## set_property generate_synth_checkpoint false [get_files softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip.xci]
+## generate_target {synthesis simulation} [get_files softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip.xci]
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip'...
+## set vivado_ver [version -short]
+## set fpo_ver 7.1
+## if {[regexp -nocase {2015\.1.*} $vivado_ver match]} {
+##     set fpo_ver 7.0
+## }
+## create_ip -name floating_point -version $fpo_ver -vendor xilinx.com -library ip -module_name softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip
+## set_property -dict [list CONFIG.a_precision_type Single \
+##                           CONFIG.a_tuser_width 1 \
+##                           CONFIG.add_sub_value Both \
+##                           CONFIG.b_tuser_width 1 \
+##                           CONFIG.c_a_exponent_width 8 \
+##                           CONFIG.c_a_fraction_width 24 \
+##                           CONFIG.c_compare_operation Programmable \
+##                           CONFIG.c_has_divide_by_zero false \
+##                           CONFIG.c_has_invalid_op false \
+##                           CONFIG.c_has_overflow false \
+##                           CONFIG.c_has_underflow false \
+##                           CONFIG.c_latency 8 \
+##                           CONFIG.c_mult_usage Medium_Usage \
+##                           CONFIG.c_optimization Speed_Optimized \
+##                           CONFIG.c_rate 1 \
+##                           CONFIG.c_result_exponent_width 8 \
+##                           CONFIG.c_result_fraction_width 24 \
+##                           CONFIG.component_name softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip \
+##                           CONFIG.flow_control NonBlocking \
+##                           CONFIG.has_a_tlast false \
+##                           CONFIG.has_a_tuser false \
+##                           CONFIG.has_aclken true \
+##                           CONFIG.has_aresetn false \
+##                           CONFIG.has_b_tlast false \
+##                           CONFIG.has_b_tuser false \
+##                           CONFIG.has_operation_tlast false \
+##                           CONFIG.has_operation_tuser false \
+##                           CONFIG.has_result_tready false \
+##                           CONFIG.maximum_latency false \
+##                           CONFIG.operation_tuser_width 1 \
+##                           CONFIG.operation_type Exponential \
+##                           CONFIG.result_precision_type Single \
+##                           CONFIG.result_tlast_behv Null] -objects [get_ips softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip] -quiet
+## set_property generate_synth_checkpoint false [get_files softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip.xci]
+## generate_target {synthesis simulation} [get_files softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip.xci]
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip'...
+# set_property generic {
+# 	
+# } [current_fileset]
+# set synth [current_run -synthesis]
+# set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects $synth
+# launch_runs $synth -jobs 32
+WARNING: [Vivado 12-7122] Auto Incremental Compile:: No reference checkpoint was found in run synth_1. Auto-incremental flow will not be run, the standard flow will be run instead.
+[Sun Sep  6 22:10:43 2026] Launched synth_1...
+Run output will be captured here: /scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/synth_1/runme.log
+# wait_on_runs $synth
+[Sun Sep  6 22:10:43 2026] Waiting for synth_1 to finish...
+
+*** Running vivado
+    with args -log softmax_top.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source softmax_top.tcl
+
+WARNING: Default location for XILINX_HLS not found
+
+****** Vivado v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source softmax_top.tcl -notrace
+Command: synth_design -top softmax_top -part xcvc1902-vsva2197-2MP-e-S -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xcvc1902'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xcvc1902'
+INFO: [Common 17-1540] The version limit for your license is '2026.01' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for new releases.
+INFO: [Device 21-403] Loading part xcvc1902-vsva2197-2MP-e-S
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 648117
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 3468.523 ; gain = 377.832 ; free physical = 45347 ; free virtual = 75246
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'softmax_top' [/scratch-local/borntraeger/softmax/src/softmax_top.v:9]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_execute' [/scratch-local/borntraeger/softmax/src/softmax_top_execute.v:9]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_max_extract' [/scratch-local/borntraeger/softmax/src/softmax_top_max_extract.v:9]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1' [/scratch-local/borntraeger/softmax/src/softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1.v:9]
+	Parameter ID bound to: 1 - type: integer 
+	Parameter NUM_STAGE bound to: 1 - type: integer 
+	Parameter din0_WIDTH bound to: 32 - type: integer 
+	Parameter din1_WIDTH bound to: 32 - type: integer 
+	Parameter dout_WIDTH bound to: 1 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip' [/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.gen/sources_1/ip/softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip/synth/softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip.v:53]
+INFO: [Synth 8-6157] synthesizing module 'LUT1' [/local/eda/xilinx/vivado/2023.1/scripts/rt/data/unisim_comp.v:79430]
+INFO: [Synth 8-6155] done synthesizing module 'LUT1' (0#1) [/local/eda/xilinx/vivado/2023.1/scripts/rt/data/unisim_comp.v:79430]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip' (0#1) [/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.gen/sources_1/ip/softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip/synth/softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1.v:9]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_regslice_both' [/scratch-local/borntraeger/softmax/src/softmax_top_regslice_both.v:11]
+	Parameter DataWidth bound to: 32 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_regslice_both' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_regslice_both.v:11]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_max_extract' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_max_extract.v:9]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_exponentiate' [/scratch-local/borntraeger/softmax/src/softmax_top_exponentiate.v:9]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1' [/scratch-local/borntraeger/softmax/src/softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1.v:9]
+	Parameter ID bound to: 1 - type: integer 
+	Parameter NUM_STAGE bound to: 1 - type: integer 
+	Parameter din0_WIDTH bound to: 32 - type: integer 
+	Parameter din1_WIDTH bound to: 32 - type: integer 
+	Parameter dout_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip' [/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.gen/sources_1/ip/softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip/synth/softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip.v:53]
+INFO: [Synth 8-6157] synthesizing module 'DSPFP32' [/local/eda/xilinx/vivado/2023.1/scripts/rt/data/unisim_comp.v:38751]
+INFO: [Synth 8-6155] done synthesizing module 'DSPFP32' (0#1) [/local/eda/xilinx/vivado/2023.1/scripts/rt/data/unisim_comp.v:38751]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip' (0#1) [/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.gen/sources_1/ip/softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip/synth/softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1.v:9]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fpext_32ns_64_1_no_dsp_1' [/scratch-local/borntraeger/softmax/src/softmax_top_fpext_32ns_64_1_no_dsp_1.v:9]
+	Parameter ID bound to: 1 - type: integer 
+	Parameter NUM_STAGE bound to: 1 - type: integer 
+	Parameter din0_WIDTH bound to: 32 - type: integer 
+	Parameter dout_WIDTH bound to: 64 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fpext_32ns_64_1_no_dsp_1_ip' [/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.gen/sources_1/ip/softmax_top_fpext_32ns_64_1_no_dsp_1_ip/synth/softmax_top_fpext_32ns_64_1_no_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fpext_32ns_64_1_no_dsp_1_ip' (0#1) [/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.gen/sources_1/ip/softmax_top_fpext_32ns_64_1_no_dsp_1_ip/synth/softmax_top_fpext_32ns_64_1_no_dsp_1_ip.v:53]
+WARNING: [Synth 8-689] width (65) of port connection 'm_axis_result_tdata' does not match port width (64) of module 'softmax_top_fpext_32ns_64_1_no_dsp_1_ip' [/scratch-local/borntraeger/softmax/src/softmax_top_fpext_32ns_64_1_no_dsp_1.v:29]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fpext_32ns_64_1_no_dsp_1' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_fpext_32ns_64_1_no_dsp_1.v:9]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fexp_32ns_32ns_32_9_med_dsp_1' [/scratch-local/borntraeger/softmax/src/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1.v:9]
+	Parameter ID bound to: 1 - type: integer 
+	Parameter NUM_STAGE bound to: 9 - type: integer 
+	Parameter din0_WIDTH bound to: 32 - type: integer 
+	Parameter din1_WIDTH bound to: 32 - type: integer 
+	Parameter dout_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip' [/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.gen/sources_1/ip/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip/synth/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip.v:53]
+WARNING: [Synth 8-5974] attribute "use_dsp48" has been deprecated, please use "use_dsp" instead 
+WARNING: [Synth 8-5974] attribute "use_dsp48" has been deprecated, please use "use_dsp" instead 
+WARNING: [Synth 8-5974] attribute "use_dsp48" has been deprecated, please use "use_dsp" instead 
+WARNING: [Synth 8-5974] attribute "use_dsp48" has been deprecated, please use "use_dsp" instead 
+WARNING: [Synth 8-5974] attribute "use_dsp48" has been deprecated, please use "use_dsp" instead 
+WARNING: [Synth 8-5974] attribute "use_dsp48" has been deprecated, please use "use_dsp" instead 
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip' (0#1) [/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.gen/sources_1/ip/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip/synth/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fexp_32ns_32ns_32_9_med_dsp_1' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1.v:9]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_exponentiate' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_exponentiate.v:9]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_div_stage' [/scratch-local/borntraeger/softmax/src/softmax_top_div_stage.v:9]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1' [/scratch-local/borntraeger/softmax/src/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1.v:9]
+	Parameter ID bound to: 1 - type: integer 
+	Parameter NUM_STAGE bound to: 15 - type: integer 
+	Parameter din0_WIDTH bound to: 32 - type: integer 
+	Parameter din1_WIDTH bound to: 32 - type: integer 
+	Parameter dout_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip' [/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.gen/sources_1/ip/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip/synth/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip' (0#1) [/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.gen/sources_1/ip/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip/synth/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1.v:9]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_div_stage' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_div_stage.v:9]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fifo_w32_d64_A' [/scratch-local/borntraeger/softmax/src/softmax_top_fifo_w32_d64_A.v:11]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fifo_w32_d64_A_ram' [/scratch-local/borntraeger/softmax/src/softmax_top_fifo_w32_d64_A.v:169]
+	Parameter MEM_STYLE bound to: auto - type: string 
+	Parameter DATA_WIDTH bound to: 32 - type: integer 
+	Parameter ADDR_WIDTH bound to: 6 - type: integer 
+	Parameter DEPTH bound to: 63 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fifo_w32_d64_A_ram' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_fifo_w32_d64_A.v:169]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fifo_w32_d64_A' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_fifo_w32_d64_A.v:11]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fifo_w32_d2_S' [/scratch-local/borntraeger/softmax/src/softmax_top_fifo_w32_d2_S.v:11]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fifo_w32_d2_S_ShiftReg' [/scratch-local/borntraeger/softmax/src/softmax_top_fifo_w32_d2_S.v:120]
+	Parameter DATA_WIDTH bound to: 32 - type: integer 
+	Parameter ADDR_WIDTH bound to: 1 - type: integer 
+	Parameter DEPTH bound to: 2 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fifo_w32_d2_S_ShiftReg' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_fifo_w32_d2_S.v:120]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fifo_w32_d2_S' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_fifo_w32_d2_S.v:11]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fifo_w31_d2_S' [/scratch-local/borntraeger/softmax/src/softmax_top_fifo_w31_d2_S.v:11]
+INFO: [Synth 8-6157] synthesizing module 'softmax_top_fifo_w31_d2_S_ShiftReg' [/scratch-local/borntraeger/softmax/src/softmax_top_fifo_w31_d2_S.v:120]
+	Parameter DATA_WIDTH bound to: 31 - type: integer 
+	Parameter ADDR_WIDTH bound to: 1 - type: integer 
+	Parameter DEPTH bound to: 2 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fifo_w31_d2_S_ShiftReg' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_fifo_w31_d2_S.v:120]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_fifo_w31_d2_S' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_fifo_w31_d2_S.v:11]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top_execute' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top_execute.v:9]
+INFO: [Synth 8-6155] done synthesizing module 'softmax_top' (0#1) [/scratch-local/borntraeger/softmax/src/softmax_top.v:9]
+WARNING: [Synth 8-7129] Port reset in module softmax_top_fifo_w31_d2_S_ShiftReg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port reset in module softmax_top_fifo_w32_d2_S_ShiftReg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized11 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized11 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized11 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized11 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized11 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized13 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized13 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized13 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized13 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized13 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized52 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized52 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized52 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port DEC_OP_STATE[11] in module flt_dec_op_lat is either unconnected or has no load
+WARNING: [Synth 8-7129] Port DEC_OP_STATE[10] in module flt_dec_op_lat is either unconnected or has no load
+WARNING: [Synth 8-7129] Port DEC_OP_STATE[9] in module flt_dec_op_lat is either unconnected or has no load
+WARNING: [Synth 8-7129] Port DEC_OP_STATE[8] in module flt_dec_op_lat is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized17 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized17 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized17 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized17 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized17 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port B[7] in module carry_chain__parameterized16 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized98 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized98 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized98 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized98 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized98 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port NORMALIZE[1] in module flt_round_bit__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port FIXED_POINT in module flt_round_bit__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port FIX_MANT_SIGN in module flt_round_bit__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SIGN in module flt_round_bit__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized127 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized127 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized127 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized127 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized127 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized88 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized88 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized88 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized88 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized88 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized84 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized84 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized84 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized84 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized84 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized121 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized121 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized121 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized125 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized125 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized125 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized123 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized123 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized123 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized119 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized119 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized119 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized19 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized19 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized19 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized19 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized19 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized117 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized117 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized117 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized26 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized26 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized26 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized92 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized92 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized92 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized15 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized15 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized15 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized15 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized15 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port A[31] in module special_detect__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized115 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized115 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized115 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port ROUND_EXP_INC in module flt_div_exp is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CLK in module xbip_pipe_v3_0_6_viv__parameterized105 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_6_viv__parameterized105 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_6_viv__parameterized105 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_6_viv__parameterized105 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_6_viv__parameterized105 is either unconnected or has no load
+INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:07 ; elapsed = 00:00:16 . Memory (MB): peak = 3638.609 ; gain = 547.918 ; free physical = 45208 ; free virtual = 75109
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:07 ; elapsed = 00:00:16 . Memory (MB): peak = 3644.547 ; gain = 553.855 ; free physical = 45208 ; free virtual = 75109
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:07 ; elapsed = 00:00:16 . Memory (MB): peak = 3644.547 ; gain = 553.855 ; free physical = 45208 ; free virtual = 75109
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00.07 ; elapsed = 00:00:00.06 . Memory (MB): peak = 3658.484 ; gain = 0.000 ; free physical = 45210 ; free virtual = 75110
+INFO: [Netlist 29-17] Analyzing 1865 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Chipscope 16-579] Latest version is versal_cips_v3_3 for versal_cips_v3_2
+INFO: [Constraints 18-6359] No Clock Expansion Window constraints config file entry for device xcvc1902.  GCLK Deskew mode will be Off and cannot be enabled via GCLK_DESKEW override.
+INFO: [Constraints 18-5720] The default GCLK Deskew mode is Off.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/synth_1/dont_touch.xdc]
+Finished Parsing XDC File [/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/synth_1/dont_touch.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3813.203 ; gain = 0.000 ; free physical = 45179 ; free virtual = 75080
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 8 instances were transformed.
+  DSP48E1 => DSP48E5 (DSP_ALUADD, DSP_ALUMUX, DSP_ALUREG, DSP_A_B_DATA58, DSP_C_DATA58, DSP_MULTIPLIER58, DSP_M_DATA58, DSP_OUTPUT58, DSP_PATDET, DSP_PREADD58, DSP_PREADD_DATA58, DSP_SRCMX_OPTINV, GND, VCC): 1 instance 
+  DSPFP32 => DSPFP32 (DSP_FPA_CREG, DSP_FPA_OPM_REG, DSP_FPM_PIPEREG, DSP_FPM_STAGE0, DSP_FPM_STAGE1, DSP_FP_ADDER, DSP_FP_INMUX, DSP_FP_INREG, DSP_FP_OUTPUT, DSP_FP_SRCMX_OPTINV): 1 instance 
+  FDE => FDRE: 3 instances
+  MUXF7 => LUT3: 2 instances
+  MUXF8 => LUT3: 1 instance 
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.06 ; elapsed = 00:00:00.03 . Memory (MB): peak = 3813.203 ; gain = 0.000 ; free physical = 45179 ; free virtual = 75080
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:11 ; elapsed = 00:00:20 . Memory (MB): peak = 3813.203 ; gain = 722.512 ; free physical = 45164 ; free virtual = 75065
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xcvc1902-vsva2197-2MP-e-S
+INFO: [Synth 8-6742] Reading net delay rules and data
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:11 ; elapsed = 00:00:20 . Memory (MB): peak = 3813.203 ; gain = 722.512 ; free physical = 45164 ; free virtual = 75065
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property KEEP_HIERARCHY = SOFT for execute_U0/div_stage_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U18/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for execute_U0/exponentiate_U0/fexp_32ns_32ns_32_9_med_dsp_1_U10/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for execute_U0/max_extract_U0/fcmp_32ns_32ns_1_1_no_dsp_1_U1/softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for execute_U0/exponentiate_U0/fcmp_32ns_32ns_1_1_no_dsp_1_U9/softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for execute_U0/exponentiate_U0/fpext_32ns_64_1_no_dsp_1_U8/softmax_top_fpext_32ns_64_1_no_dsp_1_ip_u. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for execute_U0/exponentiate_U0/fsub_32ns_32ns_32_1_primitive_dsp_1_U7/softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip_u. (constraint file  auto generated constraint).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:11 ; elapsed = 00:00:20 . Memory (MB): peak = 3813.203 ; gain = 722.512 ; free physical = 45164 ; free virtual = 75065
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter1_fsm_reg' in module 'softmax_top_max_extract'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter10_fsm_reg' in module 'softmax_top_exponentiate'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter11_fsm_reg' in module 'softmax_top_exponentiate'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter12_fsm_reg' in module 'softmax_top_exponentiate'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter13_fsm_reg' in module 'softmax_top_exponentiate'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter1_fsm_reg' in module 'softmax_top_exponentiate'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter2_fsm_reg' in module 'softmax_top_exponentiate'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter3_fsm_reg' in module 'softmax_top_exponentiate'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter4_fsm_reg' in module 'softmax_top_exponentiate'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter5_fsm_reg' in module 'softmax_top_exponentiate'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter6_fsm_reg' in module 'softmax_top_exponentiate'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter7_fsm_reg' in module 'softmax_top_exponentiate'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter8_fsm_reg' in module 'softmax_top_exponentiate'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter9_fsm_reg' in module 'softmax_top_exponentiate'
+WARNING: [Synth 8-3936] Found unconnected internal register 'lshr_ln234_1_reg_986_reg' and it is trimmed from '63' to '23' bits. [/scratch-local/borntraeger/softmax/src/softmax_top_div_stage.v:721]
+WARNING: [Synth 8-3936] Found unconnected internal register 'lshr_ln224_1_reg_976_reg' and it is trimmed from '63' to '23' bits. [/scratch-local/borntraeger/softmax/src/softmax_top_div_stage.v:714]
+WARNING: [Synth 8-3936] Found unconnected internal register 'trunc_ln234_reg_900_reg' and it is trimmed from '25' to '5' bits. [/scratch-local/borntraeger/softmax/src/softmax_top_div_stage.v:740]
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter10_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter11_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter12_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter13_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter14_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter15_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter16_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter17_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter18_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter19_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter1_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter2_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter3_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter4_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter5_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter6_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter7_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter8_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'ap_CS_iter9_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter1_fsm_state0 |                               01 |                               01
+  ap_ST_iter1_fsm_state2 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter1_fsm_reg' in module 'softmax_top_max_extract'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter1_fsm_state0 |                               01 |                               01
+  ap_ST_iter1_fsm_state2 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter1_fsm_reg' in module 'softmax_top_exponentiate'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter2_fsm_state0 |                               01 |                               01
+  ap_ST_iter2_fsm_state3 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter2_fsm_reg' in module 'softmax_top_exponentiate'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter3_fsm_state0 |                               01 |                               01
+  ap_ST_iter3_fsm_state4 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter3_fsm_reg' in module 'softmax_top_exponentiate'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter4_fsm_state0 |                               01 |                               01
+  ap_ST_iter4_fsm_state5 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter4_fsm_reg' in module 'softmax_top_exponentiate'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter5_fsm_state0 |                               01 |                               01
+  ap_ST_iter5_fsm_state6 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter5_fsm_reg' in module 'softmax_top_exponentiate'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter6_fsm_state0 |                               01 |                               01
+  ap_ST_iter6_fsm_state7 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter6_fsm_reg' in module 'softmax_top_exponentiate'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter7_fsm_state0 |                               01 |                               01
+  ap_ST_iter7_fsm_state8 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter7_fsm_reg' in module 'softmax_top_exponentiate'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter8_fsm_state0 |                               01 |                               01
+  ap_ST_iter8_fsm_state9 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter8_fsm_reg' in module 'softmax_top_exponentiate'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter9_fsm_state0 |                               01 |                               01
+ ap_ST_iter9_fsm_state10 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter9_fsm_reg' in module 'softmax_top_exponentiate'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter10_fsm_state0 |                               01 |                               01
+ap_ST_iter10_fsm_state11 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter10_fsm_reg' in module 'softmax_top_exponentiate'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter11_fsm_state0 |                               01 |                               01
+ap_ST_iter11_fsm_state12 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter11_fsm_reg' in module 'softmax_top_exponentiate'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter12_fsm_state0 |                               01 |                               01
+ap_ST_iter12_fsm_state13 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter12_fsm_reg' in module 'softmax_top_exponentiate'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter13_fsm_state0 |                               01 |                               01
+ap_ST_iter13_fsm_state14 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter13_fsm_reg' in module 'softmax_top_exponentiate'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter18_fsm_state0 |                               01 |                               01
+ap_ST_iter18_fsm_state19 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter18_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter1_fsm_state0 |                               01 |                               01
+  ap_ST_iter1_fsm_state2 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter1_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter2_fsm_state0 |                               01 |                               01
+  ap_ST_iter2_fsm_state3 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter2_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter3_fsm_state0 |                               01 |                               01
+  ap_ST_iter3_fsm_state4 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter3_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter4_fsm_state0 |                               01 |                               01
+  ap_ST_iter4_fsm_state5 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter4_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter5_fsm_state0 |                               01 |                               01
+  ap_ST_iter5_fsm_state6 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter5_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter6_fsm_state0 |                               01 |                               01
+  ap_ST_iter6_fsm_state7 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter6_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter7_fsm_state0 |                               01 |                               01
+  ap_ST_iter7_fsm_state8 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter7_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter8_fsm_state0 |                               01 |                               01
+  ap_ST_iter8_fsm_state9 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter8_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+  ap_ST_iter9_fsm_state0 |                               01 |                               01
+ ap_ST_iter9_fsm_state10 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter9_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter10_fsm_state0 |                               01 |                               01
+ap_ST_iter10_fsm_state11 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter10_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter11_fsm_state0 |                               01 |                               01
+ap_ST_iter11_fsm_state12 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter11_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter12_fsm_state0 |                               01 |                               01
+ap_ST_iter12_fsm_state13 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter12_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter13_fsm_state0 |                               01 |                               01
+ap_ST_iter13_fsm_state14 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter13_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter14_fsm_state0 |                               01 |                               01
+ap_ST_iter14_fsm_state15 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter14_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter15_fsm_state0 |                               01 |                               01
+ap_ST_iter15_fsm_state16 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter15_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter16_fsm_state0 |                               01 |                               01
+ap_ST_iter16_fsm_state17 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter16_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter17_fsm_state0 |                               01 |                               01
+ap_ST_iter17_fsm_state18 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter17_fsm_reg' in module 'softmax_top_div_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+ ap_ST_iter19_fsm_state0 |                               01 |                               01
+ap_ST_iter19_fsm_state20 |                               10 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ap_CS_iter19_fsm_reg' in module 'softmax_top_div_stage'
+INFO: [Synth 8-6904] The RAM "softmax_top_fifo_w32_d64_A_ram:/mem_reg" of size (depth=63 x width=32) is automatically implemented using LUTRAM. BRAM implementation would be inefficient 
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:12 ; elapsed = 00:00:21 . Memory (MB): peak = 3813.203 ; gain = 722.512 ; free physical = 45142 ; free virtual = 75046
+---------------------------------------------------------------------------------
+INFO: [Synth 8-223] decloning instance 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip:/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized5) to 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip:/inst/i_synth/DELAY_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip:/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized5) to 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip:/inst/i_synth/DELAY_UNDERFLOW'
+INFO: [Synth 8-223] decloning instance 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip:/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized5) to 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip:/inst/i_synth/DELAY_ACCUM_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip:/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized5) to 'softmax_top_fcmp_32ns_32ns_1_1_no_dsp_1_ip:/inst/i_synth/DELAY_ACCUM_INPUT_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'execute_U0/exponentiate_U0/fsub_32ns_32ns_32_1_primitive_dsp_1_U7/softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized5) to 'execute_U0/exponentiate_U0/fsub_32ns_32ns_32_1_primitive_dsp_1_U7/softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'execute_U0/exponentiate_U0/fsub_32ns_32ns_32_1_primitive_dsp_1_U7/softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized5) to 'execute_U0/exponentiate_U0/fsub_32ns_32ns_32_1_primitive_dsp_1_U7/softmax_top_fsub_32ns_32ns_32_1_primitive_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_INPUT_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'execute_U0/exponentiate_U0/fpext_32ns_64_1_no_dsp_1_U8/softmax_top_fpext_32ns_64_1_no_dsp_1_ip_u/inst/i_synth/DELAY_INVALID_OP' (delay__parameterized5) to 'execute_U0/exponentiate_U0/fpext_32ns_64_1_no_dsp_1_U8/softmax_top_fpext_32ns_64_1_no_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO'
+INFO: [Synth 8-223] decloning instance 'execute_U0/exponentiate_U0/fpext_32ns_64_1_no_dsp_1_U8/softmax_top_fpext_32ns_64_1_no_dsp_1_ip_u/inst/i_synth/DELAY_INVALID_OP' (delay__parameterized5) to 'execute_U0/exponentiate_U0/fpext_32ns_64_1_no_dsp_1_U8/softmax_top_fpext_32ns_64_1_no_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'execute_U0/exponentiate_U0/fpext_32ns_64_1_no_dsp_1_U8/softmax_top_fpext_32ns_64_1_no_dsp_1_ip_u/inst/i_synth/DELAY_INVALID_OP' (delay__parameterized5) to 'execute_U0/exponentiate_U0/fpext_32ns_64_1_no_dsp_1_U8/softmax_top_fpext_32ns_64_1_no_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_INPUT_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'execute_U0/exponentiate_U0/fexp_32ns_32ns_32_9_med_dsp_1_U10/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip_u/inst/i_synth/EXP_OP.i_sp_or_dp.OP/i_ccm_recip_ln2/g_tables[0].i_sign_delay' (delay__parameterized5) to 'execute_U0/exponentiate_U0/fexp_32ns_32ns_32_9_med_dsp_1_U10/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip_u/inst/i_synth/EXP_OP.i_sp_or_dp.OP/i_ccm_recip_ln2/g_tables[1].i_sign_delay'
+INFO: [Synth 8-223] decloning instance 'execute_U0/exponentiate_U0/fexp_32ns_32ns_32_9_med_dsp_1_U10/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip_u/inst/i_synth/EXP_OP.i_sp_or_dp.OP/i_ccm_ln2/g_tables[0].i_sign_delay' (delay__parameterized5) to 'execute_U0/exponentiate_U0/fexp_32ns_32ns_32_9_med_dsp_1_U10/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip_u/inst/i_synth/EXP_OP.i_sp_or_dp.OP/i_ccm_ln2/g_tables[1].i_sign_delay'
+INFO: [Synth 8-223] decloning instance 'execute_U0/exponentiate_U0/fexp_32ns_32ns_32_9_med_dsp_1_U10/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip_u/inst/i_synth/EXP_OP.i_sp_or_dp.OP/i_renorm_and_round/EXTRA_LSB_BIT_DEL' (delay__parameterized5) to 'execute_U0/exponentiate_U0/fexp_32ns_32ns_32_9_med_dsp_1_U10/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip_u/inst/i_synth/EXP_OP.i_sp_or_dp.OP/i_renorm_and_round/EXTRA_LSB_RND1_DEL'
+INFO: [Synth 8-223] decloning instance 'execute_U0/exponentiate_U0/fexp_32ns_32ns_32_9_med_dsp_1_U10/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip_u/inst/i_synth/DELAY_INVALID_OP' (delay__parameterized5) to 'execute_U0/exponentiate_U0/fexp_32ns_32ns_32_9_med_dsp_1_U10/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO'
+INFO: [Synth 8-223] decloning instance 'execute_U0/exponentiate_U0/fexp_32ns_32ns_32_9_med_dsp_1_U10/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip_u/inst/i_synth/DELAY_INVALID_OP' (delay__parameterized5) to 'execute_U0/exponentiate_U0/fexp_32ns_32ns_32_9_med_dsp_1_U10/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'execute_U0/exponentiate_U0/fexp_32ns_32ns_32_9_med_dsp_1_U10/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip_u/inst/i_synth/DELAY_INVALID_OP' (delay__parameterized5) to 'execute_U0/exponentiate_U0/fexp_32ns_32ns_32_9_med_dsp_1_U10/softmax_top_fexp_32ns_32ns_32_9_med_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_INPUT_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'execute_U0/div_stage_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U18/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXTRA_LSB_BIT_DEL' (delay__parameterized5) to 'execute_U0/div_stage_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U18/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXTRA_LSB_RND1_DEL'
+INFO: [Synth 8-223] decloning instance 'execute_U0/div_stage_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U18/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXP_INC_DELAY' (delay__parameterized5) to 'execute_U0/div_stage_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U18/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXP_INC_RND1_DELAY'
+INFO: [Synth 8-223] decloning instance 'execute_U0/div_stage_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U18/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXP_IN_DELAY.EXP_IN_DEL' (delay__parameterized9) to 'execute_U0/div_stage_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U18/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXP_RND2_DELAY.EXP_RND_DEL'
+INFO: [Synth 8-223] decloning instance 'execute_U0/div_stage_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U18/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXP_IN_DELAY.EXP_OFF_OP_DEL' (delay__parameterized9) to 'execute_U0/div_stage_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U18/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DIV_OP.SPD.OP/ROUND/EXP_RND2_DELAY.EXP_OFF_RND_DEL'
+INFO: [Synth 8-223] decloning instance 'execute_U0/div_stage_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U18/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_OVERFLOW' (delay__parameterized5) to 'execute_U0/div_stage_U0/fdiv_32ns_32ns_32_15_no_dsp_1_U18/softmax_top_fdiv_32ns_32ns_32_15_no_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_INPUT_OVERFLOW'
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 1968 (col length:164)
+BRAMs: 1934 (col length: RAMB18 168 RAMB36 84)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+WARNING: [Synth 8-3936] Found unconnected internal register 'shl_ln234_reg_971_reg' and it is trimmed from '57' to '26' bits. [/scratch-local/borntraeger/softmax/src/softmax_top_div_stage.v:677]
+WARNING: [Synth 8-3936] Found unconnected internal register 'shl_ln224_reg_935_reg' and it is trimmed from '64' to '26' bits. [/scratch-local/borntraeger/softmax/src/softmax_top_div_stage.v:696]
+INFO: [Synth 8-6904] The RAM "softmax_top_fifo_w32_d64_A:/U_softmax_top_fifo_w32_d64_A_ram/mem_reg" of size (depth=63 x width=32) is automatically implemented using LUTRAM. BRAM implementation would be inefficient 
+INFO: [Synth 8-6904] The RAM "softmax_top_fifo_w32_d64_A:/U_softmax_top_fifo_w32_d64_A_ram/mem_reg" of size (depth=63 x width=32) is automatically implemented using LUTRAM. BRAM implementation would be inefficient 
+INFO: [Synth 8-6904] The RAM "softmax_top_fifo_w32_d64_A:/U_softmax_top_fifo_w32_d64_A_ram/mem_reg" of size (depth=63 x width=32) is automatically implemented using LUTRAM. BRAM implementation would be inefficient 
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:22 ; elapsed = 00:00:31 . Memory (MB): peak = 3929.219 ; gain = 838.527 ; free physical = 44971 ; free virtual = 74874
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:34 ; elapsed = 00:00:45 . Memory (MB): peak = 4421.352 ; gain = 1330.660 ; free physical = 44491 ; free virtual = 74395
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:34 ; elapsed = 00:00:46 . Memory (MB): peak = 4426.352 ; gain = 1335.660 ; free physical = 44483 ; free virtual = 74387
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+INFO: [Synth 8-11322] No global retiming is needed without any clock constraint
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:35 ; elapsed = 00:00:46 . Memory (MB): peak = 4463.406 ; gain = 1372.715 ; free physical = 44452 ; free virtual = 74355
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:37 ; elapsed = 00:00:48 . Memory (MB): peak = 4467.375 ; gain = 1376.684 ; free physical = 44452 ; free virtual = 74355
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:37 ; elapsed = 00:00:48 . Memory (MB): peak = 4467.375 ; gain = 1376.684 ; free physical = 44452 ; free virtual = 74355
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:37 ; elapsed = 00:00:48 . Memory (MB): peak = 4467.375 ; gain = 1376.684 ; free physical = 44452 ; free virtual = 74355
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:37 ; elapsed = 00:00:48 . Memory (MB): peak = 4467.375 ; gain = 1376.684 ; free physical = 44452 ; free virtual = 74355
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:37 ; elapsed = 00:00:48 . Memory (MB): peak = 4467.375 ; gain = 1376.684 ; free physical = 44452 ; free virtual = 74355
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:37 ; elapsed = 00:00:48 . Memory (MB): peak = 4467.375 ; gain = 1376.684 ; free physical = 44452 ; free virtual = 74355
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+DSP Final Report (the ' indicates corresponding REG is set)
++----------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name     | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++----------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|dsp48e1_wrapper | C'+(D+A*B)' | 6      | 17     | 43     | 16     | 43     | 0    | 0    | 0    | 0    | 0     | 1    | 0    | 
++----------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-----------+------+
+|      |Cell       |Count |
++------+-----------+------+
+|1     |DSP48E1    |     1|
+|2     |DSPFP32    |     1|
+|3     |LOOKAHEAD8 |    21|
+|7     |LUT1       |    67|
+|8     |LUT2       |   256|
+|9     |LUT3       |   880|
+|10    |LUT4       |   661|
+|11    |LUT5       |   403|
+|12    |LUT6       |  1059|
+|13    |LUT6CY     |   154|
+|14    |LUT6       |    43|
+|15    |MUXCY      |   941|
+|16    |MUXF7      |     2|
+|17    |MUXF8      |     1|
+|18    |RAM64M8    |     9|
+|19    |SRL16E     |    48|
+|20    |XORCY      |   835|
+|21    |FDE        |     3|
+|22    |FDRE       |  2324|
+|23    |FDSE       |    46|
++------+-----------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:37 ; elapsed = 00:00:48 . Memory (MB): peak = 4467.375 ; gain = 1376.684 ; free physical = 44452 ; free virtual = 74355
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 422 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:35 ; elapsed = 00:00:46 . Memory (MB): peak = 4467.375 ; gain = 1208.027 ; free physical = 44452 ; free virtual = 74355
+Synthesis Optimization Complete : Time (s): cpu = 00:00:37 ; elapsed = 00:00:48 . Memory (MB): peak = 4467.383 ; gain = 1376.684 ; free physical = 44452 ; free virtual = 74355
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 4467.383 ; gain = 0.000 ; free physical = 44738 ; free virtual = 74642
+INFO: [Netlist 29-17] Analyzing 1990 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Chipscope 16-579] Latest version is versal_cips_v3_3 for versal_cips_v3_2
+INFO: [Constraints 18-6359] No Clock Expansion Window constraints config file entry for device xcvc1902.  GCLK Deskew mode will be Off and cannot be enabled via GCLK_DESKEW override.
+INFO: [Constraints 18-5720] The default GCLK Deskew mode is Off.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4539.984 ; gain = 0.000 ; free physical = 44715 ; free virtual = 74619
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1339 instances were transformed.
+  (CARRY8) => LOOKAHEAD8: 156 instances
+  (CARRY8) => LUT6CY (LUTCY1, LUTCY2): 969 instances
+  DSP48E1 => DSP48E5 (DSP_ALUADD, DSP_ALUMUX, DSP_ALUREG, DSP_A_B_DATA58, DSP_C_DATA58, DSP_MULTIPLIER58, DSP_M_DATA58, DSP_OUTPUT58, DSP_PATDET, DSP_PREADD58, DSP_PREADD_DATA58, DSP_SRCMX_OPTINV, GND, VCC): 1 instance 
+  DSPFP32 => DSPFP32 (DSP_FPA_CREG, DSP_FPA_OPM_REG, DSP_FPM_PIPEREG, DSP_FPM_STAGE0, DSP_FPM_STAGE1, DSP_FP_ADDER, DSP_FP_INMUX, DSP_FP_INREG, DSP_FP_OUTPUT, DSP_FP_SRCMX_OPTINV): 1 instance 
+  FDE => FDRE: 3 instances
+  LUT6CY => LUT6CY (LUTCY1, LUTCY2): 154 instances
+  LUT6_2 => LUT6_2 (LUT5, LUT6): 43 instances
+  MUXF7 => LUT3: 2 instances
+  MUXF8 => LUT3: 1 instance 
+  RAM64M8 => RAM64M8 (RAMD64E5(x8), VCC): 9 instances
+
+Synth Design complete | Checksum: 8c0e15e2
+INFO: [Common 17-83] Releasing license: Synthesis
+164 Infos, 113 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:46 ; elapsed = 00:01:30 . Memory (MB): peak = 4539.984 ; gain = 2243.617 ; free physical = 44715 ; free virtual = 74619
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 3781.481; main = 3781.481; forked = 382.520
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 4912.422; main = 4539.988; forked = 979.199
+INFO: [Common 17-1381] The checkpoint '/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/synth_1/softmax_top.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file softmax_top_utilization_synth.rpt -pb softmax_top_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Sun Sep  6 22:12:22 2026...
+[Sun Sep  6 22:12:25 2026] synth_1 finished
+wait_on_runs: Time (s): cpu = 00:00:54 ; elapsed = 00:01:42 . Memory (MB): peak = 2380.719 ; gain = 0.000 ; free physical = 48209 ; free virtual = 78110
+# open_run $synth
+Design is defaulting to impl run constrset: constrs_1
+Design is defaulting to synth run part: xcvc1902-vsva2197-2MP-e-S
+INFO: [Device 21-403] Loading part xcvc1902-vsva2197-2MP-e-S
+Netlist sorting complete. Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 3190.504 ; gain = 0.000 ; free physical = 47451 ; free virtual = 77352
+INFO: [Netlist 29-17] Analyzing 1177 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Chipscope 16-579] Latest version is versal_cips_v3_3 for versal_cips_v3_2
+INFO: [Project 1-479] Netlist was created with Vivado 2023.1
+INFO: [Constraints 18-6359] No Clock Expansion Window constraints config file entry for device xcvc1902.  GCLK Deskew mode will be Off and cannot be enabled via GCLK_DESKEW override.
+INFO: [Constraints 18-5720] The default GCLK Deskew mode is Off.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 3727.469 ; gain = 0.000 ; free physical = 46954 ; free virtual = 76856
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1177 instances were transformed.
+  (CARRY8) => LUT6CY (LUTCY1, LUTCY2): 969 instances
+  DSP48E1 => DSP48E5 (DSP_ALUADD, DSP_ALUMUX, DSP_ALUREG, DSP_A_B_DATA58, DSP_C_DATA58, DSP_MULTIPLIER58, DSP_M_DATA58, DSP_OUTPUT58, DSP_PATDET, DSP_PREADD58, DSP_PREADD_DATA58, DSP_SRCMX_OPTINV, GND, VCC): 1 instance 
+  DSPFP32 => DSPFP32 (DSP_FPA_CREG, DSP_FPA_OPM_REG, DSP_FPM_PIPEREG, DSP_FPM_STAGE0, DSP_FPM_STAGE1, DSP_FP_ADDER, DSP_FP_INMUX, DSP_FP_INREG, DSP_FP_OUTPUT, DSP_FP_SRCMX_OPTINV): 1 instance 
+  LUT6CY => LUT6CY (LUTCY1, LUTCY2): 154 instances
+  LUT6_2 => LUT6_2 (LUT5, LUT6): 43 instances
+  RAM64M8 => RAM64M8 (RAMD64E5(x8), VCC): 9 instances
+
+open_run: Time (s): cpu = 00:00:07 ; elapsed = 00:00:27 . Memory (MB): peak = 3727.469 ; gain = 1346.750 ; free physical = 46954 ; free virtual = 76856
+# create_clock -period 4.0 -name ap_clk [get_ports ap_clk]
+# set impl [get_runs impl_1]
+# launch_runs $impl -jobs 32
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-480] Writing timing data to binary archive.
+[Sun Sep  6 22:12:58 2026] Launched impl_1...
+Run output will be captured here: /scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/impl_1/runme.log
+# wait_on_runs $impl
+[Sun Sep  6 22:12:58 2026] Waiting for impl_1 to finish...
+
+*** Running vivado
+    with args -log softmax_top.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source softmax_top.tcl -notrace
+
+WARNING: Default location for XILINX_HLS not found
+
+****** Vivado v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source softmax_top.tcl -notrace
+Command: open_checkpoint /scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/impl_1/softmax_top.dcp
+INFO: [Device 21-403] Loading part xcvc1902-vsva2197-2MP-e-S
+Netlist sorting complete. Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.04 . Memory (MB): peak = 3075.441 ; gain = 0.000 ; free physical = 44584 ; free virtual = 74488
+INFO: [Netlist 29-17] Analyzing 1177 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/local/eda/xilinx/vivado/2023.1/data/ip'.
+INFO: [Chipscope 16-579] Latest version is versal_cips_v3_3 for versal_cips_v3_2
+INFO: [Project 1-479] Netlist was created with Vivado 2023.1
+INFO: [Constraints 18-6359] No Clock Expansion Window constraints config file entry for device xcvc1902.  GCLK Deskew mode will be Off and cannot be enabled via GCLK_DESKEW override.
+INFO: [Constraints 18-5720] The default GCLK Deskew mode is Off.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Reading NOC Solution File '/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/impl_1/softmax_top/softmax_top.ncr'
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4144.785 ; gain = 0.000 ; free physical = 43644 ; free virtual = 73548
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1177 instances were transformed.
+  (CARRY8) => LUT6CY (LUTCY1, LUTCY2): 969 instances
+  DSP48E1 => DSP48E5 (DSP_ALUADD, DSP_ALUMUX, DSP_ALUREG, DSP_A_B_DATA58, DSP_C_DATA58, DSP_MULTIPLIER58, DSP_M_DATA58, DSP_OUTPUT58, DSP_PATDET, DSP_PREADD58, DSP_PREADD_DATA58, DSP_SRCMX_OPTINV, GND, VCC): 1 instance 
+  DSPFP32 => DSPFP32 (DSP_FPA_CREG, DSP_FPA_OPM_REG, DSP_FPM_PIPEREG, DSP_FPM_STAGE0, DSP_FPM_STAGE1, DSP_FP_ADDER, DSP_FP_INMUX, DSP_FP_INREG, DSP_FP_OUTPUT, DSP_FP_SRCMX_OPTINV): 1 instance 
+  LUT6CY => LUT6CY (LUTCY1, LUTCY2): 154 instances
+  LUT6_2 => LUT6_2 (LUT5, LUT6): 43 instances
+  RAM64M8 => RAM64M8 (RAMD64E5(x8), VCC): 9 instances
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2023.1 (64-bit) build 3865809
+open_checkpoint: Time (s): cpu = 00:00:16 ; elapsed = 00:00:39 . Memory (MB): peak = 4144.785 ; gain = 2029.633 ; free physical = 43644 ; free virtual = 73548
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-1540] The version limit for your license is '2026.01' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for new releases.
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:00.69 ; elapsed = 00:00:00.46 . Memory (MB): peak = 4216.820 ; gain = 64.031 ; free physical = 43652 ; free virtual = 73556
+
+Starting Cache Timing Information Task
+Ending Cache Timing Information Task | Checksum: 14e07d360
+
+Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.02 . Memory (MB): peak = 4216.820 ; gain = 0.000 ; free physical = 43652 ; free virtual = 73556
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+INFO: [Opt 31-1566] Pulled 6 inverters resulting in an inversion of 61 pins
+INFO: [Opt 31-138] Pushed 12 inverter(s) to 153 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: f3494383
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.79 . Memory (MB): peak = 4216.820 ; gain = 0.000 ; free physical = 43652 ; free virtual = 73556
+INFO: [Opt 31-389] Phase Retarget created 215 cells and removed 1237 cells
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 2 Constant propagation | Checksum: 15b00ad6b
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.82 . Memory (MB): peak = 4216.820 ; gain = 0.000 ; free physical = 43652 ; free virtual = 73556
+INFO: [Opt 31-389] Phase Constant propagation created 100 cells and removed 283 cells
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: 146042e76
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.9 . Memory (MB): peak = 4216.820 ; gain = 0.000 ; free physical = 43652 ; free virtual = 73556
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 121 cells
+
+Phase 4 BUFG optimization
+INFO: [Opt 31-194] Inserted BUFG  to drive 2291 load(s) on clock net ap_clk
+INFO: [Opt 31-193] Inserted 1 BUFG(s) on clock nets
+INFO: [Opt 31-1077] Phase BUFG optimization inserted 0 global clock buffer(s) for CLOCK_LOW_FANOUT.
+Phase 4 BUFG optimization | Checksum: 11bd333ad
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.96 . Memory (MB): peak = 4243.801 ; gain = 26.980 ; free physical = 43652 ; free virtual = 73556
+INFO: [Opt 31-662] Phase BUFG optimization created 1 cells of which 1 are BUFGs and removed 0 cells.
+
+Phase 5 Shift Register Optimization
+INFO: [Opt 31-1064] SRL Remap converted 0 SRLs to 0 registers and converted 0 registers of register chains to 0 SRLs
+Phase 5 Shift Register Optimization | Checksum: 193b625be
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 4243.801 ; gain = 26.980 ; free physical = 43652 ; free virtual = 73556
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Phase 6 Post Processing Netlist
+Phase 6 Post Processing Netlist | Checksum: 193b625be
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 4243.801 ; gain = 26.980 ; free physical = 43652 ; free virtual = 73556
+INFO: [Opt 31-389] Phase Post Processing Netlist created 0 cells and removed 0 cells
+Opt_design Change Summary
+=========================
+
+
+-------------------------------------------------------------------------------------------------------------------------
+|  Phase                        |  #Cells created  |  #Cells Removed  |  #Constrained objects preventing optimizations  |
+-------------------------------------------------------------------------------------------------------------------------
+|  Retarget                     |             215  |            1237  |                                              0  |
+|  Constant propagation         |             100  |             283  |                                              0  |
+|  Sweep                        |               0  |             121  |                                              0  |
+|  BUFG optimization            |               1  |               0  |                                              0  |
+|  Shift Register Optimization  |               0  |               0  |                                              0  |
+|  Post Processing Netlist      |               0  |               0  |                                              0  |
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4243.801 ; gain = 0.000 ; free physical = 43652 ; free virtual = 73556
+Ending Logic Optimization Task | Checksum: 193b625be
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 4243.801 ; gain = 26.980 ; free physical = 43652 ; free virtual = 73556
+
+Starting Final Cleanup Task
+Ending Final Cleanup Task | Checksum: 193b625be
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4243.801 ; gain = 0.000 ; free physical = 43652 ; free virtual = 73556
+
+Starting Netlist Obfuscation Task
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4243.801 ; gain = 0.000 ; free physical = 43652 ; free virtual = 73556
+Ending Netlist Obfuscation Task | Checksum: 193b625be
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4243.801 ; gain = 0.000 ; free physical = 43652 ; free virtual = 73556
+INFO: [Common 17-83] Releasing license: Implementation
+37 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:04 ; elapsed = 00:00:23 . Memory (MB): peak = 4243.801 ; gain = 99.016 ; free physical = 43652 ; free virtual = 73556
+INFO: [runtcl-4] Executing : report_drc -file softmax_top_drc_opted.rpt -pb softmax_top_drc_opted.pb -rpx softmax_top_drc_opted.rpx
+Command: report_drc -file softmax_top_drc_opted.rpt -pb softmax_top_drc_opted.pb -rpx softmax_top_drc_opted.rpx
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file /scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/impl_1/softmax_top_drc_opted.rpt.
+report_drc completed successfully
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.47 ; elapsed = 00:00:00.13 . Memory (MB): peak = 4744.848 ; gain = 40.020 ; free physical = 43161 ; free virtual = 73076
+INFO: [Common 17-1381] The checkpoint '/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/impl_1/softmax_top_opt.dcp' has been generated.
+write_checkpoint: Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 4744.848 ; gain = 461.027 ; free physical = 43133 ; free virtual = 73039
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-1540] The version limit for your license is '2026.01' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for new releases.
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Project 1-1073] Cannot write hardware definition file as there are no IPI block design hardware handoff files present
+CRITICAL WARNING: [DRC CIPS-1] Versal CIPS exists check - place design: Versal designs must contain a CIPS IP in the netlist hierarchy to function properly. Please create an instance of the CIPS IP and configure it. Without a CIPS IP in the design, Vivado will not generate a CDO for the PMC, an elf for the PLM.
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors, 1 Critical Warnings
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+Starting Placer Task
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 8 CPUs
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4796.543 ; gain = 0.000 ; free physical = 43158 ; free virtual = 73065
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: b5e49ea3
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 4796.543 ; gain = 0.000 ; free physical = 43158 ; free virtual = 73065
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4796.543 ; gain = 0.000 ; free physical = 43158 ; free virtual = 73065
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 3ff8efbe
+
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:18 . Memory (MB): peak = 5296.605 ; gain = 500.062 ; free physical = 42611 ; free virtual = 72518
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: cc81b9be
+
+Time (s): cpu = 00:00:21 ; elapsed = 00:00:19 . Memory (MB): peak = 5511.148 ; gain = 714.605 ; free physical = 42436 ; free virtual = 72343
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: cc81b9be
+
+Time (s): cpu = 00:00:21 ; elapsed = 00:00:19 . Memory (MB): peak = 5511.148 ; gain = 714.605 ; free physical = 42436 ; free virtual = 72343
+Phase 1 Placer Initialization | Checksum: cc81b9be
+
+Time (s): cpu = 00:00:21 ; elapsed = 00:00:19 . Memory (MB): peak = 5511.148 ; gain = 714.605 ; free physical = 42436 ; free virtual = 72343
+
+Phase 2 Global Placement
+
+Phase 2.1 Floorplanning
+
+Phase 2.1.1 Partition Driven Placement
+
+Phase 2.1.1.1 PBP: Partition Driven Placement
+Phase 2.1.1.1 PBP: Partition Driven Placement | Checksum: 9a486f7b
+
+Time (s): cpu = 00:00:22 ; elapsed = 00:00:20 . Memory (MB): peak = 5511.148 ; gain = 714.605 ; free physical = 42447 ; free virtual = 72354
+
+Phase 2.1.1.2 PBP: Clock Region Placement
+INFO: [Place 30-3165] Check ILP status: ILP-based clock placer completed successfully 
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 5511.148 ; gain = 0.000 ; free physical = 42447 ; free virtual = 72354
+Phase 2.1.1.2 PBP: Clock Region Placement | Checksum: d9c63fbe
+
+Time (s): cpu = 00:00:23 ; elapsed = 00:00:20 . Memory (MB): peak = 5511.148 ; gain = 714.605 ; free physical = 42447 ; free virtual = 72354
+
+Phase 2.1.1.3 PBP: Compute Congestion
+Phase 2.1.1.3 PBP: Compute Congestion | Checksum: d9c63fbe
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:23 . Memory (MB): peak = 6051.133 ; gain = 1254.590 ; free physical = 41846 ; free virtual = 71753
+
+Phase 2.1.1.4 PBP: UpdateTiming
+Phase 2.1.1.4 PBP: UpdateTiming | Checksum: 11bbdf588
+
+Time (s): cpu = 00:00:32 ; elapsed = 00:00:23 . Memory (MB): peak = 6083.148 ; gain = 1286.605 ; free physical = 41845 ; free virtual = 71753
+
+Phase 2.1.1.5 PBP: Add part constraints
+Phase 2.1.1.5 PBP: Add part constraints | Checksum: 11bbdf588
+
+Time (s): cpu = 00:00:32 ; elapsed = 00:00:23 . Memory (MB): peak = 6083.148 ; gain = 1286.605 ; free physical = 41845 ; free virtual = 71753
+Phase 2.1.1 Partition Driven Placement | Checksum: 11bbdf588
+
+Time (s): cpu = 00:00:32 ; elapsed = 00:00:23 . Memory (MB): peak = 6083.148 ; gain = 1286.605 ; free physical = 41845 ; free virtual = 71753
+Phase 2.1 Floorplanning | Checksum: 85f8598a
+
+Time (s): cpu = 00:00:32 ; elapsed = 00:00:23 . Memory (MB): peak = 6083.148 ; gain = 1286.605 ; free physical = 41845 ; free virtual = 71753
+
+Phase 2.2 Update Timing before SLR Path Opt
+Phase 2.2 Update Timing before SLR Path Opt | Checksum: 85f8598a
+
+Time (s): cpu = 00:00:32 ; elapsed = 00:00:23 . Memory (MB): peak = 6083.148 ; gain = 1286.605 ; free physical = 41845 ; free virtual = 71753
+
+Phase 2.3 Post-Processing in Floorplanning
+Phase 2.3 Post-Processing in Floorplanning | Checksum: 85f8598a
+
+Time (s): cpu = 00:00:32 ; elapsed = 00:00:23 . Memory (MB): peak = 6083.148 ; gain = 1286.605 ; free physical = 41845 ; free virtual = 71753
+
+Phase 2.4 Global Placement Core
+
+Phase 2.4.1 UpdateTiming Before Physical Synthesis
+Phase 2.4.1 UpdateTiming Before Physical Synthesis | Checksum: 1bb40ca06
+
+Time (s): cpu = 00:00:52 ; elapsed = 00:00:28 . Memory (MB): peak = 6187.152 ; gain = 1390.609 ; free physical = 41812 ; free virtual = 71719
+
+Phase 2.4.2 Physical Synthesis In Placer
+INFO: [Physopt 32-1035] Found 5 LUTNM shape to break, 143 LUT instances to create LUTNM shape
+INFO: [Physopt 32-1044] Break lutnm for timing: one critical 4, two critical 1, total 5, new lutff created 0
+INFO: [Physopt 32-1138] End 1 Pass. Optimized 74 nets or LUTs. Breaked 5 LUTs, combined 69 existing LUTs and moved 0 existing LUT
+INFO: [Physopt 32-69] No nets found for rewiring optimization.
+INFO: [Physopt 32-661] Optimized 0 net.  Re-placed 0 instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-65] No nets found for high-fanout optimization.
+INFO: [Physopt 32-232] Optimized 0 net. Created 0 new instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-670] No setup violation found.  DSP Register Optimization was not performed.
+INFO: [Physopt 32-670] No setup violation found.  Shift Register to Pipeline Optimization was not performed.
+INFO: [Physopt 32-670] No setup violation found.  Shift Register Optimization was not performed.
+INFO: [Physopt 32-670] No setup violation found.  BRAM Register Optimization was not performed.
+INFO: [Physopt 32-670] No setup violation found.  URAM Register Optimization was not performed.
+INFO: [Physopt 32-949] No candidate nets found for dynamic/static region interface net replication
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6187.152 ; gain = 0.000 ; free physical = 41812 ; free virtual = 71719
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 6187.152 ; gain = 0.000 ; free physical = 41812 ; free virtual = 71719
+
+Summary of Physical Synthesis Optimizations
+============================================
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+|  Optimization                                     |  Added Cells  |  Removed Cells  |  Optimized Cells/Nets  |  Dont Touch  |  Iterations  |  Elapsed   |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+|  LUT Combining                                    |            5  |             69  |                    74  |           0  |           1  |  00:00:00  |
+|  Retime                                           |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Equivalent Driver Rewiring                       |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Very High Fanout                                 |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  DSP Register                                     |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
+|  Shift Register to Pipeline                       |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
+|  Shift Register                                   |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
+|  BRAM Register                                    |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
+|  URAM Register                                    |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
+|  Dynamic/Static Region Interface Net Replication  |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Total                                            |            5  |             69  |                    74  |           0  |           5  |  00:00:00  |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Phase 2.4.2 Physical Synthesis In Placer | Checksum: 2a7aebd27
+
+Time (s): cpu = 00:00:53 ; elapsed = 00:00:28 . Memory (MB): peak = 6187.152 ; gain = 1390.609 ; free physical = 41811 ; free virtual = 71719
+Phase 2.4 Global Placement Core | Checksum: 289b2c4df
+
+Time (s): cpu = 00:01:02 ; elapsed = 00:00:31 . Memory (MB): peak = 6187.152 ; gain = 1390.609 ; free physical = 41807 ; free virtual = 71714
+Phase 2 Global Placement | Checksum: 2b1488113
+
+Time (s): cpu = 00:01:02 ; elapsed = 00:00:31 . Memory (MB): peak = 6187.152 ; gain = 1390.609 ; free physical = 41807 ; free virtual = 71714
+
+Phase 3 Detail Placement
+
+Phase 3.1 Commit Multi Column Macros
+Phase 3.1 Commit Multi Column Macros | Checksum: 277dbf08f
+
+Time (s): cpu = 00:01:12 ; elapsed = 00:00:33 . Memory (MB): peak = 6187.152 ; gain = 1390.609 ; free physical = 41807 ; free virtual = 71714
+
+Phase 3.2 Commit Most Macros & LUTRAMs
+Phase 3.2 Commit Most Macros & LUTRAMs | Checksum: 1b7927da6
+
+Time (s): cpu = 00:01:13 ; elapsed = 00:00:34 . Memory (MB): peak = 6187.152 ; gain = 1390.609 ; free physical = 41808 ; free virtual = 71715
+
+Phase 3.3 Small Shape DP
+
+Phase 3.3.1 Small Shape Clustering
+Phase 3.3.1 Small Shape Clustering | Checksum: 1d8dda0d5
+
+Time (s): cpu = 00:01:22 ; elapsed = 00:00:36 . Memory (MB): peak = 6213.148 ; gain = 1416.605 ; free physical = 41801 ; free virtual = 71708
+
+Phase 3.3.2 Flow Legalize Slice Clusters
+Phase 3.3.2 Flow Legalize Slice Clusters | Checksum: 27db3bf89
+
+Time (s): cpu = 00:01:22 ; elapsed = 00:00:36 . Memory (MB): peak = 6213.148 ; gain = 1416.605 ; free physical = 41801 ; free virtual = 71708
+
+Phase 3.3.3 Slice Area Swap
+
+Phase 3.3.3.1 Slice Area Swap Initial
+Phase 3.3.3.1 Slice Area Swap Initial | Checksum: 1d68b015d
+
+Time (s): cpu = 00:01:22 ; elapsed = 00:00:36 . Memory (MB): peak = 6213.148 ; gain = 1416.605 ; free physical = 41801 ; free virtual = 71708
+Phase 3.3.3 Slice Area Swap | Checksum: 1d68b015d
+
+Time (s): cpu = 00:01:22 ; elapsed = 00:00:36 . Memory (MB): peak = 6213.148 ; gain = 1416.605 ; free physical = 41801 ; free virtual = 71708
+Phase 3.3 Small Shape DP | Checksum: 208d8f302
+
+Time (s): cpu = 00:01:23 ; elapsed = 00:00:37 . Memory (MB): peak = 6213.148 ; gain = 1416.605 ; free physical = 41801 ; free virtual = 71708
+
+Phase 3.4 Optimize BEL assignments
+Phase 3.4 Optimize BEL assignments | Checksum: 1f662a21e
+
+Time (s): cpu = 00:01:27 ; elapsed = 00:00:39 . Memory (MB): peak = 6213.148 ; gain = 1416.605 ; free physical = 41799 ; free virtual = 71706
+
+Phase 3.5 Pipeline Register Optimization
+Phase 3.5 Pipeline Register Optimization | Checksum: 22b9b6dd2
+
+Time (s): cpu = 00:01:27 ; elapsed = 00:00:39 . Memory (MB): peak = 6213.148 ; gain = 1416.605 ; free physical = 41799 ; free virtual = 71706
+
+Phase 3.6 Fast Optimization
+Phase 3.6 Fast Optimization | Checksum: 281f0e331
+
+Time (s): cpu = 00:01:28 ; elapsed = 00:00:39 . Memory (MB): peak = 6213.148 ; gain = 1416.605 ; free physical = 41798 ; free virtual = 71706
+Phase 3 Detail Placement | Checksum: 281f0e331
+
+Time (s): cpu = 00:01:28 ; elapsed = 00:00:39 . Memory (MB): peak = 6213.148 ; gain = 1416.605 ; free physical = 41798 ; free virtual = 71706
+
+Phase 4 Post Placement Optimization and Clean-Up
+
+Phase 4.1 Post Commit Optimization
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 6221.133 ; gain = 0.000 ; free physical = 41711 ; free virtual = 71619
+
+Phase 4.1.1 Post Placement Optimization
+Post Placement Optimization Initialization | Checksum: a67eb742
+
+Phase 4.1.1.1 BUFG Insertion
+
+Starting Physical Synthesis Task
+
+Phase 1 Physical Synthesis Initialization
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 8 CPUs
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=0.411 | TNS=0.000 |
+Phase 1 Physical Synthesis Initialization | Checksum: 1772f2202
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 6221.133 ; gain = 0.000 ; free physical = 41712 ; free virtual = 71619
+INFO: [Place 46-56] BUFG insertion identified 0 candidate nets. Inserted BUFG: 0, Replicated BUFG Driver: 0, Skipped due to Placement/Routing Conflicts: 0, Skipped due to Timing Degradation: 0, Skipped due to netlist editing failed: 0.
+Ending Physical Synthesis Task | Checksum: 23a255c8a
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 6221.133 ; gain = 0.000 ; free physical = 41712 ; free virtual = 71619
+Phase 4.1.1.1 BUFG Insertion | Checksum: a67eb742
+
+Time (s): cpu = 00:01:40 ; elapsed = 00:00:44 . Memory (MB): peak = 6221.133 ; gain = 1424.590 ; free physical = 41712 ; free virtual = 71619
+
+Phase 4.1.1.2 BUFG Replication
+INFO: [Place 46-63] BUFG replication identified 0 candidate nets: Replicated nets: 0, Replicated BUFGs: 0, Replicated BUFG Driver: 0, Skipped due to Placement / Routing Conflict: 0, Skipped due to Timing: 0, Skipped due to constraints: 0
+Phase 4.1.1.2 BUFG Replication | Checksum: a67eb742
+
+Time (s): cpu = 00:01:40 ; elapsed = 00:00:44 . Memory (MB): peak = 6221.133 ; gain = 1424.590 ; free physical = 41712 ; free virtual = 71619
+
+Phase 4.1.1.3 Post Placement Timing Optimization
+INFO: [Place 30-746] Post Placement Timing Summary WNS=0.530. For the most accurate timing information please run report_timing.
+Phase 4.1.1.3 Post Placement Timing Optimization | Checksum: 1b423dd3d
+
+Time (s): cpu = 00:01:42 ; elapsed = 00:00:46 . Memory (MB): peak = 6221.133 ; gain = 1424.590 ; free physical = 41625 ; free virtual = 71532
+
+Time (s): cpu = 00:01:42 ; elapsed = 00:00:46 . Memory (MB): peak = 6221.133 ; gain = 1424.590 ; free physical = 41625 ; free virtual = 71532
+Phase 4.1 Post Commit Optimization | Checksum: 1b423dd3d
+
+Time (s): cpu = 00:01:42 ; elapsed = 00:00:46 . Memory (MB): peak = 6221.133 ; gain = 1424.590 ; free physical = 41625 ; free virtual = 71532
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6292.133 ; gain = 0.000 ; free physical = 41590 ; free virtual = 71497
+
+Phase 4.2 Post Placement Cleanup
+Phase 4.2 Post Placement Cleanup | Checksum: 21060018f
+
+Time (s): cpu = 00:01:53 ; elapsed = 00:00:50 . Memory (MB): peak = 6292.133 ; gain = 1495.590 ; free physical = 41590 ; free virtual = 71497
+
+Phase 4.3 Placer Reporting
+
+Phase 4.3.1 Print Estimated Congestion
+INFO: [Place 30-612] Post-Placement Estimated Congestion 
+ ________________________________________________________________________
+|           | Global Congestion | Long Congestion   | Short Congestion  |
+| Direction | Region Size       | Region Size       | Region Size       |
+|___________|___________________|___________________|___________________|
+|      North|                1x1|                1x1|                1x1|
+|___________|___________________|___________________|___________________|
+|      South|                1x1|                1x1|                1x1|
+|___________|___________________|___________________|___________________|
+|       East|                1x1|                1x1|                1x1|
+|___________|___________________|___________________|___________________|
+|       West|                1x1|                1x1|                1x1|
+|___________|___________________|___________________|___________________|
+
+Phase 4.3.1 Print Estimated Congestion | Checksum: 21060018f
+
+Time (s): cpu = 00:01:53 ; elapsed = 00:00:50 . Memory (MB): peak = 6292.133 ; gain = 1495.590 ; free physical = 41590 ; free virtual = 71497
+Phase 4.3 Placer Reporting | Checksum: 21060018f
+
+Time (s): cpu = 00:01:53 ; elapsed = 00:00:50 . Memory (MB): peak = 6292.133 ; gain = 1495.590 ; free physical = 41590 ; free virtual = 71497
+
+Phase 4.4 Final Placement Cleanup
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6292.133 ; gain = 0.000 ; free physical = 41590 ; free virtual = 71497
+
+Time (s): cpu = 00:01:53 ; elapsed = 00:00:50 . Memory (MB): peak = 6292.133 ; gain = 1495.590 ; free physical = 41590 ; free virtual = 71497
+Phase 4 Post Placement Optimization and Clean-Up | Checksum: 1beee0a14
+
+Time (s): cpu = 00:01:53 ; elapsed = 00:00:50 . Memory (MB): peak = 6292.133 ; gain = 1495.590 ; free physical = 41590 ; free virtual = 71497
+Ending Placer Task | Checksum: 15538ed76
+
+Time (s): cpu = 00:01:53 ; elapsed = 00:00:50 . Memory (MB): peak = 6292.133 ; gain = 1495.590 ; free physical = 41590 ; free virtual = 71497
+INFO: [Common 17-83] Releasing license: Implementation
+79 Infos, 0 Warnings, 1 Critical Warnings and 0 Errors encountered.
+place_design completed successfully
+place_design: Time (s): cpu = 00:01:55 ; elapsed = 00:01:12 . Memory (MB): peak = 6292.133 ; gain = 1547.285 ; free physical = 41590 ; free virtual = 71497
+INFO: [runtcl-4] Executing : report_io -file softmax_top_io_placed.rpt
+report_io: Time (s): cpu = 00:00:00.28 ; elapsed = 00:00:00.39 . Memory (MB): peak = 6292.133 ; gain = 0.000 ; free physical = 41554 ; free virtual = 71461
+INFO: [runtcl-4] Executing : report_utilization -file softmax_top_utilization_placed.rpt -pb softmax_top_utilization_placed.pb
+INFO: [runtcl-4] Executing : report_control_sets -verbose -file softmax_top_control_sets_placed.rpt
+report_control_sets: Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.08 . Memory (MB): peak = 6292.133 ; gain = 0.000 ; free physical = 41538 ; free virtual = 71446
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.8 ; elapsed = 00:00:00.41 . Memory (MB): peak = 6308.141 ; gain = 8.004 ; free physical = 41529 ; free virtual = 71457
+INFO: [Common 17-1381] The checkpoint '/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/impl_1/softmax_top_placed.dcp' has been generated.
+Command: phys_opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-1540] The version limit for your license is '2026.01' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for new releases.
+
+Starting Initial Update Timing Task
+
+Time (s): cpu = 00:00:00.96 ; elapsed = 00:00:00.24 . Memory (MB): peak = 6316.145 ; gain = 0.000 ; free physical = 41604 ; free virtual = 71516
+INFO: [Vivado_Tcl 4-383] Design worst setup slack (WNS) is greater than or equal to 0.000 ns. Skipping all physical synthesis optimizations.
+INFO: [Vivado_Tcl 4-232] No setup violation found. The netlist was not modified.
+INFO: [Common 17-83] Releasing license: Implementation
+89 Infos, 0 Warnings, 1 Critical Warnings and 0 Errors encountered.
+phys_opt_design completed successfully
+phys_opt_design: Time (s): cpu = 00:00:01 ; elapsed = 00:00:20 . Memory (MB): peak = 6316.145 ; gain = 0.000 ; free physical = 41604 ; free virtual = 71516
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.8 ; elapsed = 00:00:00.41 . Memory (MB): peak = 6316.145 ; gain = 0.000 ; free physical = 41597 ; free virtual = 71529
+INFO: [Common 17-1381] The checkpoint '/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/impl_1/softmax_top_physopt.dcp' has been generated.
+Command: route_design
+Attempting to get a license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xcvc1902'
+INFO: [Common 17-1540] The version limit for your license is '2026.01' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for new releases.
+Running DRC as a precondition to command route_design
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+
+Starting Routing Task
+INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 8 CPUs
+
+Phase 1 Build RT Design
+Checksum: PlaceDB: d52a096a ConstDB: 0 ShapeSum: 23d2bfba RouteDB: 5c3c2452
+INFO: [DRC 23-27] Running DRC with 8 threads
+Nodegraph reading from file.  Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 6324.148 ; gain = 0.000 ; free physical = 41620 ; free virtual = 71537
+WARNING: [Route 35-197] Clock port "ap_clk" does not have an associated HD.CLK_SRC. Without this constraint, timing analysis may not be accurate and upstream checks cannot be done to ensure correct clock placement.
+WARNING: [Route 35-198] Port "dst_TREADY" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "dst_TREADY". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[22]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[22]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[23]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[23]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[28]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[28]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[29]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[29]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[30]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[30]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[31]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[31]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TVALID" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TVALID". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[16]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[16]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[17]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[17]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[18]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[18]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[19]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[19]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[12]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[12]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[13]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[13]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[26]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[26]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[27]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[27]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[20]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[20]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[21]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[21]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[24]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[24]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[25]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[25]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[10]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[10]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[11]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[11]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[14]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[14]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[15]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[15]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "ap_rst_n" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "ap_rst_n". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[6]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[6]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[7]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[7]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[2]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[2]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[3]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[3]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[8]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[8]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[9]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[9]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[0]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[0]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[1]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[1]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[4]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[4]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "src_TDATA[5]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "src_TDATA[5]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+Post Restoration Checksum: NetGraph: 1ab3a6da | NumContArr: 534f14c5 | Constraints: 8d9bd0cb | Timing: 0
+Phase 1 Build RT Design | Checksum: fb9e8c6a
+
+Time (s): cpu = 00:00:13 ; elapsed = 00:00:12 . Memory (MB): peak = 6324.148 ; gain = 0.000 ; free physical = 41620 ; free virtual = 71536
+
+Phase 2 Router Initialization
+
+Phase 2.1 Fix Topology Constraints
+Phase 2.1 Fix Topology Constraints | Checksum: fb9e8c6a
+
+Time (s): cpu = 00:00:13 ; elapsed = 00:00:12 . Memory (MB): peak = 6324.148 ; gain = 0.000 ; free physical = 41620 ; free virtual = 71536
+
+Phase 2.2 Pre Route Cleanup
+Phase 2.2 Pre Route Cleanup | Checksum: fb9e8c6a
+
+Time (s): cpu = 00:00:13 ; elapsed = 00:00:12 . Memory (MB): peak = 6324.148 ; gain = 0.000 ; free physical = 41620 ; free virtual = 71536
+
+Phase 2.3 Global Clock Net Routing
+ Number of Nodes with overlaps = 0
+Phase 2.3 Global Clock Net Routing | Checksum: 14d525f9d
+
+Time (s): cpu = 00:00:16 ; elapsed = 00:00:12 . Memory (MB): peak = 6449.172 ; gain = 125.023 ; free physical = 41463 ; free virtual = 71380
+
+Phase 2.4 Update Timing
+Phase 2.4 Update Timing | Checksum: 21140d333
+
+Time (s): cpu = 00:00:17 ; elapsed = 00:00:13 . Memory (MB): peak = 6449.172 ; gain = 125.023 ; free physical = 41464 ; free virtual = 71381
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=0.748  | TNS=0.000  | WHS=0.001  | THS=0.000  |
+
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 0 %
+  Global Horizontal Routing Utilization  = 0 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 4407
+    (Failed Nets is the sum of unrouted and partially routed nets)
+  Number of Unrouted Nets             = 3262
+  Number of Partially Routed Nets     = 1145
+  Number of Node Overlaps             = 0
+
+Phase 2 Router Initialization | Checksum: 1bc9593dd
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:14 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41445 ; free virtual = 71362
+
+Phase 3 Initial Routing
+
+Phase 3.1 Global Routing
+
+Phase 3.1.1 SLL Assignment
+Phase 3.1.1 SLL Assignment | Checksum: 1bc9593dd
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:14 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41445 ; free virtual = 71362
+Phase 3.1 Global Routing | Checksum: 1bc9593dd
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:14 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41445 ; free virtual = 71362
+Phase 3 Initial Routing | Checksum: 1b676bcb3
+
+Time (s): cpu = 00:00:23 ; elapsed = 00:00:14 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41445 ; free virtual = 71362
+
+Phase 4 Rip-up And Reroute
+
+Phase 4.1 Global Iteration 0
+ Number of Nodes with overlaps = 754
+ Number of Nodes with overlaps = 44
+ Number of Nodes with overlaps = 3
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=0.607  | TNS=0.000  | WHS=0.035  | THS=0.000  |
+
+Phase 4.1 Global Iteration 0 | Checksum: 1e27d5d97
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:16 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+
+Phase 4.2 Additional Iteration for Hold
+Phase 4.2 Additional Iteration for Hold | Checksum: 1b62c19b8
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:16 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+Phase 4 Rip-up And Reroute | Checksum: 1b62c19b8
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:16 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+
+Phase 5 Delay and Skew Optimization
+
+Phase 5.1 Delay CleanUp
+Phase 5.1 Delay CleanUp | Checksum: 1b62c19b8
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:16 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+
+Phase 5.2 Clock Skew Optimization
+Phase 5.2 Clock Skew Optimization | Checksum: 1b62c19b8
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:16 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+Phase 5 Delay and Skew Optimization | Checksum: 1b62c19b8
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:16 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+
+Phase 6 Post Hold Fix
+
+Phase 6.1 Hold Fix Iter
+
+Phase 6.1.1 Update Timing
+Phase 6.1.1 Update Timing | Checksum: 1585ad990
+
+Time (s): cpu = 00:00:28 ; elapsed = 00:00:17 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=0.607  | TNS=0.000  | WHS=0.035  | THS=0.000  |
+
+Phase 6.1 Hold Fix Iter | Checksum: 1585ad990
+
+Time (s): cpu = 00:00:28 ; elapsed = 00:00:17 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+Phase 6 Post Hold Fix | Checksum: 1585ad990
+
+Time (s): cpu = 00:00:28 ; elapsed = 00:00:17 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+
+Phase 7 Leaf Clock Prog Delay Opt
+Phase 7 Leaf Clock Prog Delay Opt | Checksum: 1585ad990
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:17 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+
+Phase 8 Route finalize
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 0.0440094 %
+  Global Horizontal Routing Utilization  = 0.0472265 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 0
+    (Failed Nets is the sum of unrouted and partially routed nets)
+  Number of Unrouted Nets             = 0
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+Phase 8 Route finalize | Checksum: 188ec9f24
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:17 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+
+Phase 9 Verifying routed nets
+
+ Verification completed successfully
+Phase 9 Verifying routed nets | Checksum: 188ec9f24
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:17 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+
+Phase 10 Depositing Routes
+Phase 10 Depositing Routes | Checksum: 16f4caa7d
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:17 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+
+Phase 11 Post Router Timing
+INFO: [Route 35-57] Estimated Timing Summary | WNS=0.607  | TNS=0.000  | WHS=0.035  | THS=0.000  |
+
+INFO: [Route 35-327] The final timing numbers are based on the router estimated timing analysis. For a complete and accurate timing signoff, please run report_timing_summary.
+Phase 11 Post Router Timing | Checksum: 16f4caa7d
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:17 . Memory (MB): peak = 6470.172 ; gain = 146.023 ; free physical = 41447 ; free virtual = 71364
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Route 35-16] Router Completed Successfully
+
+Phase 12 Post-Route Event Processing
+Phase 12 Post-Route Event Processing | Checksum: 110f54a78
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:18 . Memory (MB): peak = 6502.188 ; gain = 178.039 ; free physical = 41448 ; free virtual = 71365
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:18 . Memory (MB): peak = 6502.188 ; gain = 178.039 ; free physical = 41448 ; free virtual = 71365
+
+Routing Is Done.
+INFO: [Common 17-83] Releasing license: Implementation
+106 Infos, 36 Warnings, 1 Critical Warnings and 0 Errors encountered.
+route_design completed successfully
+route_design: Time (s): cpu = 00:00:34 ; elapsed = 00:00:39 . Memory (MB): peak = 6502.188 ; gain = 186.043 ; free physical = 41448 ; free virtual = 71365
+INFO: [runtcl-4] Executing : report_drc -file softmax_top_drc_routed.rpt -pb softmax_top_drc_routed.pb -rpx softmax_top_drc_routed.rpx
+Command: report_drc -file softmax_top_drc_routed.rpt -pb softmax_top_drc_routed.pb -rpx softmax_top_drc_routed.rpx
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file /scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/impl_1/softmax_top_drc_routed.rpt.
+report_drc completed successfully
+INFO: [runtcl-4] Executing : report_methodology -file softmax_top_methodology_drc_routed.rpt -pb softmax_top_methodology_drc_routed.pb -rpx softmax_top_methodology_drc_routed.rpx
+Command: report_methodology -file softmax_top_methodology_drc_routed.rpt -pb softmax_top_methodology_drc_routed.pb -rpx softmax_top_methodology_drc_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [DRC 23-133] Running Methodology with 8 threads
+INFO: [Vivado_Tcl 2-1520] The results of Report Methodology are in file /scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/impl_1/softmax_top_methodology_drc_routed.rpt.
+report_methodology completed successfully
+INFO: [runtcl-4] Executing : report_power -file softmax_top_power_routed.rpt -pb softmax_top_power_summary_routed.pb -rpx softmax_top_power_routed.rpx
+Command: report_power -file softmax_top_power_routed.rpt -pb softmax_top_power_summary_routed.pb -rpx softmax_top_power_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+116 Infos, 36 Warnings, 1 Critical Warnings and 0 Errors encountered.
+report_power completed successfully
+INFO: [runtcl-4] Executing : report_route_status -file softmax_top_route_status.rpt -pb softmax_top_route_status.pb
+INFO: [runtcl-4] Executing : report_timing_summary -max_paths 10 -report_unconstrained -file softmax_top_timing_summary_routed.rpt -pb softmax_top_timing_summary_routed.pb -rpx softmax_top_timing_summary_routed.rpx -warn_on_violation 
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2MP, Temperature grade: E, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 8 CPUs
+INFO: [runtcl-4] Executing : report_incremental_reuse -file softmax_top_incremental_reuse_routed.rpt
+INFO: [Vivado_Tcl 4-1062] Incremental flow is disabled. No incremental reuse Info to report.
+INFO: [runtcl-4] Executing : report_clock_utilization -file softmax_top_clock_utilization_routed.rpt
+INFO: [runtcl-4] Executing : report_bus_skew -warn_on_violation -file softmax_top_bus_skew_routed.rpt -pb softmax_top_bus_skew_routed.pb -rpx softmax_top_bus_skew_routed.rpx
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2MP, Temperature grade: E, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 8 CPUs
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.86 ; elapsed = 00:00:00.46 . Memory (MB): peak = 6518.195 ; gain = 0.000 ; free physical = 41324 ; free virtual = 71266
+INFO: [Common 17-1381] The checkpoint '/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/impl_1/softmax_top_routed.dcp' has been generated.
+INFO: [Common 17-206] Exiting Vivado at Sun Sep  6 22:16:46 2026...
+[Sun Sep  6 22:16:51 2026] impl_1 finished
+wait_on_runs: Time (s): cpu = 00:00:00.59 ; elapsed = 00:03:53 . Memory (MB): peak = 4093.023 ; gain = 0.000 ; free physical = 46750 ; free virtual = 76676
+# open_run $impl
+Netlist sorting complete. Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 4093.023 ; gain = 0.000 ; free physical = 46750 ; free virtual = 76676
+INFO: [Netlist 29-17] Analyzing 1167 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Chipscope 16-579] Latest version is versal_cips_v3_3 for versal_cips_v3_2
+INFO: [Project 1-479] Netlist was created with Vivado 2023.1
+INFO: [Constraints 18-6359] No Clock Expansion Window constraints config file entry for device xcvc1902.  GCLK Deskew mode will be Off and cannot be enabled via GCLK_DESKEW override.
+INFO: [Constraints 18-5720] The default GCLK Deskew mode is Off.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Reading NOC Solution File '/scratch-local/borntraeger/softmax/scripts/softmax_top.vivado/softmax_top.runs/impl_1/softmax_top_routed/softmax_top.ncr'
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+Reading XDEF placement.
+Reading placer database...
+Reading XDEF routing.
+Read XDEF Files: Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 4984.945 ; gain = 583.180 ; free physical = 45940 ; free virtual = 75866
+Restored from archive | CPU: 8.790000 secs | Memory: 455.974083 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 4984.945 ; gain = 583.180 ; free physical = 45940 ; free virtual = 75866
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4984.945 ; gain = 0.000 ; free physical = 45940 ; free virtual = 75866
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1167 instances were transformed.
+  (CARRY8) => LUT6CY (LUTCY1, LUTCY2): 959 instances
+  DSP48E1 => DSP48E5 (DSP_ALUADD, DSP_ALUMUX, DSP_ALUREG, DSP_A_B_DATA58, DSP_C_DATA58, DSP_MULTIPLIER58, DSP_M_DATA58, DSP_OUTPUT58, DSP_PATDET, DSP_PREADD58, DSP_PREADD_DATA58, DSP_SRCMX_OPTINV, GND, VCC): 1 instance 
+  DSPFP32 => DSPFP32 (DSP_FPA_CREG, DSP_FPA_OPM_REG, DSP_FPM_PIPEREG, DSP_FPM_STAGE0, DSP_FPM_STAGE1, DSP_FP_ADDER, DSP_FP_INMUX, DSP_FP_INREG, DSP_FP_OUTPUT, DSP_FP_SRCMX_OPTINV): 1 instance 
+  LUT6CY => LUT6CY (LUTCY1, LUTCY2): 154 instances
+  LUT6_2 => LUT6_2 (LUT5, LUT6): 43 instances
+  RAM64M8 => RAM64M8 (RAMD64E5(x8), VCC): 9 instances
+
+open_run: Time (s): cpu = 00:00:12 ; elapsed = 00:00:14 . Memory (MB): peak = 4984.945 ; gain = 891.922 ; free physical = 45940 ; free virtual = 75866
+# report_utilization -file $util_report_path -quiet
+# report_timing_summary -file $timing_report_path -quiet
+# quit
+INFO: [Common 17-206] Exiting Vivado at Sun Sep  6 22:17:08 2026...

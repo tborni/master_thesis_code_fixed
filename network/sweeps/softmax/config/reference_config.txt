@@ -1,0 +1,35 @@
+tcl_parameters:
+	# top = rsqrt_lookup
+	# part = xcvc1902-vsva2197-2MP-e-S
+	# clk_name = clk
+
+defaults:
+	# clock_period = 4.0
+	# ADDR_WIDTH = 10
+	# WORD_WIDTH = 10
+	# NUM_NEWTON_STEPS = 1
+	# RAM_STYLE = "heuristic"
+
+derived_outputs:
+	# newton_width = (int(ADDR_WIDTH) + int(WORD_WIDTH)) * int(NUM_NEWTON_STEPS)
+
+sweeps:
+	***
+		~ name: width
+		~ active: 1
+		~ fixed:
+			# RAM_STYLE = "auto"
+		~ mode: cartesian
+			# ADDR_WIDTH = {6,7,8,9,10,11}
+			# WORD_WIDTH = {6,8,10,12,14,16}
+		~ conditions:
+			# int(ADDR_WIDTH) + int(WORD_WIDTH) > 15
+			# int(ADDR_WIDTH) + int(WORD_WIDTH) != 18
+	***
+		~ name: newton
+		~ active: 0
+		~ mode: explicit
+				# (ADDR_WIDTH = 7, NUM_NEWTON_STEPS = 1)
+				# (ADDR_WIDTH = 9, NUM_NEWTON_STEPS = 0)
+				# (ADDR_WIDTH = 12, NUM_NEWTON_STEPS = 1)
+	***
