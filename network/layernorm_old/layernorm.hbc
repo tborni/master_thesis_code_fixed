@@ -1,0 +1,10 @@
+#############################################################################
+# Copyright Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: MIT
+#
+# @author	Thomas B. Preusser <thomas.preusser@amd.com>
+#############################################################################
+set hbc_caller_dir [file normalize [file dirname [info script]]]
+source [file join $hbc_caller_dir ../hbc.tcl]
+run_test layernorm
+exit
