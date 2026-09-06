@@ -1,0 +1,72 @@
+$ make
+vitis_hls -f run_hls.tcl
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2023.1 (64-bit)
+  **** SW Build 3854077 on May  4 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source /local/eda/xilinx/vitis_hls/2023.1/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/local/eda/xilinx/vitis_hls/2023.1/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'borntraeger' on host 'codesigns23.informatik.uni-erlangen.de' (Linux_x86_64 version 6.8.0-138-generic) on Sun Sep 06 21:21:11 CEST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/scratch-local/borntraeger/hls'
+Sourcing Tcl script 'run_hls.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset softmax_prj
+INFO: [HLS 200-10] Creating and opening project '/scratch-local/borntraeger/hls/softmax_prj'.
+INFO: [HLS 200-1510] Running: set_top softmax_top
+INFO: [HLS 200-1510] Running: add_files softmax_top.cpp
+INFO: [HLS 200-10] Adding design file 'softmax_top.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset -flow_target vitis sol_versal
+INFO: [HLS 200-10] Creating and opening solution '/scratch-local/borntraeger/hls/softmax_prj/sol_versal'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+INFO: [HLS 200-1505] Using flow_target 'vitis'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2023.1;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-435] Setting 'open_solution -flow_target vitis' configuration: config_interface -m_axi_latency=64
+INFO: [HLS 200-435] Setting 'open_solution -flow_target vitis' configuration: config_interface -m_axi_alignment_byte_size=64
+INFO: [HLS 200-435] Setting 'open_solution -flow_target vitis' configuration: config_interface -m_axi_max_widen_bitwidth=512
+INFO: [HLS 200-435] Setting 'open_solution -flow_target vitis' configuration: config_rtl -register_reset_num=3
+INFO: [HLS 200-1510] Running: set_part xcvc1902-vsva2197-2MP-e-S
+INFO: [HLS 200-1611] Setting target device to 'xcvc1902-vsva2197-2MP-e-S'
+INFO: [HLS 200-1510] Running: create_clock -period 3.3 -name default
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3.3ns.
+INFO: [HLS 200-1510] Running: csynth_design
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 1.234 GB.
+INFO: [HLS 200-10] Analyzing design file 'softmax_top.cpp' ...
+ERROR: [HLS 207-2975] no template named 'stream' in namespace 'hls' (./softmax.hpp:80:9)
+ERROR: [HLS 207-2975] no template named 'stream' in namespace 'hls' (./softmax.hpp:81:9)
+ERROR: [HLS 207-2975] no template named 'stream' in namespace 'hls' (./softmax.hpp:127:8)
+ERROR: [HLS 207-2975] no template named 'stream' in namespace 'hls' (./softmax.hpp:128:8)
+ERROR: [HLS 207-2975] no template named 'stream' in namespace 'hls' (./softmax.hpp:129:8)
+ERROR: [HLS 207-2975] no template named 'stream' in namespace 'hls' (./softmax.hpp:130:8)
+ERROR: [HLS 207-2975] no template named 'stream' in namespace 'hls' (./softmax.hpp:139:9)
+ERROR: [HLS 207-2975] no template named 'stream' in namespace 'hls' (./softmax.hpp:216:9)
+WARNING: [HLS 207-5548] invalid variable expr  (./softmax.hpp:84:29)
+WARNING: [HLS 207-5548] invalid variable expr  (./softmax.hpp:85:29)
+WARNING: [HLS 207-5548] invalid variable expr  (./softmax.hpp:86:29)
+WARNING: [HLS 207-5548] invalid variable expr  (./softmax.hpp:87:29)
+ERROR: [HLS 207-3701] variable has incomplete type 'void' (./softmax_top.hpp:15:6)
+ERROR: [HLS 207-2972] no member named 'stream' in namespace 'hls' (./softmax_top.hpp:16:7)
+ERROR: [HLS 207-1198] expected '(' for function-style cast or type construction (./softmax_top.hpp:16:35)
+ERROR: [HLS 207-3776] use of undeclared identifier 'src' (./softmax_top.hpp:16:38)
+ERROR: [HLS 207-2972] no member named 'stream' in namespace 'hls' (./softmax_top.hpp:17:7)
+ERROR: [HLS 207-1198] expected '(' for function-style cast or type construction (./softmax_top.hpp:17:35)
+ERROR: [HLS 207-3776] use of undeclared identifier 'dst' (./softmax_top.hpp:17:38)
+ERROR: [HLS 207-3701] variable has incomplete type 'void' (softmax_top.cpp:8:6)
+ERROR: [HLS 207-2972] no member named 'stream' in namespace 'hls' (softmax_top.cpp:9:7)
+ERROR: [HLS 207-1198] expected '(' for function-style cast or type construction (softmax_top.cpp:9:35)
+ERROR: [HLS 207-3776] use of undeclared identifier 'src' (softmax_top.cpp:9:38)
+ERROR: [HLS 207-59] too many errors emitted, stopping now
+INFO: [HLS 200-111] Finished Command csynth_design CPU user time: 1.46 seconds. CPU system time: 0.19 seconds. Elapsed time: 1.93 seconds; current allocated memory: 1.430 MB.
+
+    while executing
+"source run_hls.tcl"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel \#0 [list source $arg] "
+
+INFO: [HLS 200-112] Total CPU user time: 3.93 seconds. Total CPU system time: 0.97 seconds. Total elapsed time: 9.49 seconds; peak allocated memory: 1.236 GB.
+INFO: [Common 17-206] Exiting vitis_hls at Sun Sep  6 21:21:19 2026...
+make: *** [Makefile:15: all] Error 

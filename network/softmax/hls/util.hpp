@@ -21,10 +21,13 @@
 #ifndef UTIL_HPP
 #define UTIL_HPP
 
+#include <algorithm>
 #include <cstddef>
+#include <limits>
 #include <type_traits>
 
 #include <ap_int.h>
+#include <hls_stream.h>
 #include <hls_vector.h>
 
 
