@@ -7,10 +7,10 @@
 
 #include "softmax.hpp"
 
-constexpr size_t  N    = /*@*/ 30 /*@*/;
-constexpr size_t  SIMD =  /*@*/ 5 /*@*/;
-using  TI = /*@*/ ap_uint<8> /*@*/;
-using  TO = /*@*/ ap_float<16,8> /*@*/;
+constexpr size_t  N    = /*@*/ 64 /*@*/;
+constexpr size_t  SIMD =  /*@*/ 1 /*@*/;
+using  TI = /*@*/ float /*@*/;
+using  TO = /*@*/ float /*@*/;
 
 void softmax_top(
 	hls::stream<hls::vector<TI, SIMD>> &src,
