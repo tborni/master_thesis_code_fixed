@@ -20,12 +20,38 @@ threshold `.dat` files. Everything is vendored here and all paths are relative.
 ## Layout
 
 ```
-rtl/                477 deduplicated .v/.sv sources (flat, single namespace)
+rtl/                .v/.sv sources (flat, single namespace)
+ip/                 *_ip.tcl scripts that create the Xilinx floating_point
+                    IP cores instantiated by the HLS LayerNorm/Softmax cores
 data/<instance>/    vendored weight + threshold .dat files
 constraints/        finn_design_ooc.xdc  (ap_clk timing)
 rtl_sources.f       ordered relative read list consumed by the TCL
-build_synth.tcl     synth -> place -> route driver
+build_synth.tcl     (create IP) -> synth -> place -> route driver
 ```
+
+## LayerNorm / Softmax = Vitis-HLS cores
+
+The three normalization operators are Vitis-HLS implementations rather than the
+original behavioral RTL:
+
+| FINN op | wrapper (`rtl/`) | HLS core | params |
+|---|---|---|---|
+| `LayerNorm_rtl_0` | `LayerNorm_rtl_0.v` | `layernorm_top` | N=384, SIMD=4, FP32 |
+| `LayerNorm_rtl_1` | `LayerNorm_rtl_1.v` | `layernorm_top` | N=384, SIMD=4, FP32 |
+| `HWSoftmax_rtl_0` | `HWSoftmax_rtl_0.v` | `softmax_top`   | N=128, SIMD=4, FP32 |
+
+The op wrappers keep their FINN module name, port list and `X_INTERFACE_*`
+attributes (so the parent `finn_design_*_0` block wrappers bind unchanged) and
+simply instantiate the HLS `_top`. The 128-bit AXI-Stream payload maps directly
+(FINN packs SIMD lanes little-endian, lane 0 in bits `[31:0]`, matching
+`hls::vector<float,4>`); `ap_rst_n` is passed through active-low (the HLS core
+does its own reset synchronization/inversion internally).
+
+Each HLS core instantiates Xilinx `floating_point` IP (LayerNorm: fadd, fadd_x,
+fdiv, fmadd, fmul, fsqrt, fsub; Softmax: fcmp, fdiv, fexp, fpext, fsub). Those
+cores are created from `ip/*_ip.tcl` at the start of `build_synth.tcl`; each
+sets `GENERATE_SYNTH_CHECKPOINT=false`, so the IP is synthesized inline (global
+synthesis) with `finn_design_wrapper` — no per-IP out-of-context checkpoint.
 
 ## Build
 

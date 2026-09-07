@@ -25,41 +25,26 @@ output	out0_V_TVALID,
 output	[4*32-1:0]  out0_V_TDATA
 );
 
-	// flat carrier between input-conv stage and softmaxf core
-	wire [4*32-1:0]  idat_flat;
-
-	generate
-		if (1) begin : gen_passthrough
-			assign  idat_flat = in0_V_TDATA;
-		end
-		else begin : gen_int_conv
-			genvar  i;
-			for (i = 0; i < 4; i = i + 1) begin : gen_lane
-				int_to_fp32 #(
-					.WIDTH(32),
-					.SIGNED(1)
-				) u_conv (
-					.ival(in0_V_TDATA[(i+1)*32-1 -: 32]),
-					.fval(idat_flat[(i+1)*32-1 -: 32])
-				);
-			end
-		end
-	endgenerate
-
-	softmaxf #(
-		.N(128),
-		.SIMD(4),
-		.NR_ITERS(2),
-		.TI_WIDTH(32)
-	) impl (
-		.clk(ap_clk),
-		.rst(!ap_rst_n),
-		.idat(idat_flat),
-		.ivld(in0_V_TVALID),
-		.irdy(in0_V_TREADY),
-		.odat(out0_V_TDATA),
-		.ovld(out0_V_TVALID),
-		.ordy(out0_V_TREADY)
+	// ---------------------------------------------------------------------
+	// Softmax core replaced by the Vitis-HLS implementation (softmax_top).
+	// Parameters baked into the HLS core: N=128, SIMD=4, FP32 in/out.
+	// The upstream data is already FP32, so the (previously disabled)
+	// int_to_fp32 conversion path is dropped and the 128-bit AXI-Stream
+	// payload connects straight through: the FINN little-endian SIMD-lane
+	// packing (lane 0 in bits [31:0]) matches the hls::vector<float,4>
+	// layout used by the HLS core.
+	// softmax_top takes ap_rst_n (active-low) natively and drives its own
+	// internal ap_ctrl_none handshake, so no reset inversion is needed here.
+	// ---------------------------------------------------------------------
+	softmax_top impl (
+		.ap_clk    (ap_clk),
+		.ap_rst_n  (ap_rst_n),
+		.src_TDATA (in0_V_TDATA),
+		.src_TVALID(in0_V_TVALID),
+		.src_TREADY(in0_V_TREADY),
+		.dst_TDATA (out0_V_TDATA),
+		.dst_TVALID(out0_V_TVALID),
+		.dst_TREADY(out0_V_TREADY)
 	);
 
 endmodule
