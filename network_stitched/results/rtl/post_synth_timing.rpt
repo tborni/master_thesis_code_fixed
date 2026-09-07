@@ -1,0 +1,400 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
+| Date              : Mon Sep  7 13:13:25 2026
+| Host              : codesigns23 running 64-bit Ubuntu 22.04.5 LTS
+| Command           : report_timing_summary -file results/post_synth_timing.rpt
+| Design            : finn_design_wrapper
+| Device            : xcvc1902-vsva2197
+| Speed File        : -2MP  PRODUCTION 2.11 2022-11-23
+| Design State      : Synthesized
+| Temperature Grade : E
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Summary Report
+
+------------------------------------------------------------------------------------------------
+| Timer Settings
+| --------------
+------------------------------------------------------------------------------------------------
+
+  Enable Multi Corner Analysis               :  Yes
+  Enable Pessimism Removal                   :  Yes
+  Pessimism Removal Resolution               :  Nearest Common Node
+  Enable Input Delay Default Clock           :  No
+  Enable Preset / Clear Arcs                 :  No
+  Disable Flight Delays                      :  No
+  Ignore I/O Paths                           :  No
+  Timing Early Launch at Borrowing Latches   :  No
+  Borrow Time for Max Delay Exceptions       :  Yes
+  Merge Timing Exceptions                    :  Yes
+
+  Corner  Analyze    Analyze    
+  Name    Max Paths  Min Paths  
+  ------  ---------  ---------  
+  Slow    Yes        Yes        
+  Fast    Yes        Yes        
+
+
+------------------------------------------------------------------------------------------------
+| Report Methodology
+| ------------------
+------------------------------------------------------------------------------------------------
+
+No report available as report_methodology has not been run prior. Run report_methodology on the current design for the summary of methodology violations.
+
+
+
+check_timing report
+
+Table of Contents
+-----------------
+1. checking no_clock (0)
+2. checking constant_clock (0)
+3. checking pulse_width_clock (0)
+4. checking unconstrained_internal_endpoints (0)
+5. checking no_input_delay (259)
+6. checking no_output_delay (66)
+7. checking multiple_clock (0)
+8. checking generated_clocks (0)
+9. checking loops (0)
+10. checking partial_input_delay (0)
+11. checking partial_output_delay (0)
+12. checking latch_loops (0)
+
+1. checking no_clock (0)
+------------------------
+ There are 0 register/latch pins with no clock.
+
+
+2. checking constant_clock (0)
+------------------------------
+ There are 0 register/latch pins with constant_clock.
+
+
+3. checking pulse_width_clock (0)
+---------------------------------
+ There are 0 register/latch pins which need pulse_width check
+
+
+4. checking unconstrained_internal_endpoints (0)
+------------------------------------------------
+ There are 0 pins that are not constrained for maximum delay.
+
+ There are 0 pins that are not constrained for maximum delay due to constant clock.
+
+
+5. checking no_input_delay (259)
+--------------------------------
+ There are 259 input ports with no input delay specified. (HIGH)
+
+ There are 0 input ports with no input delay but user has a false path constraint.
+
+
+6. checking no_output_delay (66)
+--------------------------------
+ There are 66 ports with no output delay specified. (HIGH)
+
+ There are 0 ports with no output delay but user has a false path constraint
+
+ There are 0 ports with no output delay but with a timing clock defined on it or propagating through it
+
+
+7. checking multiple_clock (0)
+------------------------------
+ There are 0 register/latch pins with multiple clocks.
+
+
+8. checking generated_clocks (0)
+--------------------------------
+ There are 0 generated clocks that are not connected to a clock source.
+
+
+9. checking loops (0)
+---------------------
+ There are 0 combinational loops in the design.
+
+
+10. checking partial_input_delay (0)
+------------------------------------
+ There are 0 input ports with partial input delay specified.
+
+
+11. checking partial_output_delay (0)
+-------------------------------------
+ There are 0 ports with partial output delay specified.
+
+
+12. checking latch_loops (0)
+----------------------------
+ There are 0 combinational latch loops in the design through latch input
+
+
+
+------------------------------------------------------------------------------------------------
+| Design Timing Summary
+| ---------------------
+------------------------------------------------------------------------------------------------
+
+    WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+    -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+      1.018        0.000                      0               943395        0.035        0.000                      0               943395        2.334        0.000                       0                380496  
+
+
+All user specified timing constraints are met.
+
+
+------------------------------------------------------------------------------------------------
+| Clock Summary
+| -------------
+------------------------------------------------------------------------------------------------
+
+Clock   Waveform(ns)         Period(ns)      Frequency(MHz)
+-----   ------------         ----------      --------------
+ap_clk  {0.000 3.000}        6.000           166.667         
+
+
+------------------------------------------------------------------------------------------------
+| Intra Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+Clock             WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+-----             -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+ap_clk              1.018        0.000                      0               943395        0.035        0.000                      0               943395        2.334        0.000                       0                380496  
+
+
+------------------------------------------------------------------------------------------------
+| Inter Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------    --------          -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+
+
+------------------------------------------------------------------------------------------------
+| Other Path Groups Table
+| -----------------------
+------------------------------------------------------------------------------------------------
+
+Path Group    From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------    ----------    --------          -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+
+
+------------------------------------------------------------------------------------------------
+| Timing Details
+| --------------
+------------------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------------
+From Clock:  ap_clk
+  To Clock:  ap_clk
+
+Setup :            0  Failing Endpoints,  Worst Slack        1.018ns,  Total Violation        0.000ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.035ns,  Total Violation        0.000ns
+PW    :            0  Failing Endpoints,  Worst Slack        2.334ns,  Total Violation        0.000ns
+---------------------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             1.018ns  (required time - arrival time)
+  Source:                 finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[0].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUREG_INST/CLK
+                            (rising edge-triggered cell DSP_ALUREG clocked by ap_clk  {rise@0.000ns fall@3.000ns period=6.000ns})
+  Destination:            finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[7].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_OUTPUT58_INST/ALU_OUT[10]
+                            (rising edge-triggered cell DSP_OUTPUT58 clocked by ap_clk  {rise@0.000ns fall@3.000ns period=6.000ns})
+  Path Group:             ap_clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            6.000ns  (ap_clk rise@6.000ns - ap_clk rise@0.000ns)
+  Data Path Delay:        4.675ns  (logic 4.654ns (99.551%)  route 0.021ns (0.449%))
+  Logic Levels:           23  (DSP_ALUADD=8 DSP_ALUMUX=8 DSP_OUTPUT58=7)
+  Clock Path Skew:        -0.004ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.059ns = ( 6.059 - 6.000 ) 
+    Source Clock Delay      (SCD):    0.063ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.300ns  (CJ)/2 + PE + PJ
+    Clock Jitter             (CJ):    0.600ns
+    Phase Error              (PE):    0.000ns
+    Phase Jitter             (PJ):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock ap_clk rise edge)     0.000     0.000 r  
+                                                      0.000     0.000 r  ap_clk (IN)
+                         net (fo=381565, unset)       0.000     0.000    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[0].genDSP.DSP58_inst/DSP58C<0>_INST/CLK
+                         DSP_SRCMX_OPTINV (Prop_DSP_SRCMX_OPTINV_CLK_IN_CLK)
+                                                      0.063     0.063 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[0].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_SRCMX_OPTINV_INST/CLK
+                         net (fo=6, unplaced)         0.000     0.063    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[0].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_SRCMX_OPTINV.CLK
+                         DSP_ALUREG                                   r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[0].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUREG_INST/CLK
+  -------------------------------------------------------------------    -------------------
+                         DSP_ALUREG (Prop_DSP_ALUREG_CLK_OPMODE_DATA[1])
+                                                      0.180     0.243 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[0].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUREG_INST/OPMODE_DATA[1]
+                         net (fo=1, unplaced)         0.000     0.243    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[0].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUREG.OPMODE_DATA<1>
+                         DSP_ALUMUX (Prop_DSP_ALUMUX_OPMODE_DATA[1]_X[1])
+                                                      0.213     0.456 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[0].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX_INST/X[1]
+                         net (fo=1, unplaced)         0.000     0.456    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[0].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX.X<1>
+                         DSP_ALUADD (Prop_DSP_ALUADD_X[1]_ALU_OUT[30])
+                                                      0.348     0.804 f  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[0].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD_INST/ALU_OUT[30]
+                         net (fo=2, unplaced)         0.000     0.804    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[0].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD.ALU_OUT<30>
+                         DSP_OUTPUT58 (Prop_DSP_OUTPUT58_ALU_OUT[30]_PCOUT[30])
+                                                      0.144     0.948 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[0].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_OUTPUT58_INST/PCOUT[30]
+                         net (fo=1, unplaced)         0.003     0.951    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[1].genDSP.DSP58_inst/DSP58C<0>_INST/PCIN[30]
+                         DSP_ALUMUX (Prop_DSP_ALUMUX_PCIN[30]_Z[7])
+                                                      0.105     1.056 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[1].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX_INST/Z[7]
+                         net (fo=1, unplaced)         0.000     1.056    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[1].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX.Z<7>
+                         DSP_ALUADD (Prop_DSP_ALUADD_Z[7]_ALU_OUT[30])
+                                                      0.310     1.366 f  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[1].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD_INST/ALU_OUT[30]
+                         net (fo=2, unplaced)         0.000     1.366    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[1].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD.ALU_OUT<30>
+                         DSP_OUTPUT58 (Prop_DSP_OUTPUT58_ALU_OUT[30]_PCOUT[30])
+                                                      0.144     1.510 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[1].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_OUTPUT58_INST/PCOUT[30]
+                         net (fo=1, unplaced)         0.003     1.513    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[2].genDSP.DSP58_inst/DSP58C<0>_INST/PCIN[30]
+                         DSP_ALUMUX (Prop_DSP_ALUMUX_PCIN[30]_Z[7])
+                                                      0.105     1.618 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[2].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX_INST/Z[7]
+                         net (fo=1, unplaced)         0.000     1.618    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[2].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX.Z<7>
+                         DSP_ALUADD (Prop_DSP_ALUADD_Z[7]_ALU_OUT[30])
+                                                      0.310     1.928 f  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[2].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD_INST/ALU_OUT[30]
+                         net (fo=2, unplaced)         0.000     1.928    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[2].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD.ALU_OUT<30>
+                         DSP_OUTPUT58 (Prop_DSP_OUTPUT58_ALU_OUT[30]_PCOUT[30])
+                                                      0.144     2.072 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[2].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_OUTPUT58_INST/PCOUT[30]
+                         net (fo=1, unplaced)         0.003     2.075    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[3].genDSP.DSP58_inst/DSP58C<0>_INST/PCIN[30]
+                         DSP_ALUMUX (Prop_DSP_ALUMUX_PCIN[30]_Z[7])
+                                                      0.105     2.180 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[3].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX_INST/Z[7]
+                         net (fo=1, unplaced)         0.000     2.180    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[3].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX.Z<7>
+                         DSP_ALUADD (Prop_DSP_ALUADD_Z[7]_ALU_OUT[30])
+                                                      0.310     2.490 f  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[3].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD_INST/ALU_OUT[30]
+                         net (fo=2, unplaced)         0.000     2.490    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[3].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD.ALU_OUT<30>
+                         DSP_OUTPUT58 (Prop_DSP_OUTPUT58_ALU_OUT[30]_PCOUT[30])
+                                                      0.144     2.634 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[3].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_OUTPUT58_INST/PCOUT[30]
+                         net (fo=1, unplaced)         0.003     2.637    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[4].genDSP.DSP58_inst/DSP58C<0>_INST/PCIN[30]
+                         DSP_ALUMUX (Prop_DSP_ALUMUX_PCIN[30]_Z[7])
+                                                      0.105     2.742 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[4].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX_INST/Z[7]
+                         net (fo=1, unplaced)         0.000     2.742    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[4].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX.Z<7>
+                         DSP_ALUADD (Prop_DSP_ALUADD_Z[7]_ALU_OUT[30])
+                                                      0.310     3.052 f  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[4].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD_INST/ALU_OUT[30]
+                         net (fo=2, unplaced)         0.000     3.052    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[4].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD.ALU_OUT<30>
+                         DSP_OUTPUT58 (Prop_DSP_OUTPUT58_ALU_OUT[30]_PCOUT[30])
+                                                      0.144     3.196 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[4].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_OUTPUT58_INST/PCOUT[30]
+                         net (fo=1, unplaced)         0.003     3.199    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[5].genDSP.DSP58_inst/DSP58C<0>_INST/PCIN[30]
+                         DSP_ALUMUX (Prop_DSP_ALUMUX_PCIN[30]_Z[7])
+                                                      0.105     3.304 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[5].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX_INST/Z[7]
+                         net (fo=1, unplaced)         0.000     3.304    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[5].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX.Z<7>
+                         DSP_ALUADD (Prop_DSP_ALUADD_Z[7]_ALU_OUT[30])
+                                                      0.310     3.614 f  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[5].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD_INST/ALU_OUT[30]
+                         net (fo=2, unplaced)         0.000     3.614    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[5].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD.ALU_OUT<30>
+                         DSP_OUTPUT58 (Prop_DSP_OUTPUT58_ALU_OUT[30]_PCOUT[30])
+                                                      0.144     3.758 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[5].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_OUTPUT58_INST/PCOUT[30]
+                         net (fo=1, unplaced)         0.003     3.761    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[6].genDSP.DSP58_inst/DSP58C<0>_INST/PCIN[30]
+                         DSP_ALUMUX (Prop_DSP_ALUMUX_PCIN[30]_Z[7])
+                                                      0.105     3.866 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[6].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX_INST/Z[7]
+                         net (fo=1, unplaced)         0.000     3.866    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[6].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX.Z<7>
+                         DSP_ALUADD (Prop_DSP_ALUADD_Z[7]_ALU_OUT[30])
+                                                      0.310     4.176 f  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[6].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD_INST/ALU_OUT[30]
+                         net (fo=2, unplaced)         0.000     4.176    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[6].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD.ALU_OUT<30>
+                         DSP_OUTPUT58 (Prop_DSP_OUTPUT58_ALU_OUT[30]_PCOUT[30])
+                                                      0.144     4.320 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[6].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_OUTPUT58_INST/PCOUT[30]
+                         net (fo=1, unplaced)         0.003     4.323    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[7].genDSP.DSP58_inst/DSP58C<0>_INST/PCIN[30]
+                         DSP_ALUMUX (Prop_DSP_ALUMUX_PCIN[30]_Z[7])
+                                                      0.105     4.428 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[7].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX_INST/Z[7]
+                         net (fo=1, unplaced)         0.000     4.428    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[7].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUMUX.Z<7>
+                         DSP_ALUADD (Prop_DSP_ALUADD_Z[7]_ALU_OUT[10])
+                                                      0.310     4.738 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[7].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD_INST/ALU_OUT[10]
+                         net (fo=2, unplaced)         0.000     4.738    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[7].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_ALUADD.ALU_OUT<10>
+                         DSP_OUTPUT58                                 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[7].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_OUTPUT58_INST/ALU_OUT[10]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock ap_clk rise edge)     6.000     6.000 r  
+                                                      0.000     6.000 r  ap_clk (IN)
+                         net (fo=381565, unset)       0.000     6.000    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[7].genDSP.DSP58_inst/DSP58C<0>_INST/CLK
+                         DSP_SRCMX_OPTINV (Prop_DSP_SRCMX_OPTINV_CLK_IN_CLK)
+                                                      0.059     6.059 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[7].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_SRCMX_OPTINV_INST/CLK
+                         net (fo=6, unplaced)         0.000     6.059    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[7].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_SRCMX_OPTINV.CLK
+                         DSP_OUTPUT58                                 r  finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[7].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_OUTPUT58_INST/CLK
+                         clock pessimism              0.000     6.059    
+                         clock uncertainty           -0.300     5.759    
+                         DSP_OUTPUT58 (Setup_DSP_OUTPUT58_CLK_ALU_OUT[10])
+                                                     -0.003     5.756    finn_design_i/MVAU_rtl_0/MVAU_rtl_0/inst/inst/blkDsp.genINT8.core/genDSPPE[0].genDSPChain[7].genDSP.DSP58_inst/DSP58C<0>_INST/DSP_OUTPUT58_INST
+  -------------------------------------------------------------------
+                         required time                          5.756    
+                         arrival time                          -4.738    
+  -------------------------------------------------------------------
+                         slack                                  1.018    
+
+
+
+
+
+Min Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             0.035ns  (arrival time - required time)
+  Source:                 finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FP_INREG_INST/CLK
+                            (rising edge-triggered cell DSP_FP_INREG clocked by ap_clk  {rise@0.000ns fall@3.000ns period=6.000ns})
+  Destination:            finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FPM_PIPEREG_INST/FPM_EXPINT[0]
+                            (rising edge-triggered cell DSP_FPM_PIPEREG clocked by ap_clk  {rise@0.000ns fall@3.000ns period=6.000ns})
+  Path Group:             ap_clk
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (ap_clk rise@0.000ns - ap_clk rise@0.000ns)
+  Data Path Delay:        0.114ns  (logic 0.114ns (100.000%)  route 0.000ns (0.000%))
+  Logic Levels:           2  (DSP_FP_INMUX=1 DSP_FPM_STAGE0=1)
+  Clock Path Skew:        0.000ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.053ns
+    Source Clock Delay      (SCD):    0.042ns
+    Clock Pessimism Removal (CPR):    0.011ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock ap_clk rise edge)     0.000     0.000 r  
+                                                      0.000     0.000 r  ap_clk (IN)
+                         net (fo=381565, unset)       0.000     0.000    finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/CLK
+                         DSP_FP_SRCMX_OPTINV (Prop_DSP_FP_SRCMX_OPTINV_CLK_NAT_CLK)
+                                                      0.042     0.042 r  finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FP_SRCMX_OPTINV_INST/CLK
+                         net (fo=6, unplaced)         0.000     0.042    finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FP_SRCMX_OPTINV.CLK
+                         DSP_FP_INREG                                 r  finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FP_INREG_INST/CLK
+  -------------------------------------------------------------------    -------------------
+                         DSP_FP_INREG (Prop_DSP_FP_INREG_CLK_A2_DATA[30])
+                                                      0.092     0.134 f  finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FP_INREG_INST/A2_DATA[30]
+                         net (fo=1, unplaced)         0.000     0.134    finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FP_INREG.A2_DATA<30>
+                         DSP_FP_INMUX (Prop_DSP_FP_INMUX_A2_DATA[30]_A_EXP_DATA[7])
+                                                      0.009     0.143 r  finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FP_INMUX_INST/A_EXP_DATA[7]
+                         net (fo=1, unplaced)         0.000     0.143    finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FP_INMUX.A_EXP_DATA<7>
+                         DSP_FPM_STAGE0 (Prop_DSP_FPM_STAGE0_A_EXP_DATA[7]_FPM_EXPINT[0])
+                                                      0.013     0.156 r  finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FPM_STAGE0_INST/FPM_EXPINT[0]
+                         net (fo=1, unplaced)         0.000     0.156    finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FPM_STAGE0.FPM_EXPINT<0>
+                         DSP_FPM_PIPEREG                              r  finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FPM_PIPEREG_INST/FPM_EXPINT[0]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock ap_clk rise edge)     0.000     0.000 r  
+                                                      0.000     0.000 r  ap_clk (IN)
+                         net (fo=381565, unset)       0.000     0.000    finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/CLK
+                         DSP_FP_SRCMX_OPTINV (Prop_DSP_FP_SRCMX_OPTINV_CLK_NAT_CLK)
+                                                      0.053     0.053 r  finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FP_SRCMX_OPTINV_INST/CLK
+                         net (fo=6, unplaced)         0.000     0.053    finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FP_SRCMX_OPTINV.CLK
+                         DSP_FPM_PIPEREG                              r  finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FPM_PIPEREG_INST/CLK
+                         clock pessimism             -0.011     0.042    
+                         DSP_FPM_PIPEREG (Hold_DSP_FPM_PIPEREG_CLK_FPM_EXPINT[0])
+                                                      0.079     0.121    finn_design_i/ElementwiseMul_rtl_0/ElementwiseMul_rtl_0/inst/impl/genPE[0].genIF.core/genDSP.DSPFP32_inst/DSP_FPM_PIPEREG_INST
+  -------------------------------------------------------------------
+                         required time                         -0.121    
+                         arrival time                           0.156    
+  -------------------------------------------------------------------
+                         slack                                  0.035    
+
+
+
+
+
+Pulse Width Checks
+--------------------------------------------------------------------------------------
+Clock Name:         ap_clk
+Waveform(ns):       { 0.000 3.000 }
+Period(ns):         6.000
+Sources:            { ap_clk }
+
+Check Type        Corner  Lib Pin        Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location  Pin
+Min Period        n/a     URAM288E5/CLK  n/a            1.818         6.000       4.182                finn_design_i/OuterShuffle_hls_0/inst/input_gen_1_12288u_1u_12288u_12u_8u_128u_96u_8u_1u_vector_U0/void_input_gen_stream_vector_0_stream_conditional_1_type_0_buf_1_U/ram_reg_uram_0/CLK
+Low Pulse Width   Slow    URAM288E5/CLK  n/a            0.666         3.000       2.334                finn_design_i/MVAU_rtl_6/MVAU_rtl_6_wstrm/inst/core/genUnpumped.mem/blkMem.Mem_reg_uram_0/CLK
+High Pulse Width  Slow    URAM288E5/CLK  n/a            0.666         3.000       2.334                finn_design_i/MVAU_rtl_6/MVAU_rtl_6_wstrm/inst/core/genUnpumped.mem/blkMem.Mem_reg_uram_0/CLK
+
+
+
