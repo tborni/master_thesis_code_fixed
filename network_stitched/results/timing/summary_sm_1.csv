@@ -1,0 +1,4 @@
+N,SIMD,clock_period,WNS,Critical path timing,Max frequency,REG,LUT,DSP,BRAM,URAM
+128,4,1.9,0.046,1.854,539,1519,2234,16,0,0
+128,4,1.8,0.010,1.79,559,1519,2241,16,0,0
+128,4,1.7,-1,-1,-1,1523,2250,16,0,0
